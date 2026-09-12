@@ -1,0 +1,6 @@
+;;; pd-lib-name: fx/fuzz~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp! (@outlet~ (@clip~ [-0.22 0.22] (@*~ [14] (@hip~ [90] (@inlet~))))))

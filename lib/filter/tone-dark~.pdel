@@ -1,0 +1,6 @@
+;;; pd-lib-name: filter/tone-dark~
+;;; pd-lib-category: filter
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp! (@outlet~ (@lop~ [2800] (@inlet~))))

@@ -1,0 +1,11 @@
+;;; pd-lib-name: sampler/stereo~
+;;; pd-lib-category: sampler
+;;; pd-lib-inlets: ((0 control readsf-message))
+;;; pd-lib-outlets: ((0 signal left) (1 signal right) (2 control done))
+;;; pd-lib-note: stream stereo files using readsf~ messages
+
+(pd-lisp!
+ (let* ((player (@readsf~ [2] (@inlet))))
+   (@outlet~ (@ 0 player))
+   (@outlet~ (@ 1 player))
+   (@outlet (@ 2 player))))

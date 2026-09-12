@@ -1,0 +1,12 @@
+;;; pd-lib-name: fx/chorus~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: gentle mono chorus
+
+(pd-lisp!
+ (let* ((x (@inlet~))
+        (writer (@delwrite~ [$0-chorus 100] x))
+        (delay-ms (@+~ [18] (@*~ [6] (@osc~ [0.27]))))
+        (wet (@vd~ [$0-chorus] delay-ms)))
+   (@outlet~ (@*~ [0.62] (@+~ x wet)))))

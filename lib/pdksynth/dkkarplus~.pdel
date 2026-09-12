@@ -1,0 +1,16 @@
+;;; pd-lib-name: pdksynth/dkkarplus~
+;;; pd-lib-category: pdksynth-pitched
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: Karplus-Strong style plucked string corresponding to upstream dkkarplus~
+;;; Upstream: https://github.com/derekxkwan/pdksynth
+;;; License: GPL-3.0-or-later (derived port namespace)
+(pd-lisp!
+ (let* ((t (@inlet)) (f (@inlet~))
+        (exc (@*~ (@vline~ (@msg ["1 0, 0 8 0"] t)) (@noise~)))
+        (sum (@+~ exc))
+        (writer (@delwrite~ [$0-dkks 1000] sum))
+        (tap (@vd~ [$0-dkks] (@/~ [1000] f)))
+        (fb (@*~ [0.992] (@lop~ [6500] tap))))
+   (-> fb 0 sum 1)
+   (@outlet~ tap)))

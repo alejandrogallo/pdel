@@ -1,0 +1,9 @@
+;;; pd-lib-name: signal/gain~
+;;; pd-lib-category: signal
+;;; pd-lib-inlets: ((0 signal input) (1 signal gain))
+;;; pd-lib-outlets: ((0 signal output))
+
+(pd-lisp!
+ (let* ((input (@inlet~))
+        (gain (@inlet~)))
+   (@outlet~ (@*~ input gain))))

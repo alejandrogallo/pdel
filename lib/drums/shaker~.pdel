@@ -1,0 +1,8 @@
+;;; pd-lib-name: drums/shaker~
+;;; pd-lib-category: percussion
+;;; pd-lib-inlets: ((0 control trigger))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (env (@vline~ (@msg ["1 1, 0 190 1"] trigger))))
+   (@outlet~ (@*~ (@hip~ [7000] (@noise~)) env))))

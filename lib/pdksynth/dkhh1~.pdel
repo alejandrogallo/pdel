@@ -1,0 +1,10 @@
+;;; pd-lib-name: pdksynth/dkhh1~
+;;; pd-lib-category: pdksynth-percussion
+;;; pd-lib-inlets: ((0 control trigger))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: hi-hat voice corresponding to upstream dkhh1~
+;;; Upstream: https://github.com/derekxkwan/pdksynth
+;;; License: GPL-3.0-or-later (derived port namespace)
+(pd-lisp!
+ (let* ((t (@inlet)) (e (@vline~ (@msg ["1 1, 0 90 1"] t))))
+   (@outlet~ (@*~ e (@bp~ [9500 1.8] (@hip~ [6000] (@noise~)))))))

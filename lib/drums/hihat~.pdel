@@ -1,0 +1,14 @@
+;;; pd-lib-name: drums/hihat~
+;;; pd-lib-category: percussion
+;;; pd-lib-inlets: ((0 control trigger))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet))
+        (envelope (@vline~
+                   (@msg ["1 1, 0 65 1"] trigger))))
+   (@outlet~
+    (@*~
+     (@bp~ [10000 2]
+           (@hip~ [6500] (@noise~)))
+     envelope))))

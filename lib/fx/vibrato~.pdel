@@ -1,0 +1,12 @@
+;;; pd-lib-name: fx/vibrato~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: 5.2Hz vibrato, about +/-3ms
+
+(pd-lisp!
+ (let* ((x (@inlet~))
+        (writer (@delwrite~ [$0-vibrato 80] x))
+        (delay-ms (@+~ [8] (@*~ [3] (@osc~ [5.2]))))
+        (wet (@vd~ [$0-vibrato] delay-ms)))
+   (@outlet~ (@*~ [0.9] wet))))

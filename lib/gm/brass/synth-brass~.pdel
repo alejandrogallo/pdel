@@ -1,0 +1,10 @@
+;;; pd-lib-name: gm/brass/synth-brass~
+;;; pd-lib-category: general-midi
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (frequency (@inlet~))
+        (env (@pdel/env/brass~ trigger))
+        (voice (@lop~ [3600] (@pdel/osc/square-soft~ frequency))))
+   (@outlet~ (@*~ voice env))))

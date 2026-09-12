@@ -1,0 +1,10 @@
+
+* Compiling
+
+We compile the pdel script into pdel assembly.
+pdel assembly has also x y and so on.
+After creating the elements with assembly,
+then we call the layout function, that sets the x and y
+and widths and so on.
+
+After this we can create the pd file and

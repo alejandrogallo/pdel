@@ -1,0 +1,8 @@
+;;; pd-lib-name: signal/mix2~
+;;; pd-lib-category: signal
+;;; pd-lib-inlets: ((0 signal a) (1 signal b))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: equal 50/50 mix
+
+(pd-lisp!
+ (@outlet~ (@*~ [0.5] (@+~ (@inlet~) (@inlet~)))))

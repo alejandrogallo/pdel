@@ -1,0 +1,11 @@
+;;; pd-lib-name: env/fast-perc~
+;;; pd-lib-category: envelope
+;;; pd-lib-inlets: ((0 control trigger))
+;;; pd-lib-outlets: ((0 signal envelope))
+;;; pd-lib-note: fixed 1ms attack, 65ms decay
+
+(pd-lisp!
+ (@outlet~
+  (@vline~
+   (@msg ["1 1, 0 65 1"]
+         (@inlet)))))

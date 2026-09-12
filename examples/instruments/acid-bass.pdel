@@ -1,0 +1,17 @@
+;;; acid-bass.pdel --- compact acid-ish bass -*- lexical-binding: t; -*-
+;; A bipolar saw is driven into a resonant band-pass and soft-clipped.
+;; This is intentionally a small 303-inspired study, not a component model.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label acid))
+        (saw (@-~ [1] (@*~ [2] (@phasor~ [55]))))
+        (envelope (@vline~
+                   (@msg ["1 2, 0 360 2"] trigger)))
+        (voice
+         (@*~
+          (@clip~ [-0.8 0.8]
+                  (@*~ [2.5]
+                       (@bp~ [950 5] saw)))
+          envelope)))
+   (@dac~ voice (@ 1 voice))))

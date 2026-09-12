@@ -1,0 +1,10 @@
+;;; pd-lib-name: gm/piano/electric-piano-2~
+;;; pd-lib-category: general-midi
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (frequency (@inlet~))
+        (env (@pdel/env/mallet~ trigger))
+        (voice (@+~ (@osc~ frequency) (@*~ [0.25] (@osc~ (@+~ frequency (@*~ [90] (@osc~ (@*~ [3] frequency)))))))))
+   (@outlet~ (@*~ voice env))))

@@ -1,0 +1,19 @@
+;;; additive-organ.pdel --- drawbar-like additive organ -*- lexical-binding: t; -*-
+;; Four weighted sine partials.  Nested +~ applications make the additive
+;; structure explicit in the Lisp rather than spelling it as wires.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label organ))
+        (partials
+         (@+~
+          (@*~ [0.55] (@osc~ [220]))
+          (@+~
+           (@*~ [0.28] (@osc~ [440]))
+           (@+~
+            (@*~ [0.12] (@osc~ [660]))
+            (@*~ [0.08] (@osc~ [880]))))))
+        (envelope (@vline~
+                   (@msg ["1 8, 0 900 8"] trigger)))
+        (voice (@*~ partials envelope)))
+   (@dac~ voice (@ 1 voice))))

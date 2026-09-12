@@ -1,0 +1,9 @@
+;;; pd-lib-name: fx/reverb-hall~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: long hall
+
+(pd-lisp!
+ (let* ((x (@inlet~)) (rv (@rev3~ [96 88 4200 28] x x)))
+   (@outlet~ (@*~ [0.55] (@+~ (@ 0 rv) (@ 1 rv))))))

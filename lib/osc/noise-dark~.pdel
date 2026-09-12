@@ -1,0 +1,9 @@
+;;; pd-lib-name: osc/noise-dark~
+;;; pd-lib-category: oscillator
+;;; pd-lib-inlets: ((0 control trigger-unused))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: dark filtered noise source; inlet exists for a uniform abstraction boundary
+
+(pd-lisp!
+ (let ((unused (@inlet)))
+   (@outlet~ (@lop~ [3500] (@noise~)))))

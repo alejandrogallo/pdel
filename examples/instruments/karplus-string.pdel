@@ -1,0 +1,22 @@
+;;; karplus-string.pdel --- minimal Karplus-Strong plucked string -*- lexical-binding: t; -*-
+;; Most of the patch is functional.  The one explicit -> is intentional:
+;; feedback is cyclic and therefore cannot be represented as an ordinary
+;; nested function application without introducing a recursive graph form.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label pluck))
+        (excitation
+         (@*~
+          (@noise~)
+          (@vline~ (@msg ["1 0, 0 8 0"] trigger))))
+        (feedback-sum (@+~ excitation))
+        (delay-writer (@delwrite~ [$0-karplus 1000] feedback-sum))
+        (delay-reader (@delread4~ [$0-karplus 4.55]))
+        (feedback (@*~ [0.992]
+                       (@lop~ [6000] delay-reader)))
+        (voice (@*~ [0.35] delay-reader)))
+   ;; Complete the cycle only after both sides exist.
+   (-> feedback 0 feedback-sum 1)
+   delay-writer
+   (@dac~ voice (@ 1 voice))))

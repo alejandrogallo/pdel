@@ -1,0 +1,7 @@
+;;; pd-lib-name: fx/overdrive~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: moderate overdrive
+
+(pd-lisp! (@outlet~ (@clip~ [-1 1] (@*~ [3.2] (@inlet~)))))

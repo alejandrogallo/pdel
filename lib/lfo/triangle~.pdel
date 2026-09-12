@@ -1,0 +1,7 @@
+;;; pd-lib-name: lfo/triangle~
+;;; pd-lib-category: lfo
+;;; pd-lib-inlets: ((0 signal rate-hz))
+;;; pd-lib-outlets: ((0 signal modulation))
+
+(pd-lisp!
+ (@outlet~ (@-~ [1] (@*~ [4] (@abs~ (@-~ [0.5] (@phasor~ (@inlet~))))))))

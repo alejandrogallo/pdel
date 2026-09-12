@@ -1,0 +1,14 @@
+;;; detuned-lead.pdel --- simple detuned lead -*- lexical-binding: t; -*-
+;; Three nearby oscillators create beating; a low-pass and envelope shape it.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label lead))
+        (oscillators
+         (@+~
+          (@osc~ [218.5])
+          (@+~ (@osc~ [220]) (@osc~ [221.7]))))
+        (envelope (@vline~
+                   (@msg ["1 8, 0 650 8"] trigger)))
+        (voice (@*~ (@lop~ [2400] oscillators) envelope)))
+   (@dac~ voice (@ 1 voice))))

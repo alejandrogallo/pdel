@@ -1,0 +1,10 @@
+;;; pd-lib-name: gm/guitar/steel~
+;;; pd-lib-category: general-midi
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (frequency (@inlet~))
+        (env (@pdel/env/pluck~ trigger))
+        (voice (@bp~ [2400 0.8] (@+~ (@pdel/osc/saw~ frequency) (@*~ [0.12] (@noise~))))))
+   (@outlet~ (@*~ voice env))))

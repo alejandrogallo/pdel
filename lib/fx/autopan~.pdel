@@ -1,0 +1,13 @@
+;;; pd-lib-name: fx/autopan~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal left) (1 signal right))
+;;; pd-lib-note: slow 0.18Hz autopan
+
+(pd-lisp!
+ (let* ((x (@inlet~))
+        (lfo (@*~ [0.5] (@+~ [1] (@osc~ [0.18]))))
+        (left (@*~ x (@-~ [1] lfo)))
+        (right (@*~ x lfo)))
+   (@outlet~ left)
+   (@outlet~ right)))

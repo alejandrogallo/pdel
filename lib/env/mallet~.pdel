@@ -1,0 +1,7 @@
+;;; pd-lib-name: env/mallet~
+;;; pd-lib-category: envelope
+;;; pd-lib-inlets: ((0 control trigger))
+;;; pd-lib-outlets: ((0 signal envelope))
+;;; pd-lib-note: mallet decay
+
+(pd-lisp! (@outlet~ (@vline~ (@msg ["1 1, 0.25 180 1, 0 850 181"] (@inlet)))))

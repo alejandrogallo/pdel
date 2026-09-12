@@ -1,0 +1,7 @@
+(pd-lisp!
+ (dsp-1)
+ (let* ((notes (@notein))
+        (midi (@pack [f f] (@ 0 notes) (@ 1 notes)))
+        (synth (@pdel/poly/saw4~ midi))
+        (space (@pdel/fx/reverb-room~ synth)))
+   (@dac~ space space)))

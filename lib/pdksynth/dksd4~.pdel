@@ -1,0 +1,12 @@
+;;; pd-lib-name: pdksynth/dksd4~
+;;; pd-lib-category: pdksynth-percussion
+;;; pd-lib-inlets: ((0 control trigger))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: snare synthesizer corresponding to upstream dksd4~
+;;; Upstream: https://github.com/derekxkwan/pdksynth
+;;; License: GPL-3.0-or-later (derived port namespace)
+(pd-lisp!
+ (let* ((t (@inlet)) (e (@vline~ (@msg ["1 1, 0 260 1"] t)))
+        (tone (@*~ [0.45] (@osc~ [220])))
+        (noise (@*~ [0.8] (@bp~ [1900 1.2] (@noise~)))))
+   (@outlet~ (@*~ e (@+~ tone noise)))))

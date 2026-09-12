@@ -1,0 +1,16 @@
+;;; clap.pdel --- synthetic hand clap -*- lexical-binding: t; -*-
+;; Several fast envelope bursts followed by a short noisy tail.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label clap))
+        (envelope
+         (@vline~
+          (@msg ["1 0, 0 18 0, 1 28 0, 0 46 0, 1 58 0, 0 170 58"]
+                trigger)))
+        (voice
+         (@*~
+          (@bp~ [1400 0.8]
+                (@hip~ [700] (@noise~)))
+          envelope)))
+   (@dac~ voice (@ 1 voice))))

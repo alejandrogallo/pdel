@@ -1,0 +1,16 @@
+;;; pd-lib-name: voice/organ-note~
+;;; pd-lib-category: voice
+;;; pd-lib-inlets: ((0 control note-velocity-list))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: MIDI note/velocity voice; velocity zero releases
+
+(pd-lisp!
+ (let* ((event (@inlet))
+        (uv (@unpack [f f] event))
+        (note (@ 0 uv))
+        (velocity (@ 1 uv))
+        (frequency (@mtof note))
+        (amp-target (@/ [127] velocity))
+        (amp (@line~ (@pack [f 8] amp-target)))
+        (voice (@pdel/osc/organ~ frequency)))
+   (@outlet~ (@*~ voice amp))))

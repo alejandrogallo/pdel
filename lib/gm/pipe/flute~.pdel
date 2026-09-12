@@ -1,0 +1,10 @@
+;;; pd-lib-name: gm/pipe/flute~
+;;; pd-lib-category: general-midi
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (frequency (@inlet~))
+        (env (@pdel/env/string~ trigger))
+        (voice (@lop~ [7000] (@+~ (@osc~ frequency) (@*~ [0.035] (@noise~))))))
+   (@outlet~ (@*~ voice env))))

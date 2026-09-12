@@ -1,0 +1,6 @@
+;;; pd-lib-name: signal/dcblock2~
+;;; pd-lib-category: signal
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp! (@outlet~ (@hip~ [8] (@hip~ [8] (@inlet~)))))

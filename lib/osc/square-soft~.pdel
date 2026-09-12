@@ -1,0 +1,6 @@
+;;; pd-lib-name: osc/square-soft~
+;;; pd-lib-category: oscillator
+;;; pd-lib-inlets: ((0 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp! (@outlet~ (@lop~ [9000] (@pdel/osc/square~ (@inlet~)))))

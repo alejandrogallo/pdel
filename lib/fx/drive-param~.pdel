@@ -1,0 +1,6 @@
+;;; pd-lib-name: fx/drive-param~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio) (1 signal drive))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp! (@outlet~ (@clip~ [-1 1] (@*~ (@inlet~) (@inlet~)))))

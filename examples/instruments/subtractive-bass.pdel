@@ -1,0 +1,13 @@
+;;; subtractive-bass.pdel --- simple saw-like bass -*- lexical-binding: t; -*-
+;; phasor~ 0..1 -> bipolar saw -> low-pass -> amplitude envelope.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label bass))
+        (saw (@-~ [1]
+                  (@*~ [2]
+                       (@phasor~ [55]))))
+        (envelope (@vline~
+                   (@msg ["1 3, 0 420 3"] trigger)))
+        (voice (@*~ (@lop~ [700] saw) envelope)))
+   (@dac~ voice (@ 1 voice))))

@@ -1,0 +1,11 @@
+;;; pd-lib-name: fx/chorus-param~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio) (1 signal rate-hz) (2 signal depth-ms))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((x (@inlet~)) (rate (@inlet~)) (depth (@inlet~))
+        (writer (@delwrite~ [$0-chorus-param 120] x))
+        (delay-ms (@+~ [15] (@*~ depth (@osc~ rate))))
+        (wet (@vd~ [$0-chorus-param] delay-ms)))
+   (@outlet~ (@*~ [0.62] (@+~ x wet)))))

@@ -1,0 +1,6 @@
+;;; pd-lib-name: midi/velocity-normalize
+;;; pd-lib-category: midi
+;;; pd-lib-inlets: ((0 control velocity-0-to-127))
+;;; pd-lib-outlets: ((0 control gain-0-to-1))
+
+(pd-lisp! (@outlet (@/ [127] (@inlet))))

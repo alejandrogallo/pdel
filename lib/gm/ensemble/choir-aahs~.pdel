@@ -1,0 +1,10 @@
+;;; pd-lib-name: gm/ensemble/choir-aahs~
+;;; pd-lib-category: general-midi
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (frequency (@inlet~))
+        (env (@pdel/env/pad~ trigger))
+        (voice (@bp~ [1200 0.8] (@+~ (@osc~ frequency) (@*~ [0.42] (@osc~ (@*~ [2] frequency)))))))
+   (@outlet~ (@*~ voice env))))

@@ -1,0 +1,10 @@
+;;; pd-lib-name: osc/saw~
+;;; pd-lib-category: oscillator
+;;; pd-lib-inlets: ((0 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (@outlet~
+  (@-~ [1]
+       (@*~ [2]
+            (@phasor~ (@inlet~))))))

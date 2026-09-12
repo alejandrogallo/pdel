@@ -1,0 +1,13 @@
+;;; pd-lib-name: pdksynth/dkvowel~
+;;; pd-lib-category: pdksynth-effect
+;;; pd-lib-inlets: ((0 signal audio) (1 signal formant-shift))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: three-formant vowel-filter style effect corresponding to upstream dkvowel~
+;;; Upstream: https://github.com/derekxkwan/pdksynth
+;;; License: GPL-3.0-or-later (derived port namespace)
+(pd-lisp!
+ (let* ((x (@inlet~)) (shift (@inlet~))
+        (f1 (@bp~ [0 7] x (@+~ [700] shift)))
+        (f2 (@bp~ [0 9] x (@+~ [1220] (@*~ [1.4] shift))))
+        (f3 (@bp~ [0 12] x (@+~ [2600] (@*~ [2] shift)))))
+   (@outlet~ (@*~ [0.65] (@+~ f1 (@+~ (@*~ [0.65] f2) (@*~ [0.4] f3)))))))

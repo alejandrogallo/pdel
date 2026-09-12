@@ -1,0 +1,6 @@
+;;; pd-lib-name: osc/sine~
+;;; pd-lib-category: oscillator
+;;; pd-lib-inlets: ((0 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp! (@outlet~ (@osc~ (@inlet~))))

@@ -1,0 +1,11 @@
+;;; pd-lib-name: pdksynth/dkcymb808~
+;;; pd-lib-category: pdksynth-percussion
+;;; pd-lib-inlets: ((0 control trigger))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: 808-style metallic cymbal corresponding to upstream dkcymb808~
+;;; Upstream: https://github.com/derekxkwan/pdksynth
+;;; License: GPL-3.0-or-later (derived port namespace)
+(pd-lisp!
+ (let* ((t (@inlet)) (e (@vline~ (@msg ["1 1, 0 900 1"] t)))
+        (m (@+~ (@pdel/osc/square~ 205) (@+~ (@pdel/osc/square~ 305) (@+~ (@pdel/osc/square~ 410) (@pdel/osc/square~ 615))))))
+   (@outlet~ (@*~ [0.25] e (@hip~ [5200] m)))))

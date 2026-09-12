@@ -1,0 +1,10 @@
+;;; pd-lib-name: gm/piano/bright-acoustic~
+;;; pd-lib-category: general-midi
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (frequency (@inlet~))
+        (env (@pdel/env/piano~ trigger))
+        (voice (@hip~ [120] (@+~ (@osc~ frequency) (@*~ [0.48] (@osc~ (@*~ [3] frequency)))))))
+   (@outlet~ (@*~ voice env))))

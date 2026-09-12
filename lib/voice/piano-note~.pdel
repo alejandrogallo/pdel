@@ -1,0 +1,17 @@
+;;; pd-lib-name: voice/piano-note~
+;;; pd-lib-category: voice
+;;; pd-lib-inlets: ((0 control note-velocity-list))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((event (@inlet))
+        (uv (@unpack [f f] event))
+        (note (@ 0 uv))
+        (velocity (@ 1 uv))
+        (frequency (@mtof note))
+        (gate (@moses [1] velocity))
+        (trigger (@ 1 gate))
+        (env (@pdel/env/piano~ trigger))
+        (amp (@/ [127] velocity))
+        (tone (@+~ (@osc~ frequency) (@*~ [0.32] (@osc~ (@*~ [2.01] frequency))))))
+   (@outlet~ (@*~ amp (@*~ tone env)))))

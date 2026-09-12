@@ -1,0 +1,9 @@
+;;; pdksynth-demo.pdel --- Small pdksynth port demo
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label pdksynth-piano))
+        (freq (@nbx [5 14 20 2000 0 0 empty empty Hz 0 -8 0 10 -262144 -1 -1 220 256]))
+        (voice (@pdel/pdksynth/dkpiano~ trigger freq))
+        (room (@pdel/fx/reverb-room~ voice)))
+   (@dac~ room (@ 1 room))))

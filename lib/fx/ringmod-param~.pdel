@@ -1,0 +1,6 @@
+;;; pd-lib-name: fx/ringmod-param~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp! (@outlet~ (@*~ (@inlet~) (@osc~ (@inlet~)))))

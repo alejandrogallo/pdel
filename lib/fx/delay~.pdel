@@ -1,0 +1,14 @@
+;;; pd-lib-name: fx/delay~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: 360ms feedback delay
+
+(pd-lisp!
+ (let* ((x (@inlet~))
+        (sum (@+~ x))
+        (writer (@delwrite~ [$0-delay 2000] sum))
+        (tap (@delread~ [$0-delay 360]))
+        (fb (@*~ [0.38] tap)))
+   (-> fb 0 sum 1)
+   (@outlet~ (@+~ (@*~ [0.78] x) (@*~ [0.48] tap)))))

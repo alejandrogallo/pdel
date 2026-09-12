@@ -1,0 +1,11 @@
+;;; pd-lib-name: fx/echo-long~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: 720ms spacious echo
+
+(pd-lisp!
+ (let* ((x (@inlet~)) (sum (@+~ x)) (writer (@delwrite~ [$0-echo 4000] sum))
+        (tap (@delread~ [$0-echo 720])) (fb (@*~ [0.52] tap)))
+   (-> fb 0 sum 1)
+   (@outlet~ (@+~ (@*~ [0.72] x) (@*~ [0.42] tap)))))

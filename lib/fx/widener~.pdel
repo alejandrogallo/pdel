@@ -1,0 +1,10 @@
+;;; pd-lib-name: fx/widener~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal left) (1 signal right))
+;;; pd-lib-note: Haas-style 17ms stereo widening
+
+(pd-lisp!
+ (let* ((x (@inlet~)) (writer (@delwrite~ [$0-wide 60] x)) (r (@delread~ [$0-wide 17])))
+   (@outlet~ x)
+   (@outlet~ (@*~ [0.92] r))))

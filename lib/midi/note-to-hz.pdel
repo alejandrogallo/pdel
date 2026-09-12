@@ -1,0 +1,6 @@
+;;; pd-lib-name: midi/note-to-hz
+;;; pd-lib-category: midi
+;;; pd-lib-inlets: ((0 control midi-note))
+;;; pd-lib-outlets: ((0 control frequency-hz))
+
+(pd-lisp! (@outlet (@mtof (@inlet))))

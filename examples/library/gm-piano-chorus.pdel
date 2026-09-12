@@ -1,0 +1,7 @@
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label piano))
+        (frequency 261.6256)
+        (piano (@pdel/gm/piano/acoustic-grand~ trigger frequency))
+        (wet (@pdel/fx/chorus~ piano)))
+   (@dac~ wet wet)))

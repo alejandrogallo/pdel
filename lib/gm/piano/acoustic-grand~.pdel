@@ -1,0 +1,11 @@
+;;; pd-lib-name: gm/piano/acoustic-grand~
+;;; pd-lib-category: general-midi
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: GM 1-style acoustic piano approximation
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (frequency (@inlet~))
+        (env (@pdel/env/piano~ trigger))
+        (voice (@*~ [0.7] (@+~ (@osc~ frequency) (@*~ [0.33] (@osc~ (@*~ [2.01] frequency)))))))
+   (@outlet~ (@*~ voice env))))

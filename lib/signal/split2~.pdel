@@ -1,0 +1,9 @@
+;;; pd-lib-name: signal/split2~
+;;; pd-lib-category: signal
+;;; pd-lib-inlets: ((0 signal input))
+;;; pd-lib-outlets: ((0 signal left) (1 signal right))
+
+(pd-lisp!
+ (let ((input (@inlet~)))
+   (@outlet~ input)
+   (@outlet~ input)))

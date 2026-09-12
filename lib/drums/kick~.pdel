@@ -1,0 +1,13 @@
+;;; pd-lib-name: drums/kick~
+;;; pd-lib-category: percussion
+;;; pd-lib-inlets: ((0 control trigger))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet))
+        (pitch (@vline~
+                (@msg ["145 0, 48 95 0"] trigger)))
+        (envelope (@vline~
+                   (@msg ["1 2, 0 280 2"] trigger))))
+   (@outlet~
+    (@*~ (@osc~ pitch) envelope))))

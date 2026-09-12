@@ -1,0 +1,13 @@
+;;; hihat.pdel --- simple closed hi-hat -*- lexical-binding: t; -*-
+;; Bright filtered noise with a very short amplitude envelope.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((bandpass (@bp~ [10000 2]
+                       (@hip~ [6500]
+                              (@noise~))))
+        (envelope (@vline~
+                   (@msg ["1 1, 0 65 1"]
+                         (bng! nil :label hihat))))
+        (voice (@*~ bandpass envelope)))
+   (@dac~ voice (@ 1 voice))))

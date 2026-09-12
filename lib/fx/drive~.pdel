@@ -1,0 +1,11 @@
+;;; pd-lib-name: fx/drive~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal input) (1 signal drive))
+;;; pd-lib-outlets: ((0 signal output))
+
+(pd-lisp!
+ (let* ((input (@inlet~))
+        (drive (@inlet~)))
+   (@outlet~
+    (@clip~ [-1 1]
+            (@*~ input drive)))))

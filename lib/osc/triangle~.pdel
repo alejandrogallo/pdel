@@ -1,0 +1,12 @@
+;;; pd-lib-name: osc/triangle~
+;;; pd-lib-category: oscillator
+;;; pd-lib-inlets: ((0 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (@outlet~
+  (@-~ [1]
+       (@*~ [4]
+            (@abs~
+             (@-~ [0.5]
+                  (@phasor~ (@inlet~))))))))

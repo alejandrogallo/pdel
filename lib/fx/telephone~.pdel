@@ -1,0 +1,6 @@
+;;; pd-lib-name: fx/telephone~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp! (@outlet~ (@pdel/filter/telephone~ (@inlet~))))

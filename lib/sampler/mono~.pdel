@@ -1,0 +1,10 @@
+;;; pd-lib-name: sampler/mono~
+;;; pd-lib-category: sampler
+;;; pd-lib-inlets: ((0 control readsf-message))
+;;; pd-lib-outlets: ((0 signal audio) (1 control done))
+;;; pd-lib-note: send Pd readsf~ messages such as open <file>, then 1
+
+(pd-lisp!
+ (let* ((player (@readsf~ [1] (@inlet))))
+   (@outlet~ (@ 0 player))
+   (@outlet (@ 1 player))))

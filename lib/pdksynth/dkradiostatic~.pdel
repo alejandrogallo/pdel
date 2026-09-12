@@ -1,0 +1,10 @@
+;;; pd-lib-name: pdksynth/dkradiostatic~
+;;; pd-lib-category: pdksynth-effect
+;;; pd-lib-inlets: ((0 signal audio) (1 signal amount-0-to-1))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: radio-static effect corresponding to upstream dkradiostatic~
+;;; Upstream: https://github.com/derekxkwan/pdksynth
+;;; License: GPL-3.0-or-later (derived port namespace)
+(pd-lisp!
+ (let* ((x (@inlet~)) (a (@inlet~)) (n (@bp~ [4200 0.8] (@noise~))))
+   (@outlet~ (@+~ (@*~ x (@-~ [1] a)) (@*~ a n)))))

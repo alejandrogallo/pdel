@@ -1,0 +1,9 @@
+;;; pd-lib-name: signal/add2~
+;;; pd-lib-category: signal
+;;; pd-lib-inlets: ((0 signal a) (1 signal b))
+;;; pd-lib-outlets: ((0 signal sum))
+
+(pd-lisp!
+ (let* ((a (@inlet~))
+        (b (@inlet~)))
+   (@outlet~ (@+~ a b))))

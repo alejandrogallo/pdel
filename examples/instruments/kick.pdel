@@ -1,0 +1,12 @@
+;;; kick.pdel --- simple synthesized kick drum -*- lexical-binding: t; -*-
+;; Functional style: pitch envelope -> oscillator, amplitude envelope -> VCA.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label kick))
+        (pitch (@vline~
+                (@msg ["145 0, 48 95 0"] trigger)))
+        (envelope (@vline~
+                   (@msg ["1 2, 0 280 2"] trigger)))
+        (voice (@*~ (@osc~ pitch) envelope)))
+   (@dac~ voice (@ 1 voice))))

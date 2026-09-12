@@ -1,0 +1,5 @@
+(pd-lisp!
+ (dsp-1)
+ (let* ((commands (@inlet))
+        (player (@pdel/sampler/stereo~ commands)))
+   (@dac~ (@ 0 player) (@ 1 player))))

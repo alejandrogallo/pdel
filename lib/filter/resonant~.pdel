@@ -1,0 +1,6 @@
+;;; pd-lib-name: filter/resonant~
+;;; pd-lib-category: filter
+;;; pd-lib-inlets: ((0 signal audio) (1 control frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp! (@outlet~ (@bp~ [1000 4] (@inlet~) (@inlet))))

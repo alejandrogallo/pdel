@@ -1,0 +1,12 @@
+;;; pd-lib-name: pdksynth/dkradiotuning~
+;;; pd-lib-category: pdksynth-effect
+;;; pd-lib-inlets: ((0 signal audio) (1 signal tuning-0-to-1))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: radio-tuning coloration corresponding to upstream dkradiotuning~
+;;; Upstream: https://github.com/derekxkwan/pdksynth
+;;; License: GPL-3.0-or-later (derived port namespace)
+(pd-lisp!
+ (let* ((x (@inlet~)) (tune (@inlet~))
+        (mod (@*~ [35] (@osc~ (@+~ [0.25] (@*~ [5] tune)))))
+        (y (@bp~ [0 2.2] x (@+~ [1200] (@*~ [2400] tune)))))
+   (@outlet~ (@clip~ [-1 1] (@+~ y (@*~ [0.08] mod))))))

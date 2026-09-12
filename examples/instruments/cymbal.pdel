@@ -1,0 +1,23 @@
+;;; cymbal.pdel --- simple metallic cymbal -*- lexical-binding: t; -*-
+;; Several inharmonic oscillators are summed, clipped, high-passed and given
+;; a longer noisy-metallic decay.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label cymbal))
+        (metal
+         (@+~
+          (@osc~ [410])
+          (@+~
+           (@osc~ [527])
+           (@+~
+            (@osc~ [619])
+            (@+~ (@osc~ [837]) (@osc~ [1043]))))))
+        (envelope (@vline~
+                   (@msg ["1 1, 0 900 1"] trigger)))
+        (voice
+         (@*~
+          (@hip~ [4500]
+                 (@clip~ [-1 1] (@*~ [4] metal)))
+          envelope)))
+   (@dac~ voice (@ 1 voice))))

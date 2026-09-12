@@ -1,0 +1,10 @@
+;;; pd-lib-name: fx/tremolo-param~
+;;; pd-lib-category: effect
+;;; pd-lib-inlets: ((0 signal audio) (1 signal rate-hz) (2 signal depth-0-to-1))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((x (@inlet~)) (rate (@inlet~)) (depth (@inlet~))
+        (lfo (@*~ [0.5] (@+~ [1] (@osc~ rate))))
+        (gain (@+~ (@-~ [1] depth) (@*~ depth lfo))))
+   (@outlet~ (@*~ x gain))))

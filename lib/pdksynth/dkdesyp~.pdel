@@ -1,0 +1,11 @@
+;;; pd-lib-name: pdksynth/dkdesyp~
+;;; pd-lib-category: pdksynth-pitched
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: detuned synth pad corresponding to upstream dkdesyp~
+;;; Upstream: https://github.com/derekxkwan/pdksynth
+;;; License: GPL-3.0-or-later (derived port namespace)
+(pd-lisp!
+ (let* ((t (@inlet)) (f (@inlet~)) (e (@vline~ (@msg ["1 650, 0.75 900 650, 0 2200 1550"] t)))
+        (v (@+~ (@pdel/osc/saw~ (@*~ [0.997] f)) (@+~ (@pdel/osc/saw~ f) (@pdel/osc/saw~ (@*~ [1.003] f))))))
+   (@outlet~ (@*~ [0.22] e (@lop~ [2800] v)))))

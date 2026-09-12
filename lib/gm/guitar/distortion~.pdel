@@ -1,0 +1,10 @@
+;;; pd-lib-name: gm/guitar/distortion~
+;;; pd-lib-category: general-midi
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (frequency (@inlet~))
+        (env (@pdel/env/pluck~ trigger))
+        (voice (@pdel/fx/distortion~ (@pdel/osc/saw~ frequency))))
+   (@outlet~ (@*~ voice env))))

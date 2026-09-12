@@ -1,0 +1,10 @@
+;;; pd-lib-name: gm/pad/sweep~
+;;; pd-lib-category: general-midi
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (frequency (@inlet~))
+        (env (@pdel/env/pad~ trigger))
+        (voice (@bp~ [2200 0.6] (@pdel/osc/supersaw~ frequency))))
+   (@outlet~ (@*~ voice env))))

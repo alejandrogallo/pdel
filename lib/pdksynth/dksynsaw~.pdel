@@ -1,0 +1,10 @@
+;;; pd-lib-name: pdksynth/dksynsaw~
+;;; pd-lib-category: pdksynth-pitched
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: saw synth corresponding to upstream dksynsaw~
+;;; Upstream: https://github.com/derekxkwan/pdksynth
+;;; License: GPL-3.0-or-later (derived port namespace)
+(pd-lisp!
+ (let* ((t (@inlet)) (f (@inlet~)) (e (@vline~ (@msg ["1 8, 0.72 250 8, 0 850 258"] t))))
+   (@outlet~ (@*~ [0.5] e (@lop~ [5000] (@pdel/osc/saw~ f))))))

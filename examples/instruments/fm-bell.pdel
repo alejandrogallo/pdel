@@ -1,0 +1,16 @@
+;;; fm-bell.pdel --- two-operator FM bell -*- lexical-binding: t; -*-
+;; A decaying modulation index turns a bright attack into a sine-like tail.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label fm-bell))
+        (index (@vline~
+                (@msg ["850 0, 20 1500 0"] trigger)))
+        (carrier
+         (@osc~
+          (@+~ [440]
+               (@*~ (@osc~ [660]) index))))
+        (envelope (@vline~
+                   (@msg ["1 5, 0 2200 5"] trigger)))
+        (voice (@*~ carrier envelope)))
+   (@dac~ voice (@ 1 voice))))

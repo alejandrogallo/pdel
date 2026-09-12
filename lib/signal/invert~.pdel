@@ -1,0 +1,6 @@
+;;; pd-lib-name: signal/invert~
+;;; pd-lib-category: signal
+;;; pd-lib-inlets: ((0 signal audio))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp! (@outlet~ (@*~ [-1] (@inlet~))))

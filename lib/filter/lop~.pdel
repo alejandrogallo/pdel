@@ -1,0 +1,9 @@
+;;; pd-lib-name: filter/lop~
+;;; pd-lib-category: filter
+;;; pd-lib-inlets: ((0 signal input) (1 control cutoff-hz))
+;;; pd-lib-outlets: ((0 signal output))
+
+(pd-lisp!
+ (let* ((input (@inlet~))
+        (cutoff (@inlet)))
+   (@outlet~ (@lop~ input cutoff))))

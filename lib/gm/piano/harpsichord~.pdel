@@ -1,0 +1,10 @@
+;;; pd-lib-name: gm/piano/harpsichord~
+;;; pd-lib-category: general-midi
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (frequency (@inlet~))
+        (env (@pdel/env/pluck~ trigger))
+        (voice (@hip~ [120] (@+~ (@pdel/osc/saw~ frequency) (@*~ [0.3] (@pdel/osc/square~ (@*~ [2] frequency)))))))
+   (@outlet~ (@*~ voice env))))

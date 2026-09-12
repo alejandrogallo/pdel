@@ -1,0 +1,11 @@
+;;; pd-lib-name: pdksynth/dkpiano~
+;;; pd-lib-category: pdksynth-pitched
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: piano-like additive/decay synth corresponding to upstream dkpiano~
+;;; Upstream: https://github.com/derekxkwan/pdksynth
+;;; License: GPL-3.0-or-later (derived port namespace)
+(pd-lisp!
+ (let* ((t (@inlet)) (f (@inlet~)) (e (@pdel/env/piano~ t))
+        (v (@+~ (@osc~ f) (@+~ (@*~ [0.34] (@osc~ (@*~ [2.01] f))) (@*~ [0.15] (@osc~ (@*~ [3.02] f)))))))
+   (@outlet~ (@*~ [0.72] e v))))

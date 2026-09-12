@@ -1,0 +1,6 @@
+;;; pd-lib-name: lfo/bipolar-saw~
+;;; pd-lib-category: lfo
+;;; pd-lib-inlets: ((0 signal rate-hz))
+;;; pd-lib-outlets: ((0 signal modulation))
+
+(pd-lisp! (@outlet~ (@-~ [1] (@*~ [2] (@phasor~ (@inlet~))))))

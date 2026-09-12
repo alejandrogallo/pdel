@@ -1,0 +1,9 @@
+;;; pd-lib-name: sampler/mono-gain~
+;;; pd-lib-category: sampler
+;;; pd-lib-inlets: ((0 control readsf-message) (1 signal gain))
+;;; pd-lib-outlets: ((0 signal audio) (1 control done))
+
+(pd-lisp!
+ (let* ((player (@readsf~ [1] (@inlet))) (gain (@inlet~)))
+   (@outlet~ (@*~ gain (@ 0 player)))
+   (@outlet (@ 1 player))))

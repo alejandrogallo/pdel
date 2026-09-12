@@ -1,0 +1,17 @@
+;;; rhodes.pdel --- small FM electric-piano study -*- lexical-binding: t; -*-
+;; A harmonic FM transient plus a slower carrier envelope gives a compact
+;; Rhodes-like / tine-like electric-piano colour.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label rhodes))
+        (mod-envelope (@vline~
+                       (@msg ["700 0, 30 850 0"] trigger)))
+        (carrier
+         (@osc~
+          (@+~ [220]
+               (@*~ (@osc~ [440]) mod-envelope))))
+        (amp-envelope (@vline~
+                       (@msg ["1 4, 0.35 500 4, 0 1800 504"] trigger)))
+        (voice (@*~ carrier amp-envelope)))
+   (@dac~ voice (@ 1 voice))))

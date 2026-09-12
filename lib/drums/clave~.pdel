@@ -1,0 +1,8 @@
+;;; pd-lib-name: drums/clave~
+;;; pd-lib-category: percussion
+;;; pd-lib-inlets: ((0 control trigger))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (env (@vline~ (@msg ["1 1, 0 90 1"] trigger))))
+   (@outlet~ (@*~ (@osc~ [2450]) env))))

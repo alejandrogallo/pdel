@@ -1,0 +1,14 @@
+;;; pd-lib-name: synth/sub-bass~
+;;; pd-lib-category: synthesizer
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet))
+        (frequency (@inlet~))
+        (saw (@-~ [1]
+                  (@*~ [2] (@phasor~ frequency))))
+        (envelope (@vline~
+                   (@msg ["1 3, 0 420 3"] trigger))))
+   (@outlet~
+    (@*~ (@lop~ [700] saw) envelope))))

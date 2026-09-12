@@ -1,0 +1,10 @@
+;;; pd-lib-name: gm/organ/percussive~
+;;; pd-lib-category: general-midi
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((trigger (@inlet)) (frequency (@inlet~))
+        (env (@pdel/env/long-perc~ trigger))
+        (voice (@+~ (@pdel/osc/organ~ frequency) (@*~ [0.2] (@osc~ (@*~ [3] frequency))))))
+   (@outlet~ (@*~ voice env))))

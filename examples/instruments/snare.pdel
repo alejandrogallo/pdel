@@ -1,0 +1,18 @@
+;;; snare.pdel --- noise + body snare -*- lexical-binding: t; -*-
+;; Filtered noise supplies the wires; a short sine supplies the body.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label snare))
+        (noise-envelope (@vline~
+                         (@msg ["1 1, 0 180 1"] trigger)))
+        (body-envelope (@vline~
+                        (@msg ["1 1, 0 110 1"] trigger)))
+        (noise-voice
+         (@*~
+          (@bp~ [3200 1.2]
+                (@hip~ [900] (@noise~)))
+          noise-envelope))
+        (body-voice (@*~ (@osc~ [190]) body-envelope))
+        (voice (@+~ noise-voice body-voice)))
+   (@dac~ voice (@ 1 voice))))

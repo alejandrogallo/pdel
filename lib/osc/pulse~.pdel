@@ -1,0 +1,12 @@
+;;; pd-lib-name: osc/pulse~
+;;; pd-lib-category: oscillator
+;;; pd-lib-inlets: ((0 signal frequency-hz) (1 signal duty-cycle))
+;;; pd-lib-outlets: ((0 signal audio))
+
+(pd-lisp!
+ (let* ((frequency (@inlet~))
+        (duty (@inlet~)))
+   (@outlet~
+    (@-~ [1]
+         (@*~ [2]
+              (@>~ (@phasor~ frequency) duty))))))

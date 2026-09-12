@@ -1,0 +1,15 @@
+;;; cowbell.pdel --- metallic two-oscillator cowbell -*- lexical-binding: t; -*-
+;; Two clipped oscillators approximate the hard-edged partials of an
+;; electronic cowbell, followed by band-pass filtering and a short decay.
+
+(pd-lisp!
+ (dsp-1)
+ (let* ((trigger (bng! nil :label cowbell))
+        (metal
+         (@+~
+          (@clip~ [-1 1] (@*~ [8] (@osc~ [540])))
+          (@clip~ [-1 1] (@*~ [8] (@osc~ [800])))))
+        (envelope (@vline~
+                   (@msg ["1 1, 0 260 1"] trigger)))
+        (voice (@*~ (@bp~ [1200 3] metal) envelope)))
+   (@dac~ voice (@ 1 voice))))

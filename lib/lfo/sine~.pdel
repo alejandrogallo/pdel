@@ -1,0 +1,6 @@
+;;; pd-lib-name: lfo/sine~
+;;; pd-lib-category: lfo
+;;; pd-lib-inlets: ((0 signal rate-hz))
+;;; pd-lib-outlets: ((0 signal modulation))
+
+(pd-lisp! (@outlet~ (@osc~ (@inlet~))))

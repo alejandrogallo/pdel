@@ -1,0 +1,12 @@
+;;; pd-lib-name: pdksynth/dkpwmsq~
+;;; pd-lib-category: pdksynth-pitched
+;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
+;;; pd-lib-outlets: ((0 signal audio))
+;;; pd-lib-note: pulse-width-modulated square voice corresponding to upstream dkpwmsq~
+;;; Upstream: https://github.com/derekxkwan/pdksynth
+;;; License: GPL-3.0-or-later (derived port namespace)
+(pd-lisp!
+ (let* ((t (@inlet)) (f (@inlet~)) (e (@vline~ (@msg ["1 7, 0.72 220 7, 0 900 227"] t)))
+        (duty (@+~ [0.5] (@*~ [0.28] (@osc~ [0.23]))))
+        (v (@expr~ ["if($v1 > $v2, 1, -1)"] (@phasor~ f) duty)))
+   (@outlet~ (@*~ [0.42] e v))))
