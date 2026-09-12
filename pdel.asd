@@ -4,7 +4,7 @@
   :author "Alejandro Gallo; Common Lisp port"
   :license "GPL-3.0-or-later"
   :serial t
-  :depends-on (#:s-graphviz)
+  :depends-on (#:s-graphviz #:alexandria #:uiop)
   :components ((:file "package")
                (:file "asm")
                (:file "layout")
