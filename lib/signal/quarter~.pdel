@@ -1,4 +1,4 @@
 ;;; signal/quarter~ --- converted PDEL library definition
 ;;; category: signal
 
-(defpdel signal/quarter~ :inputs ((audio signal)) :outputs ((audio signal)) (*~ #(0.25) audio))
+(defpdel signal/quarter~ ((audio signal)) :outputs ((audio signal)) (*~ #(0.25) audio))

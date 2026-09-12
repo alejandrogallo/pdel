@@ -2,6 +2,6 @@
 ;;; category: effect
 ;;; note: 360ms feedback delay
 
-(defpdel fx/delay~ :inputs ((audio signal)) :outputs ((audio signal))
+(defpdel fx/delay~ ((audio signal)) :outputs ((audio signal))
  (let*
    ((x audio) (sum (+~ x)) (writer (delwrite~ #($0-delay 2000) sum)) (tap (delread~ #($0-delay 360))) (fb (*~ #(0.38) tap))) (-> fb 0 sum 1) (+~ (*~ #(0.78) x) (*~ #(0.48) tap))))

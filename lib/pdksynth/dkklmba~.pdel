@@ -2,7 +2,7 @@
 ;;; category: pdksynth-pitched
 ;;; note: kalimba-like resonant voice corresponding to upstream dkklmba~
 
-(defpdel pdksynth/dkklmba~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel pdksynth/dkklmba~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 1, 0 700 1") t))) (n (*~ e (noise~)))
      (v

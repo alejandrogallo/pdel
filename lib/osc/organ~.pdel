@@ -1,6 +1,6 @@
 ;;; osc/organ~ --- converted PDEL library definition
 ;;; category: oscillator
 
-(defpdel osc/organ~ :inputs ((frequency-hz signal)) :outputs ((audio signal))
+(defpdel osc/organ~ ((frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((f frequency-hz) (h1 (osc~ f)) (h2 (*~ #(0.5) (osc~ (*~ #(2) f)))) (h3 (*~ #(0.25) (osc~ (*~ #(3) f)))) (h4 (*~ #(0.12) (osc~ (*~ #(4) f))))) (*~ #(0.52) (+~ h1 (+~ h2 (+~ h3 h4))))))

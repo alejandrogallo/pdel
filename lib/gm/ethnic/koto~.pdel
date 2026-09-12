@@ -1,6 +1,6 @@
 ;;; gm/ethnic/koto~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/ethnic/koto~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/ethnic/koto~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pluck~ trigger)) (voice (bp~ #(2200 1.1) (osc/triangle~ frequency)))) (*~ voice env)))

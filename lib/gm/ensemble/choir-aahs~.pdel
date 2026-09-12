@@ -1,7 +1,7 @@
 ;;; gm/ensemble/choir-aahs~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/ensemble/choir-aahs~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/ensemble/choir-aahs~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pad~ trigger))
      (voice (bp~ #(1200 0.8) (+~ (osc~ frequency) (*~ #(0.42) (osc~ (*~ #(2) frequency))))))) (*~ voice env)))

@@ -2,4 +2,4 @@
 ;;; category: filter
 ;;; note: fixed 1kHz notch
 
-(defpdel filter/notch~ :inputs ((audio signal)) :outputs ((audio signal)) (let* ((x audio) (band (bp~ #(1000 5) x))) (-~ x band)))
+(defpdel filter/notch~ ((audio signal)) :outputs ((audio signal)) (let* ((x audio) (band (bp~ #(1000 5) x))) (-~ x band)))

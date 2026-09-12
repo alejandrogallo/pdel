@@ -1,5 +1,5 @@
 ;;; drums/cymbal~ --- converted PDEL library definition
 ;;; category: percussion
 
-(defpdel drums/cymbal~ :inputs ((trigger control)) :outputs ((audio signal))
+(defpdel drums/cymbal~ ((trigger control)) :outputs ((audio signal))
  (let* ((env (vline~ (msg #("1 1, 0.5 120 1, 0 1500 121") trigger)))) (*~ (hip~ #(6500) (bp~ #(9800 1.5) (noise~))) env)))

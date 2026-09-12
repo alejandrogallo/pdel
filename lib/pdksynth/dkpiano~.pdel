@@ -2,7 +2,7 @@
 ;;; category: pdksynth-pitched
 ;;; note: piano-like additive/decay synth corresponding to upstream dkpiano~
 
-(defpdel pdksynth/dkpiano~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel pdksynth/dkpiano~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((t trigger) (f frequency-hz) (e (env/piano~ t))
      (v

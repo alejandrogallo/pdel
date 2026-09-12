@@ -1,4 +1,4 @@
 ;;; midi/velocity-normalize --- converted PDEL library definition
 ;;; category: midi
 
-(defpdel midi/velocity-normalize :inputs ((velocity-0-to-127 control)) :outputs ((gain-0-to-1 control)) (/ #(127) velocity-0-to-127))
+(defpdel midi/velocity-normalize ((velocity-0-to-127 control)) :outputs ((gain-0-to-1 control)) (/ #(127) velocity-0-to-127))

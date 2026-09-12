@@ -2,4 +2,4 @@
 ;;; category: oscillator
 ;;; note: dark filtered noise source; inlet exists for a uniform abstraction boundary
 
-(defpdel osc/noise-dark~ :inputs ((trigger-unused control)) :outputs ((audio signal)) (let ((unused trigger-unused)) (lop~ #(3500) (noise~))))
+(defpdel osc/noise-dark~ ((trigger-unused control)) :outputs ((audio signal)) (let ((unused trigger-unused)) (lop~ #(3500) (noise~))))

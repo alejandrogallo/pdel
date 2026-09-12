@@ -2,4 +2,4 @@
 ;;; category: effect
 ;;; note: moderate overdrive
 
-(defpdel fx/overdrive~ :inputs ((audio signal)) :outputs ((audio signal)) (clip~ #(-1 1) (*~ #(3.2) audio)))
+(defpdel fx/overdrive~ ((audio signal)) :outputs ((audio signal)) (clip~ #(-1 1) (*~ #(3.2) audio)))

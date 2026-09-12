@@ -1,4 +1,4 @@
 ;;; signal/split2~ --- converted PDEL library definition
 ;;; category: signal
 
-(defpdel signal/split2~ :inputs ((input signal)) :outputs ((left signal) (right signal)) (outputs input input))
+(defpdel signal/split2~ ((input signal)) :outputs ((left signal) (right signal)) (outputs input input))

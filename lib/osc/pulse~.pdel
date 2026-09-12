@@ -1,5 +1,5 @@
 ;;; osc/pulse~ --- converted PDEL library definition
 ;;; category: oscillator
 
-(defpdel osc/pulse~ :inputs ((frequency-hz signal) (duty-cycle signal)) :outputs ((audio signal))
+(defpdel osc/pulse~ ((frequency-hz signal) (duty-cycle signal)) :outputs ((audio signal))
  (let* ((frequency frequency-hz) (duty duty-cycle)) (-~ #(1) (*~ #(2) (>~ (phasor~ frequency) duty)))))

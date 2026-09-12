@@ -1,6 +1,6 @@
 ;;; gm/strings/cello~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/strings/cello~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/strings/cello~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/string~ trigger)) (voice (lop~ #(3600) (osc/saw~ frequency)))) (*~ voice env)))

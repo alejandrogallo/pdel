@@ -1,4 +1,4 @@
 ;;; signal/invert~ --- converted PDEL library definition
 ;;; category: signal
 
-(defpdel signal/invert~ :inputs ((audio signal)) :outputs ((audio signal)) (*~ #(-1) audio))
+(defpdel signal/invert~ ((audio signal)) :outputs ((audio signal)) (*~ #(-1) audio))

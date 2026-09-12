@@ -1,7 +1,7 @@
 ;;; drums/cowbell~ --- converted PDEL library definition
 ;;; category: percussion
 
-(defpdel drums/cowbell~ :inputs ((trigger control)) :outputs ((audio signal))
+(defpdel drums/cowbell~ ((trigger control)) :outputs ((audio signal))
  (let*
    ((metal
       (+~ (clip~ #(-1 1) (*~ #(8) (osc~ #(540)))) (clip~ #(-1 1) (*~ #(8) (osc~ #(800)))))) (envelope (vline~ (msg #("1 1, 0 260 1") trigger)))) (*~ (bp~ #(1200 3) metal) envelope)))

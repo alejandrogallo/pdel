@@ -2,4 +2,4 @@
 ;;; category: envelope
 ;;; note: very short click
 
-(defpdel env/click~ :inputs ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 1, 0 18 1") trigger)))
+(defpdel env/click~ ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 1, 0 18 1") trigger)))

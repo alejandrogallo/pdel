@@ -1,4 +1,4 @@
 ;;; lfo/triangle~ --- converted PDEL library definition
 ;;; category: lfo
 
-(defpdel lfo/triangle~ :inputs ((rate-hz signal)) :outputs ((modulation signal)) (-~ #(1) (*~ #(4) (abs~ (-~ #(0.5) (phasor~ rate-hz))))))
+(defpdel lfo/triangle~ ((rate-hz signal)) :outputs ((modulation signal)) (-~ #(1) (*~ #(4) (abs~ (-~ #(0.5) (phasor~ rate-hz))))))

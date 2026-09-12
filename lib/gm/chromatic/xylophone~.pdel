@@ -1,7 +1,7 @@
 ;;; gm/chromatic/xylophone~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/chromatic/xylophone~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/chromatic/xylophone~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/fast-perc~ trigger))
      (voice (hip~ #(500) (+~ (osc~ frequency) (*~ #(0.45) (osc~ (*~ #(3.0) frequency))))))) (*~ voice env)))

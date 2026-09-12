@@ -2,6 +2,6 @@
 ;;; category: oscillator
 ;;; note: three detuned saws
 
-(defpdel osc/supersaw~ :inputs ((frequency-hz signal)) :outputs ((audio signal))
+(defpdel osc/supersaw~ ((frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((f frequency-hz) (a (osc/saw~ (*~ #(0.993) f))) (b (osc/saw~ f)) (c (osc/saw~ (*~ #(1.007) f)))) (*~ #(0.28) (+~ a (+~ b c)))))

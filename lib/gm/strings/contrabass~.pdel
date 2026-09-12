@@ -1,6 +1,6 @@
 ;;; gm/strings/contrabass~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/strings/contrabass~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/strings/contrabass~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/string~ trigger)) (voice (lop~ #(2200) (osc/saw~ frequency)))) (*~ voice env)))

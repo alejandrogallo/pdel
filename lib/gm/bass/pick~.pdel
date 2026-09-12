@@ -1,6 +1,6 @@
 ;;; gm/bass/pick~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/bass/pick~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/bass/pick~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pluck~ trigger)) (voice (lop~ #(3000) (osc/saw~ frequency)))) (*~ voice env)))

@@ -2,6 +2,6 @@
 ;;; category: voice
 ;;; note: MIDI note/velocity voice; velocity zero releases
 
-(defpdel voice/sine-note~ :inputs ((note-velocity-list control)) :outputs ((audio signal))
+(defpdel voice/sine-note~ ((note-velocity-list control)) :outputs ((audio signal))
  (let*
    ((event note-velocity-list) (uv (unpack #(f f) event)) (note (out 0 uv)) (velocity (out 1 uv)) (frequency (mtof note)) (amp-target (/ #(127) velocity)) (amp (line~ (pack #(f 8) amp-target))) (voice (osc~ frequency))) (*~ voice amp)))

@@ -1,7 +1,7 @@
 ;;; gm/piano/honky-tonk~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/piano/honky-tonk~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/piano/honky-tonk~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/piano~ trigger))
      (voice (*~ #(0.55) (+~ (osc~ (*~ #(0.996) frequency)) (osc~ (*~ #(1.004) frequency)))))) (*~ voice env)))

@@ -1,6 +1,6 @@
 ;;; gm/reed/clarinet~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/reed/clarinet~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/reed/clarinet~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/brass~ trigger)) (voice (lop~ #(4200) (osc/square-soft~ frequency)))) (*~ voice env)))

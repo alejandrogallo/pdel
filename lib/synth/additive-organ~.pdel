@@ -1,7 +1,7 @@
 ;;; synth/additive-organ~ --- converted PDEL library definition
 ;;; category: synthesizer
 
-(defpdel synth/additive-organ~ :inputs ((trigger control) (fundamental-hz signal)) :outputs ((audio signal))
+(defpdel synth/additive-organ~ ((trigger control) (fundamental-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency fundamental-hz)
      (partials

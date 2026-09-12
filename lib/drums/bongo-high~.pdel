@@ -1,4 +1,4 @@
 ;;; drums/bongo-high~ --- converted PDEL library definition
 ;;; category: percussion
 
-(defpdel drums/bongo-high~ :inputs ((trigger control)) :outputs ((audio signal)) (let* ((env (vline~ (msg #("1 1, 0 180 1") trigger)))) (*~ (osc~ #(310)) env)))
+(defpdel drums/bongo-high~ ((trigger control)) :outputs ((audio signal)) (let* ((env (vline~ (msg #("1 1, 0 180 1") trigger)))) (*~ (osc~ #(310)) env)))

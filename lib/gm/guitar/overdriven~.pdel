@@ -1,6 +1,6 @@
 ;;; gm/guitar/overdriven~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/guitar/overdriven~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/guitar/overdriven~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pluck~ trigger)) (voice (fx/overdrive~ (osc/saw~ frequency)))) (*~ voice env)))

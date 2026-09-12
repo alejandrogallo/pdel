@@ -1,7 +1,7 @@
 ;;; gm/chromatic/marimba~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/chromatic/marimba~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/chromatic/marimba~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/mallet~ trigger))
      (voice (lop~ #(4200) (+~ (osc~ frequency) (*~ #(0.45) (osc~ (*~ #(2.0) frequency))))))) (*~ voice env)))

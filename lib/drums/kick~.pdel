@@ -1,6 +1,6 @@
 ;;; drums/kick~ --- converted PDEL library definition
 ;;; category: percussion
 
-(defpdel drums/kick~ :inputs ((trigger control)) :outputs ((audio signal))
+(defpdel drums/kick~ ((trigger control)) :outputs ((audio signal))
  (let*
    ((pitch (vline~ (msg #("145 0, 48 95 0") trigger))) (envelope (vline~ (msg #("1 2, 0 280 2") trigger)))) (*~ (osc~ pitch) envelope)))

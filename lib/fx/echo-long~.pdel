@@ -2,6 +2,6 @@
 ;;; category: effect
 ;;; note: 720ms spacious echo
 
-(defpdel fx/echo-long~ :inputs ((audio signal)) :outputs ((audio signal))
+(defpdel fx/echo-long~ ((audio signal)) :outputs ((audio signal))
  (let*
    ((x audio) (sum (+~ x)) (writer (delwrite~ #($0-echo 4000) sum)) (tap (delread~ #($0-echo 720))) (fb (*~ #(0.52) tap))) (-> fb 0 sum 1) (+~ (*~ #(0.72) x) (*~ #(0.42) tap))))

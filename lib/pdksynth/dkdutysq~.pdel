@@ -2,5 +2,5 @@
 ;;; category: pdksynth-oscillator
 ;;; note: variable-duty square oscillator corresponding to upstream dkdutysq~
 
-(defpdel pdksynth/dkdutysq~ :inputs ((frequency-hz signal) (duty-0-to-1 signal)) :outputs ((audio signal))
+(defpdel pdksynth/dkdutysq~ ((frequency-hz signal) (duty-0-to-1 signal)) :outputs ((audio signal))
  (let* ((f frequency-hz) (d duty-0-to-1) (p (phasor~ f))) (expr~ #("if($v1 > $v2, 1, -1)") p d)))

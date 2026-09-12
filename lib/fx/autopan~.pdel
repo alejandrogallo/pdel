@@ -2,6 +2,6 @@
 ;;; category: effect
 ;;; note: slow 0.18Hz autopan
 
-(defpdel fx/autopan~ :inputs ((audio signal)) :outputs ((left signal) (right signal))
+(defpdel fx/autopan~ ((audio signal)) :outputs ((left signal) (right signal))
  (let*
    ((x audio) (lfo (*~ #(0.5) (+~ #(1) (osc~ #(0.18))))) (left (*~ x (-~ #(1) lfo))) (right (*~ x lfo))) (outputs left right)))

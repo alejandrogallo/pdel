@@ -2,4 +2,4 @@
 ;;; category: effect
 ;;; note: +5dB-ish gain boost; may clip
 
-(defpdel fx/boost~ :inputs ((audio signal)) :outputs ((audio signal)) (*~ #(1.8) audio))
+(defpdel fx/boost~ ((audio signal)) :outputs ((audio signal)) (*~ #(1.8) audio))

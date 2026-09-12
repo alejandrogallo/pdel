@@ -1,4 +1,4 @@
 ;;; signal/clip~ --- converted PDEL library definition
 ;;; category: signal
 
-(defpdel signal/clip~ :inputs ((audio signal)) :outputs ((audio signal)) (clip~ #(-1 1) audio))
+(defpdel signal/clip~ ((audio signal)) :outputs ((audio signal)) (clip~ #(-1 1) audio))

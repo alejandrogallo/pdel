@@ -2,7 +2,7 @@
 ;;; category: general-midi
 ;;; note: GM 1-style acoustic piano approximation
 
-(defpdel gm/piano/acoustic-grand~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/piano/acoustic-grand~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/piano~ trigger))
      (voice (*~ #(0.7) (+~ (osc~ frequency) (*~ #(0.33) (osc~ (*~ #(2.01) frequency))))))) (*~ voice env)))

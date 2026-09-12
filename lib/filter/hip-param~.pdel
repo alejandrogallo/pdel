@@ -1,4 +1,4 @@
 ;;; filter/hip-param~ --- converted PDEL library definition
 ;;; category: filter
 
-(defpdel filter/hip-param~ :inputs ((audio signal) (cutoff-hz control)) :outputs ((audio signal)) (hip~ #(100) audio cutoff-hz))
+(defpdel filter/hip-param~ ((audio signal) (cutoff-hz control)) :outputs ((audio signal)) (hip~ #(100) audio cutoff-hz))

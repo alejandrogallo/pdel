@@ -2,4 +2,4 @@
 ;;; category: envelope
 ;;; note: fixed 1ms attack, 65ms decay
 
-(defpdel env/fast-perc~ :inputs ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 1, 0 65 1") trigger)))
+(defpdel env/fast-perc~ ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 1, 0 65 1") trigger)))

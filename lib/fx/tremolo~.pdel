@@ -2,4 +2,4 @@
 ;;; category: effect
 ;;; note: full-depth unipolar sine tremolo
 
-(defpdel fx/tremolo~ :inputs ((input signal) (rate-hz signal)) :outputs ((output signal)) (let* ((rate rate-hz) (lfo (*~ #(0.5) (+~ #(1) (osc~ rate))))) (*~ input lfo)))
+(defpdel fx/tremolo~ ((input signal) (rate-hz signal)) :outputs ((output signal)) (let* ((rate rate-hz) (lfo (*~ #(0.5) (+~ #(1) (osc~ rate))))) (*~ input lfo)))

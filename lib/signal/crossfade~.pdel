@@ -1,4 +1,4 @@
 ;;; signal/crossfade~ --- converted PDEL library definition
 ;;; category: signal
 
-(defpdel signal/crossfade~ :inputs ((a signal) (b signal) (mix-0-to-1 signal)) :outputs ((audio signal)) (let* ((mix mix-0-to-1)) (+~ (*~ a (-~ #(1) mix)) (*~ b mix))))
+(defpdel signal/crossfade~ ((a signal) (b signal) (mix-0-to-1 signal)) :outputs ((audio signal)) (let* ((mix mix-0-to-1)) (+~ (*~ a (-~ #(1) mix)) (*~ b mix))))

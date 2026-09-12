@@ -1,6 +1,6 @@
 ;;; gm/bass/fretless~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/bass/fretless~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/bass/fretless~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/long-perc~ trigger)) (voice (lop~ #(2200) (osc~ frequency)))) (*~ voice env)))

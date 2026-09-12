@@ -1,6 +1,6 @@
 ;;; gm/pad/sweep~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/pad/sweep~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/pad/sweep~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pad~ trigger)) (voice (bp~ #(2200 0.6) (osc/supersaw~ frequency)))) (*~ voice env)))

@@ -1,4 +1,4 @@
 ;;; signal/dcblock2~ --- converted PDEL library definition
 ;;; category: signal
 
-(defpdel signal/dcblock2~ :inputs ((audio signal)) :outputs ((audio signal)) (hip~ #(8) (hip~ #(8) audio)))
+(defpdel signal/dcblock2~ ((audio signal)) :outputs ((audio signal)) (hip~ #(8) (hip~ #(8) audio)))

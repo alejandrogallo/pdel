@@ -1,4 +1,4 @@
 ;;; fx/ringmod-param~ --- converted PDEL library definition
 ;;; category: effect
 
-(defpdel fx/ringmod-param~ :inputs ((audio signal) (frequency-hz signal)) :outputs ((audio signal)) (*~ audio (osc~ frequency-hz)))
+(defpdel fx/ringmod-param~ ((audio signal) (frequency-hz signal)) :outputs ((audio signal)) (*~ audio (osc~ frequency-hz)))

@@ -1,4 +1,4 @@
 ;;; signal/gain~ --- converted PDEL library definition
 ;;; category: signal
 
-(defpdel signal/gain~ :inputs ((input signal) (gain signal)) :outputs ((output signal)) (*~ input gain))
+(defpdel signal/gain~ ((input signal) (gain signal)) :outputs ((output signal)) (*~ input gain))

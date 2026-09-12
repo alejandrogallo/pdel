@@ -1,5 +1,5 @@
 ;;; drums/timpani~ --- converted PDEL library definition
 ;;; category: percussion
 
-(defpdel drums/timpani~ :inputs ((trigger control)) :outputs ((audio signal))
+(defpdel drums/timpani~ ((trigger control)) :outputs ((audio signal))
  (let* ((env (vline~ (msg #("1 4, 0.35 650 4, 0 1800 654") trigger)))) (*~ (osc~ #(92)) env)))

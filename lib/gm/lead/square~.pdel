@@ -1,6 +1,6 @@
 ;;; gm/lead/square~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/lead/square~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/lead/square~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/long-perc~ trigger)) (voice (lop~ #(5200) (osc/square-soft~ frequency)))) (*~ voice env)))

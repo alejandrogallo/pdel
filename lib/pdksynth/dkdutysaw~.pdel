@@ -2,5 +2,5 @@
 ;;; category: pdksynth-oscillator
 ;;; note: variable-duty saw oscillator corresponding to upstream dkdutysaw~
 
-(defpdel pdksynth/dkdutysaw~ :inputs ((frequency-hz signal) (duty-0-to-1 signal)) :outputs ((audio signal))
+(defpdel pdksynth/dkdutysaw~ ((frequency-hz signal) (duty-0-to-1 signal)) :outputs ((audio signal))
  (let* ((f frequency-hz) (d duty-0-to-1) (p (phasor~ f))) (expr~ #("if($v1 < $v2, (($v1/$v2)*2)-1, (((1-$v1)/(1-$v2))*2)-1)") p d)))

@@ -1,6 +1,6 @@
 ;;; gm/guitar/nylon~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/guitar/nylon~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/guitar/nylon~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pluck~ trigger)) (voice (lop~ #(5200) (+~ (osc/triangle~ frequency) (*~ #(0.18) (noise~)))))) (*~ voice env)))

@@ -1,6 +1,6 @@
 ;;; gm/ensemble/synth-strings~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/ensemble/synth-strings~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/ensemble/synth-strings~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pad~ trigger)) (voice (lop~ #(4300) (osc/supersaw~ frequency)))) (*~ voice env)))

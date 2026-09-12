@@ -1,6 +1,6 @@
 ;;; synth/rhodes~ --- converted PDEL library definition
 ;;; category: synthesizer
 
-(defpdel synth/rhodes~ :inputs ((trigger control) (carrier-hz signal)) :outputs ((audio signal))
+(defpdel synth/rhodes~ ((trigger control) (carrier-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency carrier-hz) (mod-envelope (vline~ (msg #("700 0, 30 850 0") trigger))) (carrier (osc~ (+~ frequency (*~ (osc~ (*~ #(2) frequency)) mod-envelope)))) (amp-envelope (vline~ (msg #("1 4, 0.35 500 4, 0 1800 504") trigger)))) (*~ carrier amp-envelope)))

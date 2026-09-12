@@ -1,6 +1,6 @@
 ;;; gm/organ/rock~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/organ/rock~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/organ/rock~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/long-perc~ trigger)) (voice (lop~ #(6500) (osc/square-soft~ frequency)))) (*~ voice env)))

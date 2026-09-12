@@ -2,4 +2,4 @@
 ;;; category: sampler
 ;;; note: send Pd readsf~ messages such as open <file>, then 1
 
-(defpdel sampler/mono~ :inputs ((readsf-message control)) :outputs ((audio signal) (done control)) (let* ((player (readsf~ #(1) readsf-message))) (outputs (out 0 player) (out 1 player))))
+(defpdel sampler/mono~ ((readsf-message control)) :outputs ((audio signal) (done control)) (let* ((player (readsf~ #(1) readsf-message))) (outputs (out 0 player) (out 1 player))))

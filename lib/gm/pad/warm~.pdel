@@ -1,6 +1,6 @@
 ;;; gm/pad/warm~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/pad/warm~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/pad/warm~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pad~ trigger)) (voice (lop~ #(2800) (osc/supersaw~ frequency)))) (*~ voice env)))

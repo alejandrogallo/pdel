@@ -2,7 +2,7 @@
 ;;; category: pdksynth-pitched
 ;;; note: additive organ corresponding to upstream dkorgan~
 
-(defpdel pdksynth/dkorgan~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel pdksynth/dkorgan~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 15, 0.9 100 15, 0 900 115") t)))
      (v

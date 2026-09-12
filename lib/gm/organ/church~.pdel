@@ -1,7 +1,7 @@
 ;;; gm/organ/church~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/organ/church~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/organ/church~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pad~ trigger))
      (voice

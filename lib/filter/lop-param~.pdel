@@ -1,4 +1,4 @@
 ;;; filter/lop-param~ --- converted PDEL library definition
 ;;; category: filter
 
-(defpdel filter/lop-param~ :inputs ((audio signal) (cutoff-hz control)) :outputs ((audio signal)) (lop~ #(1000) audio cutoff-hz))
+(defpdel filter/lop-param~ ((audio signal) (cutoff-hz control)) :outputs ((audio signal)) (lop~ #(1000) audio cutoff-hz))

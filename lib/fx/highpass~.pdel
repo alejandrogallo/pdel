@@ -1,4 +1,4 @@
 ;;; fx/highpass~ --- converted PDEL library definition
 ;;; category: effect
 
-(defpdel fx/highpass~ :inputs ((audio signal)) :outputs ((audio signal)) (hip~ #(120) audio))
+(defpdel fx/highpass~ ((audio signal)) :outputs ((audio signal)) (hip~ #(120) audio))

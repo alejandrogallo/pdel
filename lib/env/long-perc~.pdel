@@ -2,4 +2,4 @@
 ;;; category: envelope
 ;;; note: fixed 5ms attack, 1800ms decay
 
-(defpdel env/long-perc~ :inputs ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 5, 0 1800 5") trigger)))
+(defpdel env/long-perc~ ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 5, 0 1800 5") trigger)))

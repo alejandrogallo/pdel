@@ -2,5 +2,5 @@
 ;;; category: pdksynth-pitched
 ;;; note: saw synth corresponding to upstream dksynsaw~
 
-(defpdel pdksynth/dksynsaw~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel pdksynth/dksynsaw~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let* ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 8, 0.72 250 8, 0 850 258") t)))) (*~ #(0.5) e (lop~ #(5000) (osc/saw~ f)))))

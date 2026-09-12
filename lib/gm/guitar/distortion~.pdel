@@ -1,6 +1,6 @@
 ;;; gm/guitar/distortion~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/guitar/distortion~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/guitar/distortion~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pluck~ trigger)) (voice (fx/distortion~ (osc/saw~ frequency)))) (*~ voice env)))

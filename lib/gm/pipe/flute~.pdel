@@ -1,6 +1,6 @@
 ;;; gm/pipe/flute~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/pipe/flute~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/pipe/flute~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/string~ trigger)) (voice (lop~ #(7000) (+~ (osc~ frequency) (*~ #(0.035) (noise~)))))) (*~ voice env)))

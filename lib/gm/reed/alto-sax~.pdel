@@ -1,6 +1,6 @@
 ;;; gm/reed/alto-sax~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/reed/alto-sax~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/reed/alto-sax~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/brass~ trigger)) (voice (bp~ #(1400 1.1) (osc/saw~ frequency)))) (*~ voice env)))

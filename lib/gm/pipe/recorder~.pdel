@@ -1,6 +1,6 @@
 ;;; gm/pipe/recorder~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/pipe/recorder~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/pipe/recorder~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/string~ trigger)) (voice (lop~ #(5800) (osc/triangle~ frequency)))) (*~ voice env)))

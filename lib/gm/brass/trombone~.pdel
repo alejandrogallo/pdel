@@ -1,6 +1,6 @@
 ;;; gm/brass/trombone~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/brass/trombone~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/brass/trombone~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/brass~ trigger)) (voice (lop~ #(3200) (osc/saw~ frequency)))) (*~ voice env)))

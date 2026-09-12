@@ -1,4 +1,4 @@
 ;;; filter/tone-dark~ --- converted PDEL library definition
 ;;; category: filter
 
-(defpdel filter/tone-dark~ :inputs ((audio signal)) :outputs ((audio signal)) (lop~ #(2800) audio))
+(defpdel filter/tone-dark~ ((audio signal)) :outputs ((audio signal)) (lop~ #(2800) audio))

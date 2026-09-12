@@ -321,7 +321,7 @@ supply one independent source group per outlet."
      ',name))
 
 
-(defmacro defpdel (name &rest definition)
+(defmacro defpdel (name inputs &rest definition)
   "Define NAME as both a registered PDEL object and a CL launcher macro.
 
 Keyword options currently stored are :ARGS, :INPUTS, :OUTPUTS and :FLAGS.
@@ -330,7 +330,6 @@ Common Lisp macro launches that PDEL form through `pdel-pd:launch-form'."
   (multiple-value-bind (options source)
       (split-defpdel-options definition)
     (let ((args (getf options :args))
-          (inputs (getf options :inputs))
           (outputs (getf options :outputs))
           (flags (getf options :flags)))
       `(progn

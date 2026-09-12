@@ -1,4 +1,4 @@
 ;;; filter/resonant~ --- converted PDEL library definition
 ;;; category: filter
 
-(defpdel filter/resonant~ :inputs ((audio signal) (frequency-hz control)) :outputs ((audio signal)) (bp~ #(1000 4) audio frequency-hz))
+(defpdel filter/resonant~ ((audio signal) (frequency-hz control)) :outputs ((audio signal)) (bp~ #(1000 4) audio frequency-hz))

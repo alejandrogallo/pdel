@@ -2,6 +2,6 @@
 ;;; category: pdksynth-percussion
 ;;; note: bass drum voice corresponding to upstream dkbd1~
 
-(defpdel pdksynth/dkbd1~ :inputs ((trigger control)) :outputs ((audio signal))
+(defpdel pdksynth/dkbd1~ ((trigger control)) :outputs ((audio signal))
  (let*
    ((t trigger) (p (vline~ (msg #("150 0, 52 120 0") t))) (e (vline~ (msg #("1 2, 0 320 2") t)))) (*~ e (osc~ p))))

@@ -2,5 +2,5 @@
 ;;; category: effect
 ;;; note: Haas-style 17ms stereo widening
 
-(defpdel fx/widener~ :inputs ((audio signal)) :outputs ((left signal) (right signal))
+(defpdel fx/widener~ ((audio signal)) :outputs ((left signal) (right signal))
  (let* ((x audio) (writer (delwrite~ #($0-wide 60) x)) (r (delread~ #($0-wide 17)))) (outputs x (*~ #(0.92) r))))

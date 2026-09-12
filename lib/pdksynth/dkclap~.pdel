@@ -2,7 +2,7 @@
 ;;; category: pdksynth-percussion
 ;;; note: clap synthesizer corresponding to upstream dkclap~
 
-(defpdel pdksynth/dkclap~ :inputs ((trigger control)) :outputs ((audio signal))
+(defpdel pdksynth/dkclap~ ((trigger control)) :outputs ((audio signal))
  (let*
    ((t trigger)
      (e

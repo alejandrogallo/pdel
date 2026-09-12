@@ -2,6 +2,6 @@
 ;;; category: pdksynth-pitched
 ;;; note: string synth corresponding to upstream dkstring~
 
-(defpdel pdksynth/dkstring~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel pdksynth/dkstring~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 180, 0.78 650 180, 0 1600 830") t))) (v (+~ (osc/saw~ f) (*~ #(0.45) (osc/saw~ (*~ #(1.004) f)))))) (*~ #(0.35) e (lop~ #(3600) v))))

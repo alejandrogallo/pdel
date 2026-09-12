@@ -1,6 +1,6 @@
 ;;; gm/guitar/steel~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/guitar/steel~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/guitar/steel~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pluck~ trigger)) (voice (bp~ #(2400 0.8) (+~ (osc/saw~ frequency) (*~ #(0.12) (noise~)))))) (*~ voice env)))

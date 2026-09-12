@@ -1,7 +1,7 @@
 ;;; gm/brass/french-horn~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/brass/french-horn~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/brass/french-horn~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/brass~ trigger))
      (voice
