@@ -140,6 +140,11 @@
 
 
 (defun layout-with-dot-file (assembly dot-file)
+  ;; Lay out nested subpatches first.  Their geometry is independent from the
+  ;; parent graph, while the parent treats each subpatch as one ordinary node.
+  (dolist (element (pdel-asm:assembly-elements assembly))
+    (when (typep element 'pdel-asm:asm-subpatch)
+      (layout (pdel-asm:asm-subpatch-assembly element))))
   (write-dot-file assembly dot-file)
   (apply-plain-layout assembly
                       (run-dot-plain dot-file)))

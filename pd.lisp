@@ -23,6 +23,24 @@
           (pdel-asm:connection-destination connection)
           (pdel-asm:connection-destination-inlet connection)))
 
+(defun write-pd-assembly-body (assembly stream)
+  "Write ASSEMBLY records inside an already-open Pd canvas."
+  (dolist (element (pdel-asm:assembly-elements assembly))
+    (if (typep element 'pdel-asm:asm-subpatch)
+        (let ((child (pdel-asm:asm-subpatch-assembly element)))
+          (format stream "#N canvas 0 0 ~d ~d ~a 0;~%"
+                  (max 1 (ceiling (pdel-asm:assembly-width child)))
+                  (max 1 (ceiling (pdel-asm:assembly-height child)))
+                  (pd-token (pdel-asm:asm-element-name element)))
+          (write-pd-assembly-body child stream)
+          (format stream "#X restore ~d ~d pd ~a;~%"
+                  (round (pdel-asm:asm-element-x element))
+                  (round (pdel-asm:asm-element-y element))
+                  (pd-token (pdel-asm:asm-element-name element))))
+        (write-pd-element element stream)))
+  (dolist (connection (pdel-asm:assembly-connections assembly))
+    (write-pd-connection connection stream)))
+
 (defun write-pd (assembly pathname)
   (ensure-directories-exist pathname)
   (with-open-file (stream pathname
@@ -32,12 +50,8 @@
     (format stream "#N canvas 0 0 ~d ~d 10;~%"
             (max 1 (ceiling (pdel-asm:assembly-width assembly)))
             (max 1 (ceiling (pdel-asm:assembly-height assembly))))
-    (dolist (element (pdel-asm:assembly-elements assembly))
-      (write-pd-element element stream))
-    (dolist (connection (pdel-asm:assembly-connections assembly))
-      (write-pd-connection connection stream)))
+    (write-pd-assembly-body assembly stream))
   pathname)
-
 
 (defun temporary-pd-pathname ()
   "Return a fresh temporary pathname suitable for a generated Pd patch."
@@ -52,28 +66,7 @@
                            (gui t)
                            pathname
                            (arguments nil))
-  "Compile FORM, lay it out, write a .pd file, and launch Pure Data.
-
-FORM is a PDEL form accepted by `pdel-lang:assembly'.
-
-PD names the Pure Data executable and defaults to \"pd\".
-
-When GUI is NIL, pass -nogui to Pure Data.  GUI defaults to T.
-
-PATHNAME optionally chooses the generated .pd file.  When it is NIL, a
-fresh pathname in `uiop:temporary-directory' is used.
-
-ARGUMENTS is a list of additional command-line arguments passed to Pure Data
-before the patch pathname.
-
-The function launches Pure Data asynchronously and returns three values:
-
-  1. the UIOP process-info object,
-  2. the pathname of the generated .pd file,
-  3. the laid-out `pdel-asm:assembly-result'.
-
-The generated file is intentionally retained so it remains inspectable while
-Pure Data is running and afterwards."
+  "Compile FORM, lay it out, write a .pd file, and launch Pure Data."
   (let* ((assembly (pdel-lang:assembly form))
          (output (or pathname (temporary-pd-pathname))))
     (pdel-layout:layout assembly)

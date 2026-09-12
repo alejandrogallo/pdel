@@ -37,3 +37,9 @@
 (defun find-element-by-id (assembly id)
   (find id (assembly-elements assembly)
         :key #'asm-element-id :test #'=))
+
+(defclass asm-subpatch (asm-element)
+  ((assembly
+    :initarg :assembly
+    :reader asm-subpatch-assembly
+    :type assembly-result)))

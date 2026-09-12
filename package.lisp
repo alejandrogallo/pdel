@@ -5,22 +5,21 @@
    #:asm-element-args #:asm-element-flags #:asm-element-inputs #:asm-element-outputs
    #:asm-element-x #:asm-element-y #:asm-element-width #:asm-element-height
    #:asm-element-center-x #:asm-element-center-y
+   #:asm-subpatch #:asm-subpatch-assembly
    #:connection #:make-connection
    #:connection-source #:connection-source-outlet
    #:connection-destination #:connection-destination-inlet
    #:assembly-result #:assembly-elements #:assembly-connections
    #:assembly-width #:assembly-height #:find-element-by-id))
 
-
 (defpackage #:pdel-lang
   (:use #:cl)
   (:export
-   #:object #:object-origin #:object-args #:object-flags
+   #:object #:object-name #:object-origin #:object-args #:object-flags
    #:object-inputs #:object-outputs #:object-methods #:object-source
-   #:declare-object #:find-object
+   #:declare-object #:find-object #:defpdel
    #:free-form-flags #:free-form-args #:free-form-inputs
    #:assembly))
-
 
 (defpackage #:pdel-layout
   (:use #:cl)
@@ -30,7 +29,6 @@
    #:write-dot-file
    #:layout
    #:layout-with-dot-file))
-
 
 (defpackage #:pdel-graphviz
   (:use #:cl)
@@ -48,7 +46,6 @@
    #:layout-result-width
    #:layout-result-height
    #:layout-result-elements))
-
 
 (defpackage #:pdel-pd
   (:use #:cl)

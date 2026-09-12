@@ -9,7 +9,8 @@
                (:file "asm")
                (:file "layout")
                (:file "pd")
-               (:file "lang")))
+               (:file "lang")
+               (:file "lib")))
 
 (asdf:defsystem #:pdel/tests
   :depends-on (#:pdel)

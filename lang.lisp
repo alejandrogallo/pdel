@@ -1,11 +1,34 @@
 (in-package #:pdel-lang)
 
-
 (defparameter *obj-alist* nil
   "Association list of declared PDEL objects.")
 
+(defparameter *compiler-macro-alist* nil
+  "Association list of declared PDEL objects.")
+
+(defparameter *macro-alist* nil
+  "Association list of declared PDEL macros.")
+
+(deftype origin ()
+  '(member :pdel :foreign :unknown))
+
+(defclass object ()
+  ((name :initarg :name :type symbol :reader object-name)
+   (origin :initarg :origin :type origin :initform :unknown :reader object-origin)
+   (args :initarg :args :initform nil :type list :reader object-args)
+   (flags :initarg :flags :initform nil :type list :reader object-flags)
+   (inputs :initarg :inputs :initform nil :type list :reader object-inputs)
+   (outputs :initarg :outputs :initform nil :type list :reader object-outputs)
+   (methods :initarg :methods :initform nil :type list :reader object-methods)
+   (source :initarg :source :initform nil :type list :reader object-source)))
+
+(defstruct port
+  id
+  index)
+
 (defun declare-object (object)
-  (let ((name (pdel-asm:asm-element-name object)))
+  "Register OBJECT by name, replacing an older definition of that name."
+  (let ((name (object-name object)))
     (setf *obj-alist*
           (acons name object
                  (remove name *obj-alist* :key #'car :test #'eq))))
@@ -14,23 +37,95 @@
 (defun find-object (name)
   (cdr (assoc name *obj-alist* :test #'eq)))
 
-(deftype origin ()
-  '(member :pdel :foreign :unknown))
+(defun find-compiler-macro (name)
+  (cdr (assoc name *compiler-macro-alist* :test #'eq)))
 
-(defclass object ()
-  ((origin :initarg :origin :type origin :initform :unknown :reader object-origin)
-   (args :initarg :args :initform nil :type list :reader object-args)
-   (flags :initarg :flags :initform nil :type list :reader object-flags)
-   (inputs :initarg :inputs :initform nil :type list :reader object-inputs)
-   (outputs :initarg :outputs :initform nil :type list :reader object-outputs)
-   (methods :initarg :methods :initform nil :type list :reader object-methods)
-   (source :initarg :source :initform nil :reader object-source)))
+(defun split-defpdel-options (forms)
+  "Split FORMS into a property list and the remaining source forms."
+  (let ((options nil))
+    (loop while (and forms (keywordp (first forms)))
+          do (let ((key (pop forms)))
+               (unless forms
+                 (error "Missing value for DEFPDEL option ~S" key))
+               (setf (getf options key) (pop forms))))
+    (values options forms)))
+
+;; defmacro lisp > pdel
+;; defcompiler macro lisp -> pdel no eval
+(defmacro defpdel-compiler-macro (name args &body body)
+  `(let ((entry (assoc ',name *compiler-macro-alist*)))
+     (if entry
+         (setf (cdr entry)
+               (lambda ,args ,@body))
+         (push (cons ',name
+                     (lambda ,args ,@body))
+               *compiler-macro-alist*))
+     ',name))
+
+(defun find-pdel-macro (name)
+  (cdr (assoc name *macro-alist* :test #'eq)))
+
+(defmacro defpdel-macro (name args &body body)
+  `(progn
+     ;; Register PDEL macro expander.
+     (let ((entry (assoc ',name *macro-alist* :test #'eq)))
+       (if entry
+           (setf (cdr entry)
+                 (lambda ,args ,@body))
+           (push (cons ',name
+                       (lambda ,args ,@body))
+                 *macro-alist*)))
+
+     ;; Also make it directly executable from Common Lisp.
+     (defmacro ,name (&rest call-arguments)
+       (list 'pdel-pd:launch-form
+             (list 'quote
+                   (cons ',name call-arguments))))
+
+     ',name))
+
+
+(defmacro defpdel (name &rest definition)
+  "Define NAME as both a registered PDEL object and a CL launcher macro.
+
+Keyword options currently stored are :ARGS, :INPUTS, :OUTPUTS and :FLAGS.
+The remaining forms are the PDEL source of the subpatch.  Calling NAME as a
+Common Lisp macro launches that PDEL form through `pdel-pd:launch-form'."
+  (multiple-value-bind (options source)
+      (split-defpdel-options definition)
+    (let ((args (getf options :args))
+          (inputs (getf options :inputs))
+          (outputs (getf options :outputs))
+          (flags (getf options :flags)))
+      `(progn
+         (eval-when (:compile-toplevel :load-toplevel :execute)
+           (declare-object
+            (make-instance 'object
+                           :name ',name
+                           :origin :pdel
+                           :args ',args
+                           :inputs ',inputs
+                           :outputs ',outputs
+                           :flags ',flags
+                           :source ',source)))
+         (defmacro ,name (&rest call-arguments)
+           (list 'pdel-pd:launch-form
+                 (list 'quote (cons ',name call-arguments))))
+         ',name))))
+
+(defclass var ()
+    ((name :initarg :name
+           :accessor var-name)
+     (value :initarg :value
+           :accessor var-value)))
 
 (defclass context ()
   ((objects :initarg :objects :initform nil :type list :accessor context-objects)
    (connections :initarg :connections :initform nil :type list
                 :accessor context-connections)
-   (counter :initarg :counter :initform 0 :type integer :accessor context-counter)))
+   (counter :initarg :counter :initform 0 :type integer :accessor context-counter)
+   (bindings :initarg :bindings :initform nil :type list :accessor context-bindings)))
+
 
 (defun free-form-flags (form)
   (loop for tail on form
@@ -55,44 +150,179 @@
   (prog1 (context-counter ctx)
     (incf (context-counter ctx))))
 
-(defun assembly-form (form ctx)
+(defun context-binding (name ctx)
+  (cdr (assoc name (context-bindings ctx) :test #'eq)))
+
+(defun set-binding (name value ctx)
+  (let ((entry (assoc name (context-bindings ctx) :test #'eq)))
+    (if entry
+        (setf (cdr entry) value)
+        (push (cons name value)
+              (context-bindings ctx)))))
+
+(defun unset-binding (name ctx)
+  (let ((entry (assoc name (context-bindings ctx) :test #'eq)))
+    (when entry
+      (setf (cdr entry) nil))))
+
+(defun push-binding (name value ctx)
+  (push (cons name value)
+        (context-bindings ctx)))
+
+(defun pop-binding (ctx)
+  (pop (context-bindings ctx)))
+
+(defun formal-name (spec)
+  "Return the binding name represented by a simple input/output SPEC."
+  (etypecase spec
+    (symbol spec)
+    (cons (first spec))))
+
+(defun context-result (ctx)
+  (make-instance
+   'pdel-asm:assembly-result
+   :elements (sort (copy-list (context-objects ctx))
+                   #'< :key #'pdel-asm:asm-element-id)
+   :connections (nreverse (context-connections ctx))))
+
+;; todo do it with ports
+(defun add-connection (ctx source destination)
+  (when source
+    (push (pdel-asm:make-connection
+           :source (port-id source)
+           :source-outlet (port-index source)
+           :destination (port-id destination)
+           :destination-inlet (port-index destination))
+          (context-connections ctx))))
+
+(defun assembly-free-object (form ctx)
   (let* ((name (car form))
-         (declared-object (find-object name)))
-    (if declared-object
-        (error "Declared-object compilation is not implemented yet for ~S" name)
-        (let* ((flags (free-form-flags form))
-               (inputs (free-form-inputs form))
-               (args (free-form-args form))
-               (id (next-element-id ctx))
-               (input-connections
-                 (loop for input in inputs
-                       collect (assembly-form input ctx))))
-          (loop for (source-id . source-outlet) in input-connections
-                for destination-inlet from 0
-                do
-                   (push
-                    (pdel-asm:make-connection
-                     :source source-id
-                     :source-outlet source-outlet
-                     :destination id
-                     :destination-inlet destination-inlet)
-                    (context-connections ctx)))
+         (flags (free-form-flags form))
+         (inputs (free-form-inputs form))
+         (args (free-form-args form))
+         (id (next-element-id ctx))
+         (input-connections
+           (loop for input in inputs
+                 collect (and input (assembly-form input ctx)))))
+    (loop for sources in input-connections
+          for destination-inlet from 0
+          for destination = (make-port :id id
+                                       :index destination-inlet)
+          do (dolist (source sources)
+               (add-connection ctx source destination)))
+    (push (make-instance 'pdel-asm:asm-element
+                         :name name
+                         :type :object
+                         :id id
+                         :args args
+                         :flags flags)
+          (context-objects ctx))
+    (list (make-port :id id :index 0))))
+
+(defun make-subpatch-assembly (object)
+  "Compile OBJECT's stored source into a child assembly.
+
+This first implementation supports named inputs and one returned output."
+  (let ((ctx (make-instance 'context)))
+    ;; Each formal input becomes an [inlet] object and a lexical PDEL binding.
+    (loop for input-spec in (object-inputs object)
+          for inlet-number from 0
+          for name = (formal-name input-spec)
+          for id = (next-element-id ctx)
+          do (push (make-instance 'pdel-asm:asm-element
+                                  :name 'inlet
+                                  :type :object
+                                  :id id
+                                  :args (list inlet-number))
+                   (context-objects ctx))
+             (push (cons name (cons id 0))
+                   (context-bindings ctx)))
+
+    ;; Compile every body form.  The last value is the first subpatch output.
+    (let ((result nil))
+      (dolist (source-form (object-source object))
+        (setf result (assembly-form source-form ctx)))
+
+      (when (object-outputs object)
+        (unless result
+          (error "PDEL object ~S declares outputs but has no source result"
+                 (object-name object)))
+        (let ((outlet-id (next-element-id ctx)))
           (push (make-instance 'pdel-asm:asm-element
-                               :name name
+                               :name 'outlet
                                :type :object
-                               :id id
-                               :args args
-                               :flags flags)
+                               :id outlet-id
+                               :args '(0))
                 (context-objects ctx))
-          (cons id 0)))))
+          (dolist (r result)
+            (add-connection ctx r (make-port :id outlet-id :index 0))))))
+
+    (context-result ctx)))
+
+(defun assembly-pdel-object (form object ctx)
+  "Compile a call to registered PDEL OBJECT as a nested Pd subpatch."
+  (let* ((id (next-element-id ctx))
+         (actual-inputs (free-form-inputs form))
+         (actual-sources
+           (loop for input in actual-inputs
+                 collect (and input (assembly-form input ctx))))
+         (child (make-subpatch-assembly object)))
+    (loop for source in actual-sources
+          for inlet from 0
+          for destination = (make-port :id id :index inlet)
+          do (add-connection ctx source destination))
+    (push (make-instance 'pdel-asm:asm-subpatch
+                         :name (object-name object)
+                         :type :subpatch
+                         :id id
+                         :args (free-form-args form)
+                         :flags (free-form-flags form)
+                         :assembly child)
+          (context-objects ctx))
+    (list (make-port :id id :index 0))))
+
+(defun assembly-form (form ctx)
+  (cond
+
+    ;; variables
+    ((symbolp form)
+     (or (context-binding form ctx)
+         (error "Unbound PDEL symbol ~S" form)))
+
+    ;; compiler macro
+    ((and (consp form)
+          (find-compiler-macro (car form)))
+     (apply (find-compiler-macro (car form))
+            ctx (cdr form)))
+
+    ;; pdel macro
+    ((and (consp form)
+          (find-pdel-macro (car form)))
+     (assembly-form
+      (apply (find-pdel-macro (car form))
+             (cdr form))
+      ctx))
+
+    ;; general form
+    ((consp form)
+     (let* ((name (car form))
+            (declared-object (find-object name)))
+       (if declared-object
+           (assembly-pdel-object form declared-object ctx)
+           (assembly-free-object form ctx))))
+    (t
+     (error "Cannot assemble PDEL form ~S" form))))
 
 (defun assembly (form)
   (let ((ctx (make-instance 'context)))
     (assembly-form form ctx)
-    (make-instance
-     'pdel-asm:assembly-result
-     :elements
-     (sort (copy-list (context-objects ctx))
-           #'< :key #'pdel-asm:asm-element-id)
-     :connections
-     (nreverse (context-connections ctx)))))
+    (context-result ctx)))
+
+(defun assembly-pointer-p (value)
+  (and (listp value)
+       (every #'port-p  value)))
+
+(defun ensure-ids (form ctx)
+  (if (assembly-pointer-p form)
+      form
+      (assembly-form form ctx)))
