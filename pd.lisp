@@ -67,7 +67,7 @@
                            pathname
                            (arguments nil))
   "Compile FORM, lay it out, write a .pd file, and launch Pure Data."
-  (let* ((assembly (pdel-lang:assembly form))
+  (let* ((assembly (pdel-compiler:assembly form))
          (output (or pathname (temporary-pd-pathname))))
     (pdel-layout:layout assembly)
     (write-pd assembly output)

@@ -12,15 +12,25 @@
    #:assembly-result #:assembly-elements #:assembly-connections
    #:assembly-width #:assembly-height #:find-element-by-id))
 
-(defpackage #:pdel-lang
+(defpackage #:pdel-compiler
   (:use #:cl)
   (:export
    #:object #:object-name #:object-origin #:object-args #:object-flags
    #:object-inputs #:object-outputs #:object-methods #:object-source
-   #:declare-object #:find-object #:defpdel #:defpdel-macro
+   #:declare-object #:find-object
+   #:defpdel
+   #:defpdel-macro
    #:load-bundled-library
    #:free-form-flags #:free-form-args #:free-form-inputs
    #:assembly))
+
+(defpackage #:pdel-lang
+  (:use #:cl)
+  (:import-from #:pdel-compiler
+                #:defpdel
+                #:defpdel-macro)
+  (:export
+   #:load-bundled-library))
 
 (defpackage #:pdel-layout
   (:use #:cl)
@@ -50,6 +60,17 @@
 
 (defpackage #:pdel-pd
   (:use #:cl)
+  (:export
+   #:write-pd
+   #:write-pd-element
+   #:write-pd-connection
+   #:launch-form))
+
+(defpackage #:pdel-user
+  (:use #:cl #:pdel-lang)
+  (:import-from #:pdel-compiler
+                #:defpdel
+                #:defpdel-macro)
   (:export
    #:write-pd
    #:write-pd-element

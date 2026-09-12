@@ -1,4 +1,4 @@
-(in-package #:pdel-lang)
+(in-package #:pdel-compiler)
 
 (defparameter *obj-alist* nil
   "Association list of declared PDEL objects.")
@@ -54,68 +54,8 @@
                (setf (getf options key) (pop forms))))
     (values options forms)))
 
-;; defmacro lisp > pdel
-;; defcompiler macro lisp -> pdel no eval
-(defmacro defpdel-compiler-macro (name args &body body)
-  `(let ((entry (assoc ',name *compiler-macro-alist*)))
-     (if entry
-         (setf (cdr entry)
-               (lambda ,args ,@body))
-         (push (cons ',name
-                     (lambda ,args ,@body))
-               *compiler-macro-alist*))
-     ',name))
-
 (defun find-pdel-macro (name)
   (cdr (assoc name *macro-alist* :test #'eq)))
-
-(defmacro defpdel-macro (name args &body body)
-  `(progn
-     ;; Register PDEL macro expander.
-     (let ((entry (assoc ',name *macro-alist* :test #'eq)))
-       (if entry
-           (setf (cdr entry)
-                 (lambda ,args ,@body))
-           (push (cons ',name
-                       (lambda ,args ,@body))
-                 *macro-alist*)))
-
-     ;; Also make it directly executable from Common Lisp.
-     (defmacro ,name (&rest call-arguments)
-       (list 'pdel-pd:launch-form
-             (list 'quote
-                   (cons ',name call-arguments))))
-
-     ',name))
-
-
-(defmacro defpdel (name &rest definition)
-  "Define NAME as both a registered PDEL object and a CL launcher macro.
-
-Keyword options currently stored are :ARGS, :INPUTS, :OUTPUTS and :FLAGS.
-The remaining forms are the PDEL source of the subpatch.  Calling NAME as a
-Common Lisp macro launches that PDEL form through `pdel-pd:launch-form'."
-  (multiple-value-bind (options source)
-      (split-defpdel-options definition)
-    (let ((args (getf options :args))
-          (inputs (getf options :inputs))
-          (outputs (getf options :outputs))
-          (flags (getf options :flags)))
-      `(progn
-         (eval-when (:compile-toplevel :load-toplevel :execute)
-           (declare-object
-            (make-instance 'object
-                           :name ',name
-                           :origin :pdel
-                           :args ',args
-                           :inputs ',inputs
-                           :outputs ',outputs
-                           :flags ',flags
-                           :source ',source)))
-         (defmacro ,name (&rest call-arguments)
-           (list 'pdel-pd:launch-form
-                 (list 'quote (cons ',name call-arguments))))
-         ',name))))
 
 (defclass var ()
     ((name :initarg :name
@@ -356,3 +296,139 @@ supply one independent source group per outlet."
   (if (assembly-pointer-p form)
       form
       (assembly-form form ctx)))
+
+
+;; Compiler macros
+
+
+(defmacro defpdel-macro (name args &body body)
+  `(progn
+     ;; Register PDEL macro expander.
+     (let ((entry (assoc ',name pdel-compiler::*macro-alist* :test #'eq)))
+       (if entry
+           (setf (cdr entry)
+                 (lambda ,args ,@body))
+           (push (cons ',name
+                       (lambda ,args ,@body))
+                 *macro-alist*)))
+
+     ;; Also make it directly executable from Common Lisp.
+     (defmacro ,name (&rest call-arguments)
+       (list 'pdel-pd:launch-form
+             (list 'quote
+                   (cons ',name call-arguments))))
+
+     ',name))
+
+
+(defmacro defpdel (name &rest definition)
+  "Define NAME as both a registered PDEL object and a CL launcher macro.
+
+Keyword options currently stored are :ARGS, :INPUTS, :OUTPUTS and :FLAGS.
+The remaining forms are the PDEL source of the subpatch.  Calling NAME as a
+Common Lisp macro launches that PDEL form through `pdel-pd:launch-form'."
+  (multiple-value-bind (options source)
+      (split-defpdel-options definition)
+    (let ((args (getf options :args))
+          (inputs (getf options :inputs))
+          (outputs (getf options :outputs))
+          (flags (getf options :flags)))
+      `(progn
+         (eval-when (:compile-toplevel :load-toplevel :execute)
+           (declare-object
+            (make-instance 'object
+                           :name ',name
+                           :origin :pdel
+                           :args ',args
+                           :inputs ',inputs
+                           :outputs ',outputs
+                           :flags ',flags
+                           :source ',source)))
+         (defmacro ,name (&rest call-arguments)
+           (list 'pdel-pd:launch-form
+                 (list 'quote (cons ',name call-arguments))))
+         ',name))))
+
+(defmacro defpdel-compiler-macro (name args &body body)
+  `(let ((entry (assoc ',name *compiler-macro-alist*)))
+     (if entry
+         (setf (cdr entry)
+               (lambda ,args ,@body))
+         (push (cons ',name
+                     (lambda ,args ,@body))
+               *compiler-macro-alist*))
+     ',name))
+
+(defpdel-compiler-macro outputs (ctx &rest forms)
+  "Return one independently routable source group for each FORM."
+  (make-output-values
+   :values (mapcar (lambda (form)
+                     (ensure-ids form ctx))
+                   forms)))
+
+(defpdel-compiler-macro join (ctx &rest objects)
+  (loop for o in objects
+        append (copy-list (ensure-ids o ctx))))
+
+(defpdel-compiler-macro defvar (ctx var-name object)
+  (set-binding var-name (ensure-ids object ctx) ctx))
+
+(defpdel-compiler-macro undefvar (ctx var-name)
+  (unset-binding var-name ctx))
+
+(defpdel-compiler-macro progn (ctx &rest body)
+  (loop for form in body
+        for result = (assembly-form form ctx)
+        finally (return result)))
+
+(defpdel-compiler-macro let (ctx bindings &rest body)
+  ;; LET semantics: compile all initializers before introducing bindings.
+  (let ((values
+         (loop for (name form) in bindings
+               collect
+               (cons name
+                     (ensure-ids form ctx)))))
+
+    (unwind-protect
+         (progn
+           (dolist (binding values)
+             (push binding
+                   (context-bindings ctx)))
+
+           (assembly-form
+            (cons 'progn body)
+            ctx))
+
+      ;; Remove exactly the bindings introduced above.
+      (dotimes (_ (length values))
+        (pop (context-bindings ctx))))))
+
+(defpdel-compiler-macro let* (ctx bindings &rest body)
+  (if bindings
+      (assembly-form
+       `(let (,(car bindings))
+          (let* ,(cdr bindings)
+            ,@body))
+       ctx)
+    (assembly-form
+     `(progn ,@body)
+     ctx)))
+
+(defpdel-compiler-macro out (ctx n object)
+  (let* ((ids (ensure-ids object ctx))
+         (id (car ids)))
+    (when (> (length ids) 1)
+      (error "It does not make sound to calculate the out of many objects"))
+    (list (make-port :id (port-id id)
+                     :index n))))
+
+(defpdel-compiler-macro -> (ctx &rest objects)
+  (let* ((ids (mapcar (lambda (o)
+                        (ensure-ids o ctx))
+                      objects))
+         (first (car ids)))
+    (dolist (out (cdr ids) first)
+      (dolist (f first)
+        (dolist (o out)
+          (add-connection ctx f o)))
+      (setf first out))))
