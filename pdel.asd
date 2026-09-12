@@ -7,7 +7,9 @@
   :depends-on (#:s-graphviz)
   :components ((:file "package")
                (:file "asm")
-               (:file "parse")))
+               (:file "layout")
+               (:file "pd")
+               (:file "lang")))
 
 (asdf:defsystem #:pdel/tests
   :depends-on (#:pdel)

@@ -1,72 +1,41 @@
 (in-package #:pdel-lang)
 
-(defparameter *obj-alist* nil
-  "Objlist for all defined elements.")
 
+(defparameter *obj-alist* nil
+  "Association list of declared PDEL objects.")
 
 (defun declare-object (object)
-  (push (cons (pdel-parse:asm-element-name object)
-              object)
-        *obj-alist*))
+  (let ((name (pdel-asm:asm-element-name object)))
+    (setf *obj-alist*
+          (acons name object
+                 (remove name *obj-alist* :key #'car :test #'eq))))
+  object)
 
 (defun find-object (name)
-  (cdr (assoc name *obj-alist*)))
+  (cdr (assoc name *obj-alist* :test #'eq)))
 
 (deftype origin ()
   '(member :pdel :foreign :unknown))
 
-
 (defclass object ()
-  ((origin
-    :initarg :origin
-    :type origin
-    :initform :unknown
-    :reader object-origin)
-   (args
-    :initarg :args
-    :type list
-    :reader object-args)
-   (flags
-    :initarg :flags
-    :type list
-    :reader object-flags)
-   (inputs
-    :initarg :inputs
-    :type list
-    :reader object-inputs)
-   (outputs
-    :initarg :outputs
-    :type list
-    :reader object-outputs)
-   (methods
-    :initarg :methods
-    :reader object-methods)
-   (source :initarg :source
-           :reader object-source)))
-
+  ((origin :initarg :origin :type origin :initform :unknown :reader object-origin)
+   (args :initarg :args :initform nil :type list :reader object-args)
+   (flags :initarg :flags :initform nil :type list :reader object-flags)
+   (inputs :initarg :inputs :initform nil :type list :reader object-inputs)
+   (outputs :initarg :outputs :initform nil :type list :reader object-outputs)
+   (methods :initarg :methods :initform nil :type list :reader object-methods)
+   (source :initarg :source :initform nil :reader object-source)))
 
 (defclass context ()
-  ((objects
-    :initarg :objects
-    :initform nil
-    :type list
-    :accessor context-objects)
-   (connections
-    :initarg :connections
-    :type list
-    :accessor context-connections
-    :initform nil)
-   (counter
-    :initarg :counter
-    :accessor context-counter
-    :type integer
-    :initform 0)))
+  ((objects :initarg :objects :initform nil :type list :accessor context-objects)
+   (connections :initarg :connections :initform nil :type list
+                :accessor context-connections)
+   (counter :initarg :counter :initform 0 :type integer :accessor context-counter)))
 
 (defun free-form-flags (form)
-  (loop for f in form
-        for i from 0
-        when (keywordp f)
-          return (subseq form i)))
+  (loop for tail on form
+        when (keywordp (car tail))
+          return tail))
 
 (defun free-form-args (form)
   (let ((args (second form)))
@@ -82,48 +51,32 @@
             do (push f inputs))
     (nreverse inputs)))
 
-(free-form-inputs '(osc~ #(5 6 8)
-                    (mtofreq (midiin))
-                    (adc~)
-                    :half t))
-
-(free-form-args '(osc~ #(5 6 8) (mtofreq (midiin))
-                  :half t))
-
-(free-form-flags '(osc~ (5 6 8) (mtofreq (midiin))
-                   :half t))
-
-
-(defclass parse-result ()
-  ((elements
-    :initarg :elements
-    :type list
-    :reader parse-result-elements)
-   (connections
-    :initarg :connections
-    :type list
-    :reader parse-result-connections)))
-
+(defun next-element-id (ctx)
+  (prog1 (context-counter ctx)
+    (incf (context-counter ctx))))
 
 (defun assembly-form (form ctx)
   (let* ((name (car form))
-         (object (find-object name)))
-    (if object
-        (error "TODO")
-        ;; free form
+         (declared-object (find-object name)))
+    (if declared-object
+        (error "Declared-object compilation is not implemented yet for ~S" name)
         (let* ((flags (free-form-flags form))
-              (inputs (free-form-inputs form))
-              (args (free-form-args form))
-              (id (prog1 (context-counter ctx)
-                    (incf (context-counter ctx))))
-              (input-connections
-                (loop for i in inputs
-                      collect (assembly-form i ctx))))
-          (loop for conn in input-connections
-                for i from 0
+               (inputs (free-form-inputs form))
+               (args (free-form-args form))
+               (id (next-element-id ctx))
+               (input-connections
+                 (loop for input in inputs
+                       collect (assembly-form input ctx))))
+          (loop for (source-id . source-outlet) in input-connections
+                for destination-inlet from 0
                 do
-                (push (cons conn (cons id i))
-                      (context-connections ctx)))
+                   (push
+                    (pdel-asm:make-connection
+                     :source source-id
+                     :source-outlet source-outlet
+                     :destination id
+                     :destination-inlet destination-inlet)
+                    (context-connections ctx)))
           (push (make-instance 'pdel-asm:asm-element
                                :name name
                                :type :object
@@ -137,9 +90,9 @@
   (let ((ctx (make-instance 'context)))
     (assembly-form form ctx)
     (make-instance
-     'parse-result
-     :elements (sort (context-objects ctx)
-                     #'<
-                     :key #'pdel-asm:asm-element-id)
-     :connections (context-connections ctx))))
-
+     'pdel-asm:assembly-result
+     :elements
+     (sort (copy-list (context-objects ctx))
+           #'< :key #'pdel-asm:asm-element-id)
+     :connections
+     (nreverse (context-connections ctx)))))
