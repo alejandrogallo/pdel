@@ -52,4 +52,8 @@
 
 (defpackage #:pdel-pd
   (:use #:cl)
-  (:export #:write-pd #:write-pd-element #:write-pd-connection))
+  (:export
+   #:write-pd
+   #:write-pd-element
+   #:write-pd-connection
+   #:launch-form))

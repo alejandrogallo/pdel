@@ -8,3 +8,62 @@ then we call the layout function, that sets the x and y
 and widths and so on.
 
 After this we can create the pd file and
+
+
+* Launching Pure Data from a form
+
+A PDEL form can be assembled, laid out, written to a temporary =.pd= file,
+and launched in Pure Data directly:
+
+#+begin_src lisp
+(pdel-pd:launch-form
+ '(osc~ #(440)
+   (mtofreq
+    (midiin))))
+#+end_src
+
+The function returns three values: the UIOP process object, the generated
+pathname, and the laid-out assembly.
+
+#+begin_src lisp
+(multiple-value-bind (process pathname assembly)
+    (pdel-pd:launch-form
+     '(osc~ #(440)
+       (mtofreq
+        (midiin))))
+  (declare (ignore assembly))
+  (format t "Pd process: ~S~%Patch: ~A~%" process pathname))
+#+end_src
+
+Use =:gui nil= for =pd -nogui=, =:pd= to select another executable, and
+=:arguments= for extra Pure Data command-line arguments.
+
+
+
+
+* Syntax
+
+You can write anything that
+
+(whatever ...) -> assembly
+
+But I want to be able to define functions and macros
+
+
+#+begin_src lisp
+       (defpdel my-new-sketch
+           :args (args..)
+           :inputs (inputs..)
+           :outputs (outputs..)
+           :flags (flags...))
+#+end_src
+
+and this should add the thing to the objlist, but it should also create a common-lisp macro called
+
+my-new-sketch
+
+that when I call it, it should launch the pd sketch compiled,i.e.,
+
+(my-new-osc~ nil (mtof (midiin) :flag1 t)
+
+and so on.

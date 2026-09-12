@@ -37,3 +37,54 @@
     (dolist (connection (pdel-asm:assembly-connections assembly))
       (write-pd-connection connection stream)))
   pathname)
+
+
+(defun temporary-pd-pathname ()
+  "Return a fresh temporary pathname suitable for a generated Pd patch."
+  (merge-pathnames
+   (make-pathname
+    :name (format nil "pdel-~36r" (random most-positive-fixnum))
+    :type "pd")
+   (uiop:temporary-directory)))
+
+(defun launch-form (form &key
+                           (pd "pd")
+                           (gui t)
+                           pathname
+                           (arguments nil))
+  "Compile FORM, lay it out, write a .pd file, and launch Pure Data.
+
+FORM is a PDEL form accepted by `pdel-lang:assembly'.
+
+PD names the Pure Data executable and defaults to \"pd\".
+
+When GUI is NIL, pass -nogui to Pure Data.  GUI defaults to T.
+
+PATHNAME optionally chooses the generated .pd file.  When it is NIL, a
+fresh pathname in `uiop:temporary-directory' is used.
+
+ARGUMENTS is a list of additional command-line arguments passed to Pure Data
+before the patch pathname.
+
+The function launches Pure Data asynchronously and returns three values:
+
+  1. the UIOP process-info object,
+  2. the pathname of the generated .pd file,
+  3. the laid-out `pdel-asm:assembly-result'.
+
+The generated file is intentionally retained so it remains inspectable while
+Pure Data is running and afterwards."
+  (let* ((assembly (pdel-lang:assembly form))
+         (output (or pathname (temporary-pd-pathname))))
+    (pdel-layout:layout assembly)
+    (write-pd assembly output)
+    (let ((process
+            (uiop:launch-program
+             (append (list pd)
+                     (unless gui (list "-nogui"))
+                     arguments
+                     (list (namestring output)))
+             :output :interactive
+             :error-output :interactive
+             :wait nil)))
+      (values process output assembly))))
