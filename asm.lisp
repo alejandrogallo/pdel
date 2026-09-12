@@ -31,6 +31,12 @@
   ((elements :initarg :elements :initform nil :type list :reader assembly-elements)
    (connections :initarg :connections :initform nil :type list
                 :reader assembly-connections)
+   ;; Structural Pd records.  These do not consume object IDs and therefore
+   ;; cannot participate in #X connect records.
+   (declarations :initarg :declarations :initform nil :type list
+                 :reader assembly-declarations)
+   (raw-records :initarg :raw-records :initform nil :type list
+                :reader assembly-raw-records)
    (width :initarg :width :initform 0 :type real :accessor assembly-width)
    (height :initarg :height :initform 0 :type real :accessor assembly-height)))
 

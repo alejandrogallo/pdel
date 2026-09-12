@@ -35,14 +35,19 @@
   (let ((name (object-name object)))
     (setf *obj-alist*
           (acons name object
-                 (remove name *obj-alist* :key #'car :test #'eq))))
+                 (remove name *obj-alist* :key #'car :test #'pdel-name=))))
   object)
 
+(defun pdel-name= (a b)
+  "Compare PDEL names independently of the package they were read in."
+  (and (symbolp a) (symbolp b)
+       (string-equal (symbol-name a) (symbol-name b))))
+
 (defun find-object (name)
-  (cdr (assoc name *obj-alist* :test #'eq)))
+  (cdr (assoc name *obj-alist* :test #'pdel-name=)))
 
 (defun find-compiler-macro (name)
-  (cdr (assoc name *compiler-macro-alist* :test #'eq)))
+  (cdr (assoc name *compiler-macro-alist* :test #'pdel-name=)))
 
 (defun split-defpdel-options (forms)
   "Split FORMS into a property list and the remaining source forms."
@@ -55,7 +60,7 @@
     (values options forms)))
 
 (defun find-pdel-macro (name)
-  (cdr (assoc name *macro-alist* :test #'eq)))
+  (cdr (assoc name *macro-alist* :test #'pdel-name=)))
 
 (defclass var ()
     ((name :initarg :name
@@ -68,7 +73,11 @@
    (connections :initarg :connections :initform nil :type list
                 :accessor context-connections)
    (counter :initarg :counter :initform 0 :type integer :accessor context-counter)
-   (bindings :initarg :bindings :initform nil :type list :accessor context-bindings)))
+   (bindings :initarg :bindings :initform nil :type list :accessor context-bindings)
+   (declarations :initarg :declarations :initform nil :type list
+                 :accessor context-declarations)
+   (raw-records :initarg :raw-records :initform nil :type list
+                :accessor context-raw-records)))
 
 
 (defun free-form-flags (form)
@@ -136,7 +145,9 @@
    'pdel-asm:assembly-result
    :elements (sort (copy-list (context-objects ctx))
                    #'< :key #'pdel-asm:asm-element-id)
-   :connections (nreverse (context-connections ctx))))
+   :connections (nreverse (context-connections ctx))
+   :declarations (nreverse (context-declarations ctx))
+   :raw-records (nreverse (context-raw-records ctx))))
 
 ;; todo do it with ports
 (defun add-connection (ctx source destination)
@@ -147,6 +158,52 @@
            :destination (port-id destination)
            :destination-inlet (port-index destination))
           (context-connections ctx))))
+
+
+(defun add-special-element (ctx type name arguments inputs)
+  "Create one connectable special Pd element and return its output port list."
+  (let* ((id (next-element-id ctx))
+         (input-connections
+           (loop for input in inputs
+                 collect (and input (assembly-form input ctx)))))
+    (loop for sources in input-connections
+          for destination-inlet from 0
+          for destination = (make-port :id id :index destination-inlet)
+          do (dolist (source sources)
+               (add-connection ctx source destination)))
+    (push (make-instance 'pdel-asm:asm-element
+                         :name name
+                         :type type
+                         :id id
+                         :args arguments)
+          (context-objects ctx))
+    (list (make-port :id id :index 0))))
+
+(defun special-vector-form-parts (form)
+  "Return two values: creation arguments and input forms for FORM.
+
+Special atom boxes follow the normal PDEL convention that a vector directly
+following the form name contains the Pd record arguments."
+  (if (and (cdr form) (vectorp (second form)))
+      (values (coerce (second form) 'list) (cddr form))
+      (values nil (cdr form))))
+
+(defun message-form-parts (form)
+  "Return message contents and inlet forms for a MSG FORM.
+
+Both `(msg \"hello\" source)' and the older converted-library form
+`(msg #(\"hello\") source)' are accepted.  A vector permits multiple Pd
+message atoms without confusing them with inlet expressions."
+  (unless (cdr form)
+    (error "MSG requires message contents"))
+  (let ((content (second form)))
+    (cond
+      ((vectorp content)
+       (values (coerce content 'list) (cddr form)))
+      ((stringp content)
+       (values (list content) (cddr form)))
+      (t
+       (error "MSG contents must be a string or vector, got ~S" content)))))
 
 (defun assembly-free-object (form ctx)
   (let* ((name (car form))
@@ -357,6 +414,53 @@ Common Lisp macro launches that PDEL form through `pdel-pd:launch-form'."
                      (lambda ,args ,@body))
                *compiler-macro-alist*))
      ',name))
+
+;; Special Pd canvas records -------------------------------------------------
+
+(defpdel-compiler-macro msg (ctx &rest form)
+  (multiple-value-bind (arguments inputs)
+      (message-form-parts (cons 'msg form))
+    (add-special-element ctx :message 'msg arguments inputs)))
+
+(defpdel-compiler-macro text (ctx string)
+  (unless (stringp string)
+    (error "TEXT requires a string, got ~S" string))
+  (add-special-element ctx :text 'text (list string) nil)
+  nil)
+
+(defpdel-compiler-macro comment (ctx string)
+  ;; COMMENT is source-level sugar for Pd's #X text record.
+  (unless (stringp string)
+    (error "COMMENT requires a string, got ~S" string))
+  (add-special-element ctx :text 'text (list string) nil)
+  nil)
+
+(defpdel-compiler-macro floatatom (ctx &rest form)
+  (multiple-value-bind (arguments inputs)
+      (special-vector-form-parts (cons 'floatatom form))
+    (add-special-element ctx :floatatom 'floatatom arguments inputs)))
+
+(defpdel-compiler-macro symbolatom (ctx &rest form)
+  (multiple-value-bind (arguments inputs)
+      (special-vector-form-parts (cons 'symbolatom form))
+    (add-special-element ctx :symbolatom 'symbolatom arguments inputs)))
+
+(defpdel-compiler-macro listbox (ctx &rest form)
+  (multiple-value-bind (arguments inputs)
+      (special-vector-form-parts (cons 'listbox form))
+    (add-special-element ctx :listbox 'listbox arguments inputs)))
+
+(defpdel-compiler-macro declare (ctx &rest arguments)
+  "Add one structural #X declare record.  It has no object ID or output."
+  (push arguments (context-declarations ctx))
+  nil)
+
+(defpdel-compiler-macro raw (ctx content)
+  "Add CONTENT verbatim to the Pd canvas without assigning an object ID."
+  (unless (stringp content)
+    (error "RAW requires a string, got ~S" content))
+  (push content (context-raw-records ctx))
+  nil)
 
 (defpdel-compiler-macro outputs (ctx &rest forms)
   "Return one independently routable source group for each FORM."

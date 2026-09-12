@@ -10,6 +10,7 @@
    #:connection-source #:connection-source-outlet
    #:connection-destination #:connection-destination-inlet
    #:assembly-result #:assembly-elements #:assembly-connections
+   #:assembly-declarations #:assembly-raw-records
    #:assembly-width #:assembly-height #:find-element-by-id))
 
 (defpackage #:pdel-compiler

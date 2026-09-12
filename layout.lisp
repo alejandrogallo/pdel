@@ -6,21 +6,31 @@
   (format nil "node_~d" (pdel-asm:asm-element-id element)))
 
 (defun element-label (element)
-  (with-output-to-string (out)
-    (write-string
-     (string-downcase
-      (symbol-name (pdel-asm:asm-element-name element)))
-     out)
-    (dolist (arg (pdel-asm:asm-element-args element))
-      (format out " ~a" arg))))
+  (let ((type (pdel-asm:asm-element-type element))
+        (args (pdel-asm:asm-element-args element)))
+    (if (member type '(:message :text :floatatom :symbolatom :listbox))
+        (format nil "~{~a~^ ~}" args)
+        (with-output-to-string (out)
+          (write-string
+           (string-downcase
+            (symbol-name (pdel-asm:asm-element-name element)))
+           out)
+          (dolist (arg args)
+            (format out " ~a" arg))))))
 
 (defun element->graphviz (element)
-  `(,(element-node-id element)
-    (:label ,(element-label element))
-    (:shape :box)
-    (:fontname "monospace")
-    (:fontsize 12)
-    (:margin "0.04,0.02")))
+  (let* ((type (pdel-asm:asm-element-type element))
+         (shape (case type
+                  (:message :polygon)
+                  ((:floatatom :symbolatom :listbox) :box3d)
+                  (:text :plain)
+                  (otherwise :box))))
+    `(,(element-node-id element)
+      (:label ,(element-label element))
+      (:shape ,shape)
+      (:fontname "monospace")
+      (:fontsize 12)
+      (:margin "0.04,0.02"))))
 
 (defun connection->graphviz (connection)
   `(:->

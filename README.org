@@ -67,3 +67,41 @@ that when I call it, it should launch the pd sketch compiled,i.e.,
 (my-new-osc~ nil (mtof (midiin) :flag1 t)
 
 and so on.
+
+* Special Pd records
+
+PDEL distinguishes ordinary =#X obj= nodes from Pd records whose patch-file
+syntax is different:
+
+#+begin_src lisp
+(msg "set 440")
+(msg #("1 2, 0 250 2") (bang))
+(text "a canvas comment")
+(comment "alias for text")
+(floatatom #(5 0 127 0 "" "" ""))
+(symbolatom #(10 0 0 0 "" "" ""))
+(listbox #(20 0 0 0 "" "" ""))
+#+end_src
+
+=msg=, =floatatom=, =symbolatom= and =listbox= are connectable assembly
+elements. =text=/=comment= consume a canvas object index but are not treated as
+connection sources. Structural records do not consume object IDs:
+
+#+begin_src lisp
+(declare -path "else")
+(raw "#X coords 0 0 1 1 100 100 1;")
+#+end_src
+
+=declare= records are emitted before canvas elements. =raw= records are emitted
+after normal elements and connections and are intended for structural Pd syntax,
+not arbitrary connectable objects.
+
+* Tests
+
+Run the Common Lisp sanity suite with:
+
+#+begin_src sh
+./tests/run-tests.sh
+#+end_src
+
+The runner uses ASDF and SBCL and executes =asdf:test-system :pdel=.

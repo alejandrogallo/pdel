@@ -1,20 +1,67 @@
 (in-package #:pdel-pd)
 
+(defun escape-pd-text (value)
+  "Escape VALUE for use as one or more atoms in a .pd patch file."
+  (let ((text (princ-to-string value)))
+    (when (or (find #\Newline text) (find #\Return text))
+      (error "Pure Data atoms cannot contain newlines: ~S" value))
+    ;; Match the escaping policy of the old Emacs Lisp backend.
+    (with-output-to-string (out)
+      (loop for ch across (princ-to-string value)
+            do (case ch
+                 (#\, (write-string " \\, " out))
+                 (#\; (write-string "\\;" out))
+                 (#\$ (write-string "\\$" out))
+                 (t (write-char ch out)))))))
+
 (defun pd-token (value)
   (etypecase value
-    (symbol (string-downcase (symbol-name value)))
-    (string value)
+    (symbol (escape-pd-text (string-downcase (symbol-name value))))
+    (string (escape-pd-text value))
     (number (princ-to-string value))))
 
+(defun write-pd-arguments (arguments stream)
+  (loop for arg in arguments
+        for first = t then nil
+        do (unless first (write-char #\Space stream))
+           (write-string (pd-token arg) stream)))
+
 (defun write-pd-element (element stream)
-  (format stream "#X obj ~d ~d ~a"
-          (round (pdel-asm:asm-element-x element))
-          (round (pdel-asm:asm-element-y element))
-          (pd-token (pdel-asm:asm-element-name element)))
-  (dolist (arg (pdel-asm:asm-element-args element))
-    (format stream " ~a" (pd-token arg)))
-  (write-string ";" stream)
-  (terpri stream))
+  (let ((x (round (pdel-asm:asm-element-x element)))
+        (y (round (pdel-asm:asm-element-y element)))
+        (name (pdel-asm:asm-element-name element))
+        (type (pdel-asm:asm-element-type element))
+        (args (pdel-asm:asm-element-args element)))
+    (case type
+      (:object
+       (format stream "#X obj ~d ~d ~a" x y (pd-token name))
+       (when args
+         (write-char #\Space stream)
+         (write-pd-arguments args stream))
+       (write-string ";" stream))
+      (:message
+       (format stream "#X msg ~d ~d " x y)
+       (write-pd-arguments args stream)
+       (write-string ";" stream))
+      (:text
+       (format stream "#X text ~d ~d " x y)
+       (write-pd-arguments args stream)
+       (write-string ";" stream))
+      (:floatatom
+       (format stream "#X floatatom ~d ~d" x y)
+       (when args (write-char #\Space stream) (write-pd-arguments args stream))
+       (write-string ";" stream))
+      (:symbolatom
+       (format stream "#X symbolatom ~d ~d" x y)
+       (when args (write-char #\Space stream) (write-pd-arguments args stream))
+       (write-string ";" stream))
+      (:listbox
+       (format stream "#X listbox ~d ~d" x y)
+       (when args (write-char #\Space stream) (write-pd-arguments args stream))
+       (write-string ";" stream))
+      (otherwise
+       (error "Unsupported assembly element type ~S for ~S" type element)))
+    (terpri stream)))
 
 (defun write-pd-connection (connection stream)
   (format stream "#X connect ~d ~d ~d ~d;~%"
@@ -25,6 +72,13 @@
 
 (defun write-pd-assembly-body (assembly stream)
   "Write ASSEMBLY records inside an already-open Pd canvas."
+  (dolist (arguments (pdel-asm:assembly-declarations assembly))
+    (write-string "#X declare" stream)
+    (when arguments
+      (write-char #\Space stream)
+      (write-pd-arguments arguments stream))
+    (write-string ";" stream)
+    (terpri stream))
   (dolist (element (pdel-asm:assembly-elements assembly))
     (if (typep element 'pdel-asm:asm-subpatch)
         (let ((child (pdel-asm:asm-subpatch-assembly element)))
@@ -39,7 +93,15 @@
                   (pd-token (pdel-asm:asm-element-name element))))
         (write-pd-element element stream)))
   (dolist (connection (pdel-asm:assembly-connections assembly))
-    (write-pd-connection connection stream)))
+    (write-pd-connection connection stream))
+  ;; RAW is intentionally structural: it does not consume a Pd object index.
+  ;; Emit it after ordinary graph records, which is useful for records such as
+  ;; #X coords.  Use a real assembly element for anything connectable.
+  (dolist (record (pdel-asm:assembly-raw-records assembly))
+    (write-string record stream)
+    (unless (and (> (length record) 0)
+                 (char= (char record (1- (length record))) #\Newline))
+      (terpri stream))))
 
 (defun write-pd (assembly pathname)
   (ensure-directories-exist pathname)
