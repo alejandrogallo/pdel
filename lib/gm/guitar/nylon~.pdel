@@ -1,10 +1,6 @@
-;;; pd-lib-name: gm/guitar/nylon~
-;;; pd-lib-category: general-midi
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; gm/guitar/nylon~ --- converted PDEL library definition
+;;; category: general-midi
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (frequency (@inlet~))
-        (env (@pdel/env/pluck~ trigger))
-        (voice (@lop~ [5200] (@+~ (@pdel/osc/triangle~ frequency) (@*~ [0.18] (@noise~))))))
-   (@outlet~ (@*~ voice env))))
+(defpdel gm/guitar/nylon~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((frequency frequency-hz) (env (env/pluck~ trigger)) (voice (lop~ #(5200) (+~ (osc/triangle~ frequency) (*~ #(0.18) (noise~)))))) (*~ voice env)))

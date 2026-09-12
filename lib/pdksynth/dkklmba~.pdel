@@ -1,12 +1,10 @@
-;;; pd-lib-name: pdksynth/dkklmba~
-;;; pd-lib-category: pdksynth-pitched
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: kalimba-like resonant voice corresponding to upstream dkklmba~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((t (@inlet)) (f (@inlet~)) (e (@vline~ (@msg ["1 1, 0 700 1"] t)))
-        (n (@*~ e (@noise~)))
-        (v (@+~ (@bp~ [0 18] n f) (@+~ (@*~ [0.45] (@bp~ [0 20] n (@*~ [2.01] f))) (@*~ [0.22] (@bp~ [0 22] n (@*~ [3.95] f)))))))
-   (@outlet~ (@*~ [0.6] v))))
+;;; pdksynth/dkklmba~ --- converted PDEL library definition
+;;; category: pdksynth-pitched
+;;; note: kalimba-like resonant voice corresponding to upstream dkklmba~
+
+(defpdel pdksynth/dkklmba~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 1, 0 700 1") t))) (n (*~ e (noise~)))
+     (v
+       (+~ (bp~ #(0 18) n f)
+         (+~ (*~ #(0.45) (bp~ #(0 20) n (*~ #(2.01) f))) (*~ #(0.22) (bp~ #(0 22) n (*~ #(3.95) f))))))) (*~ #(0.6) v)))

@@ -1,12 +1,7 @@
-;;; pd-lib-name: pdksynth/dkrhodes~
-;;; pd-lib-category: pdksynth-pitched
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: electric-piano/FM voice corresponding to upstream dkrhodes~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((t (@inlet)) (f (@inlet~)) (e (@vline~ (@msg ["1 4, 0.55 500 4, 0 1900 504"] t)))
-        (m (@*~ (@*~ [2] f) (@*~ [0.9] (@osc~ (@*~ [2] f)))))
-        (v (@osc~ (@+~ f m))))
-   (@outlet~ (@*~ [0.72] e v))))
+;;; pdksynth/dkrhodes~ --- converted PDEL library definition
+;;; category: pdksynth-pitched
+;;; note: electric-piano/FM voice corresponding to upstream dkrhodes~
+
+(defpdel pdksynth/dkrhodes~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 4, 0.55 500 4, 0 1900 504") t))) (m (*~ (*~ #(2) f) (*~ #(0.9) (osc~ (*~ #(2) f))))) (v (osc~ (+~ f m)))) (*~ #(0.72) e v)))

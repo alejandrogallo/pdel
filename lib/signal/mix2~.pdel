@@ -1,8 +1,5 @@
-;;; pd-lib-name: signal/mix2~
-;;; pd-lib-category: signal
-;;; pd-lib-inlets: ((0 signal a) (1 signal b))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: equal 50/50 mix
+;;; signal/mix2~ --- converted PDEL library definition
+;;; category: signal
+;;; note: equal 50/50 mix
 
-(pd-lisp!
- (@outlet~ (@*~ [0.5] (@+~ (@inlet~) (@inlet~)))))
+(defpdel signal/mix2~ :inputs ((a signal) (b signal)) :outputs ((audio signal)) (*~ #(0.5) (+~ a b)))

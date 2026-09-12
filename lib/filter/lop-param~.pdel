@@ -1,6 +1,4 @@
-;;; pd-lib-name: filter/lop-param~
-;;; pd-lib-category: filter
-;;; pd-lib-inlets: ((0 signal audio) (1 control cutoff-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; filter/lop-param~ --- converted PDEL library definition
+;;; category: filter
 
-(pd-lisp! (@outlet~ (@lop~ [1000] (@inlet~) (@inlet))))
+(defpdel filter/lop-param~ :inputs ((audio signal) (cutoff-hz control)) :outputs ((audio signal)) (lop~ #(1000) audio cutoff-hz))

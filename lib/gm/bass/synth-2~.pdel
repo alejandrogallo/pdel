@@ -1,10 +1,6 @@
-;;; pd-lib-name: gm/bass/synth-2~
-;;; pd-lib-category: general-midi
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; gm/bass/synth-2~ --- converted PDEL library definition
+;;; category: general-midi
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (frequency (@inlet~))
-        (env (@pdel/env/long-perc~ trigger))
-        (voice (@lop~ [1200] (@pdel/osc/square-soft~ frequency))))
-   (@outlet~ (@*~ voice env))))
+(defpdel gm/bass/synth-2~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((frequency frequency-hz) (env (env/long-perc~ trigger)) (voice (lop~ #(1200) (osc/square-soft~ frequency)))) (*~ voice env)))

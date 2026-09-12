@@ -1,10 +1,7 @@
-;;; pd-lib-name: pdksynth/dkdtmf~
-;;; pd-lib-category: pdksynth-pitched
-;;; pd-lib-inlets: ((0 control trigger) (1 signal low-frequency-hz) (2 signal high-frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: dual-tone multifrequency voice corresponding to upstream dkdtmf~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((t (@inlet)) (lo (@inlet~)) (hi (@inlet~)) (e (@vline~ (@msg ["1 2, 0 180 2"] t))))
-   (@outlet~ (@*~ [0.45] e (@+~ (@osc~ lo) (@osc~ hi))))))
+;;; pdksynth/dkdtmf~ --- converted PDEL library definition
+;;; category: pdksynth-pitched
+;;; note: dual-tone multifrequency voice corresponding to upstream dkdtmf~
+
+(defpdel pdksynth/dkdtmf~ :inputs ((trigger control) (low-frequency-hz signal) (high-frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((t trigger) (lo low-frequency-hz) (hi high-frequency-hz) (e (vline~ (msg #("1 2, 0 180 2") t)))) (*~ #(0.45) e (+~ (osc~ lo) (osc~ hi)))))

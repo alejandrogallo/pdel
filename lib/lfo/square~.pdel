@@ -1,6 +1,4 @@
-;;; pd-lib-name: lfo/square~
-;;; pd-lib-category: lfo
-;;; pd-lib-inlets: ((0 signal rate-hz))
-;;; pd-lib-outlets: ((0 signal modulation))
+;;; lfo/square~ --- converted PDEL library definition
+;;; category: lfo
 
-(pd-lisp! (@outlet~ (@-~ [1] (@*~ [2] (@>~ [0.5] (@phasor~ (@inlet~)))))))
+(defpdel lfo/square~ :inputs ((rate-hz signal)) :outputs ((modulation signal)) (-~ #(1) (*~ #(2) (>~ #(0.5) (phasor~ rate-hz)))))

@@ -1,8 +1,4 @@
-;;; pd-lib-name: drums/bongo-high~
-;;; pd-lib-category: percussion
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; drums/bongo-high~ --- converted PDEL library definition
+;;; category: percussion
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (env (@vline~ (@msg ["1 1, 0 180 1"] trigger))))
-   (@outlet~ (@*~ (@osc~ [310]) env))))
+(defpdel drums/bongo-high~ :inputs ((trigger control)) :outputs ((audio signal)) (let* ((env (vline~ (msg #("1 1, 0 180 1") trigger)))) (*~ (osc~ #(310)) env)))

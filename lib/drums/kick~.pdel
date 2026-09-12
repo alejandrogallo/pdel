@@ -1,13 +1,6 @@
-;;; pd-lib-name: drums/kick~
-;;; pd-lib-category: percussion
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; drums/kick~ --- converted PDEL library definition
+;;; category: percussion
 
-(pd-lisp!
- (let* ((trigger (@inlet))
-        (pitch (@vline~
-                (@msg ["145 0, 48 95 0"] trigger)))
-        (envelope (@vline~
-                   (@msg ["1 2, 0 280 2"] trigger))))
-   (@outlet~
-    (@*~ (@osc~ pitch) envelope))))
+(defpdel drums/kick~ :inputs ((trigger control)) :outputs ((audio signal))
+ (let*
+   ((pitch (vline~ (msg #("145 0, 48 95 0") trigger))) (envelope (vline~ (msg #("1 2, 0 280 2") trigger)))) (*~ (osc~ pitch) envelope)))

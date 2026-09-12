@@ -1,10 +1,8 @@
-;;; pd-lib-name: gm/bass/acoustic~
-;;; pd-lib-category: general-midi
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; gm/bass/acoustic~ --- converted PDEL library definition
+;;; category: general-midi
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (frequency (@inlet~))
-        (env (@pdel/env/pluck~ trigger))
-        (voice (@lop~ [1800] (@+~ (@osc~ frequency) (@*~ [0.3] (@pdel/osc/triangle~ (@*~ [2] frequency)))))))
-   (@outlet~ (@*~ voice env))))
+(defpdel gm/bass/acoustic~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((frequency frequency-hz) (env (env/pluck~ trigger))
+     (voice
+       (lop~ #(1800) (+~ (osc~ frequency) (*~ #(0.3) (osc/triangle~ (*~ #(2) frequency))))))) (*~ voice env)))

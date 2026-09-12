@@ -1,10 +1,4 @@
-;;; pd-lib-name: fx/ringmod~
-;;; pd-lib-category: effect
-;;; pd-lib-inlets: ((0 signal input) (1 signal mod-frequency-hz))
-;;; pd-lib-outlets: ((0 signal output))
+;;; fx/ringmod~ --- converted PDEL library definition
+;;; category: effect
 
-(pd-lisp!
- (let* ((input (@inlet~))
-        (frequency (@inlet~)))
-   (@outlet~
-    (@*~ input (@osc~ frequency)))))
+(defpdel fx/ringmod~ :inputs ((input signal) (mod-frequency-hz signal)) :outputs ((output signal)) (let* ((frequency mod-frequency-hz)) (*~ input (osc~ frequency))))

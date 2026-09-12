@@ -1,10 +1,4 @@
-;;; pd-lib-name: osc/saw~
-;;; pd-lib-category: oscillator
-;;; pd-lib-inlets: ((0 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; osc/saw~ --- converted PDEL library definition
+;;; category: oscillator
 
-(pd-lisp!
- (@outlet~
-  (@-~ [1]
-       (@*~ [2]
-            (@phasor~ (@inlet~))))))
+(defpdel osc/saw~ :inputs ((frequency-hz signal)) :outputs ((audio signal)) (-~ #(1) (*~ #(2) (phasor~ frequency-hz))))

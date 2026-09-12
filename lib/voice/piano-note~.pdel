@@ -1,17 +1,6 @@
-;;; pd-lib-name: voice/piano-note~
-;;; pd-lib-category: voice
-;;; pd-lib-inlets: ((0 control note-velocity-list))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; voice/piano-note~ --- converted PDEL library definition
+;;; category: voice
 
-(pd-lisp!
- (let* ((event (@inlet))
-        (uv (@unpack [f f] event))
-        (note (@ 0 uv))
-        (velocity (@ 1 uv))
-        (frequency (@mtof note))
-        (gate (@moses [1] velocity))
-        (trigger (@ 1 gate))
-        (env (@pdel/env/piano~ trigger))
-        (amp (@/ [127] velocity))
-        (tone (@+~ (@osc~ frequency) (@*~ [0.32] (@osc~ (@*~ [2.01] frequency))))))
-   (@outlet~ (@*~ amp (@*~ tone env)))))
+(defpdel voice/piano-note~ :inputs ((note-velocity-list control)) :outputs ((audio signal))
+ (let*
+   ((event note-velocity-list) (uv (unpack #(f f) event)) (note (out 0 uv)) (velocity (out 1 uv)) (frequency (mtof note)) (gate (moses #(1) velocity)) (trigger (out 1 gate)) (env (env/piano~ trigger)) (amp (/ #(127) velocity)) (tone (+~ (osc~ frequency) (*~ #(0.32) (osc~ (*~ #(2.01) frequency)))))) (*~ amp (*~ tone env))))

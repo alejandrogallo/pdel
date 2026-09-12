@@ -1,12 +1,4 @@
-;;; pd-lib-name: osc/triangle~
-;;; pd-lib-category: oscillator
-;;; pd-lib-inlets: ((0 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; osc/triangle~ --- converted PDEL library definition
+;;; category: oscillator
 
-(pd-lisp!
- (@outlet~
-  (@-~ [1]
-       (@*~ [4]
-            (@abs~
-             (@-~ [0.5]
-                  (@phasor~ (@inlet~))))))))
+(defpdel osc/triangle~ :inputs ((frequency-hz signal)) :outputs ((audio signal)) (-~ #(1) (*~ #(4) (abs~ (-~ #(0.5) (phasor~ frequency-hz))))))

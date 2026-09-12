@@ -1,6 +1,4 @@
-;;; pd-lib-name: midi/note-to-hz
-;;; pd-lib-category: midi
-;;; pd-lib-inlets: ((0 control midi-note))
-;;; pd-lib-outlets: ((0 control frequency-hz))
+;;; midi/note-to-hz --- converted PDEL library definition
+;;; category: midi
 
-(pd-lisp! (@outlet (@mtof (@inlet))))
+(defpdel midi/note-to-hz :inputs ((midi-note control)) :outputs ((frequency-hz control)) (mtof midi-note))

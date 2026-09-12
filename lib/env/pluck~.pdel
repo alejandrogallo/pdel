@@ -1,7 +1,5 @@
-;;; pd-lib-name: env/pluck~
-;;; pd-lib-category: envelope
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal envelope))
-;;; pd-lib-note: plucked decay
+;;; env/pluck~ --- converted PDEL library definition
+;;; category: envelope
+;;; note: plucked decay
 
-(pd-lisp! (@outlet~ (@vline~ (@msg ["1 2, 0.45 90 2, 0 700 92"] (@inlet)))))
+(defpdel env/pluck~ :inputs ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 2, 0.45 90 2, 0 700 92") trigger)))

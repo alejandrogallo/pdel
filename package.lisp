@@ -17,7 +17,8 @@
   (:export
    #:object #:object-name #:object-origin #:object-args #:object-flags
    #:object-inputs #:object-outputs #:object-methods #:object-source
-   #:declare-object #:find-object #:defpdel
+   #:declare-object #:find-object #:defpdel #:defpdel-macro
+   #:load-bundled-library
    #:free-form-flags #:free-form-args #:free-form-inputs
    #:assembly))
 

@@ -1,9 +1,6 @@
-;;; pd-lib-name: fx/reverb-room~
-;;; pd-lib-category: effect
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: small/medium room
+;;; fx/reverb-room~ --- converted PDEL library definition
+;;; category: effect
+;;; note: small/medium room
 
-(pd-lisp!
- (let* ((x (@inlet~)) (rv (@rev3~ [85 78 3200 18] x x)))
-   (@outlet~ (@*~ [0.55] (@+~ (@ 0 rv) (@ 1 rv))))))
+(defpdel fx/reverb-room~ :inputs ((audio signal)) :outputs ((audio signal))
+ (let* ((x audio) (rv (rev3~ #(85 78 3200 18) x x))) (*~ #(0.55) (+~ (out 0 rv) (out 1 rv)))))

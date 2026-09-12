@@ -1,10 +1,5 @@
-;;; pd-lib-name: sampler/mono~
-;;; pd-lib-category: sampler
-;;; pd-lib-inlets: ((0 control readsf-message))
-;;; pd-lib-outlets: ((0 signal audio) (1 control done))
-;;; pd-lib-note: send Pd readsf~ messages such as open <file>, then 1
+;;; sampler/mono~ --- converted PDEL library definition
+;;; category: sampler
+;;; note: send Pd readsf~ messages such as open <file>, then 1
 
-(pd-lisp!
- (let* ((player (@readsf~ [1] (@inlet))))
-   (@outlet~ (@ 0 player))
-   (@outlet (@ 1 player))))
+(defpdel sampler/mono~ :inputs ((readsf-message control)) :outputs ((audio signal) (done control)) (let* ((player (readsf~ #(1) readsf-message))) (outputs (out 0 player) (out 1 player))))

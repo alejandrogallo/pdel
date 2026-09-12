@@ -1,12 +1,7 @@
-;;; pd-lib-name: osc/supersaw~
-;;; pd-lib-category: oscillator
-;;; pd-lib-inlets: ((0 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: three detuned saws
+;;; osc/supersaw~ --- converted PDEL library definition
+;;; category: oscillator
+;;; note: three detuned saws
 
-(pd-lisp!
- (let* ((f (@inlet~))
-        (a (@pdel/osc/saw~ (@*~ [0.993] f)))
-        (b (@pdel/osc/saw~ f))
-        (c (@pdel/osc/saw~ (@*~ [1.007] f))))
-   (@outlet~ (@*~ [0.28] (@+~ a (@+~ b c))))))
+(defpdel osc/supersaw~ :inputs ((frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((f frequency-hz) (a (osc/saw~ (*~ #(0.993) f))) (b (osc/saw~ f)) (c (osc/saw~ (*~ #(1.007) f)))) (*~ #(0.28) (+~ a (+~ b c)))))

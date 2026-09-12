@@ -1,7 +1,5 @@
-;;; pd-lib-name: fx/boost~
-;;; pd-lib-category: effect
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: +5dB-ish gain boost; may clip
+;;; fx/boost~ --- converted PDEL library definition
+;;; category: effect
+;;; note: +5dB-ish gain boost; may clip
 
-(pd-lisp! (@outlet~ (@*~ [1.8] (@inlet~))))
+(defpdel fx/boost~ :inputs ((audio signal)) :outputs ((audio signal)) (*~ #(1.8) audio))

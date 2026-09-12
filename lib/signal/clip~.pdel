@@ -1,6 +1,4 @@
-;;; pd-lib-name: signal/clip~
-;;; pd-lib-category: signal
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; signal/clip~ --- converted PDEL library definition
+;;; category: signal
 
-(pd-lisp! (@outlet~ (@clip~ [-1 1] (@inlet~))))
+(defpdel signal/clip~ :inputs ((audio signal)) :outputs ((audio signal)) (clip~ #(-1 1) audio))

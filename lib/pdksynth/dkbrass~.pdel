@@ -1,11 +1,7 @@
-;;; pd-lib-name: pdksynth/dkbrass~
-;;; pd-lib-category: pdksynth-pitched
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: brass synth corresponding to upstream dkbrass~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((t (@inlet)) (f (@inlet~)) (e (@vline~ (@msg ["1 35, 0.75 170 35, 0 650 205"] t)))
-        (v (@+~ (@pdel/osc/saw~ f) (@*~ [0.35] (@pdel/osc/saw~ (@*~ [1.005] f))))))
-   (@outlet~ (@*~ e (@lop~ [4200] v)))))
+;;; pdksynth/dkbrass~ --- converted PDEL library definition
+;;; category: pdksynth-pitched
+;;; note: brass synth corresponding to upstream dkbrass~
+
+(defpdel pdksynth/dkbrass~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 35, 0.75 170 35, 0 650 205") t))) (v (+~ (osc/saw~ f) (*~ #(0.35) (osc/saw~ (*~ #(1.005) f)))))) (*~ e (lop~ #(4200) v))))

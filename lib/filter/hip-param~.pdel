@@ -1,6 +1,4 @@
-;;; pd-lib-name: filter/hip-param~
-;;; pd-lib-category: filter
-;;; pd-lib-inlets: ((0 signal audio) (1 control cutoff-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; filter/hip-param~ --- converted PDEL library definition
+;;; category: filter
 
-(pd-lisp! (@outlet~ (@hip~ [100] (@inlet~) (@inlet))))
+(defpdel filter/hip-param~ :inputs ((audio signal) (cutoff-hz control)) :outputs ((audio signal)) (hip~ #(100) audio cutoff-hz))

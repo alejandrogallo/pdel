@@ -1,12 +1,7 @@
-;;; pd-lib-name: pdksynth/dksd2~
-;;; pd-lib-category: pdksynth-percussion
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: snare synthesizer corresponding to upstream dksd2~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((t (@inlet)) (e (@vline~ (@msg ["1 1, 0 260 1"] t)))
-        (tone (@*~ [0.45] (@osc~ [200])))
-        (noise (@*~ [0.8] (@bp~ [3300 1.2] (@noise~)))))
-   (@outlet~ (@*~ e (@+~ tone noise)))))
+;;; pdksynth/dksd2~ --- converted PDEL library definition
+;;; category: pdksynth-percussion
+;;; note: snare synthesizer corresponding to upstream dksd2~
+
+(defpdel pdksynth/dksd2~ :inputs ((trigger control)) :outputs ((audio signal))
+ (let*
+   ((t trigger) (e (vline~ (msg #("1 1, 0 260 1") t))) (tone (*~ #(0.45) (osc~ #(200)))) (noise (*~ #(0.8) (bp~ #(3300 1.2) (noise~))))) (*~ e (+~ tone noise))))

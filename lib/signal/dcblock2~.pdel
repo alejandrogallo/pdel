@@ -1,6 +1,4 @@
-;;; pd-lib-name: signal/dcblock2~
-;;; pd-lib-category: signal
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; signal/dcblock2~ --- converted PDEL library definition
+;;; category: signal
 
-(pd-lisp! (@outlet~ (@hip~ [8] (@hip~ [8] (@inlet~)))))
+(defpdel signal/dcblock2~ :inputs ((audio signal)) :outputs ((audio signal)) (hip~ #(8) (hip~ #(8) audio)))

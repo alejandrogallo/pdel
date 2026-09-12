@@ -1,11 +1,7 @@
-;;; pd-lib-name: pdksynth/dkdesaw~
-;;; pd-lib-category: pdksynth-pitched
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: detuned saw synth corresponding to upstream dkdesaw~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((t (@inlet)) (f (@inlet~)) (e (@vline~ (@msg ["1 12, 0.8 450 12, 0 1100 462"] t)))
-        (v (@+~ (@pdel/osc/saw~ (@*~ [0.994] f)) (@+~ (@pdel/osc/saw~ f) (@pdel/osc/saw~ (@*~ [1.006] f))))))
-   (@outlet~ (@*~ [0.28] e (@lop~ [6500] v)))))
+;;; pdksynth/dkdesaw~ --- converted PDEL library definition
+;;; category: pdksynth-pitched
+;;; note: detuned saw synth corresponding to upstream dkdesaw~
+
+(defpdel pdksynth/dkdesaw~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 12, 0.8 450 12, 0 1100 462") t))) (v (+~ (osc/saw~ (*~ #(0.994) f)) (+~ (osc/saw~ f) (osc/saw~ (*~ #(1.006) f)))))) (*~ #(0.28) e (lop~ #(6500) v))))

@@ -1,11 +1,6 @@
-;;; pd-lib-name: fx/delay-param~
-;;; pd-lib-category: effect
-;;; pd-lib-inlets: ((0 signal audio) (1 signal delay-ms) (2 signal feedback-0-to-0.9))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; fx/delay-param~ --- converted PDEL library definition
+;;; category: effect
 
-(pd-lisp!
- (let* ((x (@inlet~)) (time (@inlet~)) (feedback (@inlet~))
-        (sum (@+~ x)) (writer (@delwrite~ [$0-delay-param 4000] sum))
-        (tap (@vd~ [$0-delay-param] time)) (fb (@*~ tap feedback)))
-   (-> fb 0 sum 1)
-   (@outlet~ (@+~ (@*~ [0.75] x) (@*~ [0.5] tap)))))
+(defpdel fx/delay-param~ :inputs ((audio signal) (delay-ms signal) (feedback-0-to-0.9 signal)) :outputs ((audio signal))
+ (let*
+   ((x audio) (time delay-ms) (feedback feedback-0-to-0.9) (sum (+~ x)) (writer (delwrite~ #($0-delay-param 4000) sum)) (tap (vd~ #($0-delay-param) time)) (fb (*~ tap feedback))) (-> fb 0 sum 1) (+~ (*~ #(0.75) x) (*~ #(0.5) tap))))

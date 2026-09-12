@@ -1,6 +1,4 @@
-;;; pd-lib-name: filter/telephone~
-;;; pd-lib-category: filter
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; filter/telephone~ --- converted PDEL library definition
+;;; category: filter
 
-(pd-lisp! (@outlet~ (@lop~ [3400] (@hip~ [300] (@inlet~)))))
+(defpdel filter/telephone~ :inputs ((audio signal)) :outputs ((audio signal)) (lop~ #(3400) (hip~ #(300) audio)))

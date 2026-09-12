@@ -1,11 +1,6 @@
-;;; pd-lib-name: sampler/stereo~
-;;; pd-lib-category: sampler
-;;; pd-lib-inlets: ((0 control readsf-message))
-;;; pd-lib-outlets: ((0 signal left) (1 signal right) (2 control done))
-;;; pd-lib-note: stream stereo files using readsf~ messages
+;;; sampler/stereo~ --- converted PDEL library definition
+;;; category: sampler
+;;; note: stream stereo files using readsf~ messages
 
-(pd-lisp!
- (let* ((player (@readsf~ [2] (@inlet))))
-   (@outlet~ (@ 0 player))
-   (@outlet~ (@ 1 player))
-   (@outlet (@ 2 player))))
+(defpdel sampler/stereo~ :inputs ((readsf-message control)) :outputs ((left signal) (right signal) (done control))
+ (let* ((player (readsf~ #(2) readsf-message))) (outputs (out 0 player) (out 1 player) (out 2 player))))

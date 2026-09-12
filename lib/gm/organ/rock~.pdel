@@ -1,10 +1,6 @@
-;;; pd-lib-name: gm/organ/rock~
-;;; pd-lib-category: general-midi
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; gm/organ/rock~ --- converted PDEL library definition
+;;; category: general-midi
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (frequency (@inlet~))
-        (env (@pdel/env/long-perc~ trigger))
-        (voice (@lop~ [6500] (@pdel/osc/square-soft~ frequency))))
-   (@outlet~ (@*~ voice env))))
+(defpdel gm/organ/rock~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((frequency frequency-hz) (env (env/long-perc~ trigger)) (voice (lop~ #(6500) (osc/square-soft~ frequency)))) (*~ voice env)))

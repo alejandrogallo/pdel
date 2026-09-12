@@ -1,6 +1,4 @@
-;;; pd-lib-name: filter/resonant~
-;;; pd-lib-category: filter
-;;; pd-lib-inlets: ((0 signal audio) (1 control frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; filter/resonant~ --- converted PDEL library definition
+;;; category: filter
 
-(pd-lisp! (@outlet~ (@bp~ [1000 4] (@inlet~) (@inlet))))
+(defpdel filter/resonant~ :inputs ((audio signal) (frequency-hz control)) :outputs ((audio signal)) (bp~ #(1000 4) audio frequency-hz))

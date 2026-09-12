@@ -1,6 +1,4 @@
-;;; pd-lib-name: midi/velocity-normalize
-;;; pd-lib-category: midi
-;;; pd-lib-inlets: ((0 control velocity-0-to-127))
-;;; pd-lib-outlets: ((0 control gain-0-to-1))
+;;; midi/velocity-normalize --- converted PDEL library definition
+;;; category: midi
 
-(pd-lisp! (@outlet (@/ [127] (@inlet))))
+(defpdel midi/velocity-normalize :inputs ((velocity-0-to-127 control)) :outputs ((gain-0-to-1 control)) (/ #(127) velocity-0-to-127))

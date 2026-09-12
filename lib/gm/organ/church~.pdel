@@ -1,10 +1,10 @@
-;;; pd-lib-name: gm/organ/church~
-;;; pd-lib-category: general-midi
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; gm/organ/church~ --- converted PDEL library definition
+;;; category: general-midi
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (frequency (@inlet~))
-        (env (@pdel/env/pad~ trigger))
-        (voice (@lop~ [9000] (@+~ (@osc~ frequency) (@+~ (@*~ [0.5] (@osc~ (@*~ [2] frequency))) (@*~ [0.2] (@osc~ (@*~ [4] frequency))))))))
-   (@outlet~ (@*~ voice env))))
+(defpdel gm/organ/church~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((frequency frequency-hz) (env (env/pad~ trigger))
+     (voice
+       (lop~ #(9000)
+         (+~ (osc~ frequency)
+           (+~ (*~ #(0.5) (osc~ (*~ #(2) frequency))) (*~ #(0.2) (osc~ (*~ #(4) frequency)))))))) (*~ voice env)))

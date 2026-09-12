@@ -1,9 +1,6 @@
-;;; pd-lib-name: fx/reverb-plate~
-;;; pd-lib-category: effect
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: bright plate-like reverb
+;;; fx/reverb-plate~ --- converted PDEL library definition
+;;; category: effect
+;;; note: bright plate-like reverb
 
-(pd-lisp!
- (let* ((x (@inlet~)) (rv (@rev3~ [90 84 6000 12] x x)))
-   (@outlet~ (@*~ [0.55] (@+~ (@ 0 rv) (@ 1 rv))))))
+(defpdel fx/reverb-plate~ :inputs ((audio signal)) :outputs ((audio signal))
+ (let* ((x audio) (rv (rev3~ #(90 84 6000 12) x x))) (*~ #(0.55) (+~ (out 0 rv) (out 1 rv)))))

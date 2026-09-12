@@ -1,18 +1,6 @@
-;;; pd-lib-name: drums/snare~
-;;; pd-lib-category: percussion
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; drums/snare~ --- converted PDEL library definition
+;;; category: percussion
 
-(pd-lisp!
- (let* ((trigger (@inlet))
-        (noise-env (@vline~
-                    (@msg ["1 1, 0 180 1"] trigger)))
-        (body-env (@vline~
-                   (@msg ["1 1, 0 110 1"] trigger)))
-        (noise-body
-         (@*~
-          (@bp~ [3200 1.2]
-                (@hip~ [900] (@noise~)))
-          noise-env))
-        (tonal-body (@*~ (@osc~ [190]) body-env)))
-   (@outlet~ (@+~ noise-body tonal-body))))
+(defpdel drums/snare~ :inputs ((trigger control)) :outputs ((audio signal))
+ (let*
+   ((noise-env (vline~ (msg #("1 1, 0 180 1") trigger))) (body-env (vline~ (msg #("1 1, 0 110 1") trigger))) (noise-body (*~ (bp~ #(3200 1.2) (hip~ #(900) (noise~))) noise-env)) (tonal-body (*~ (osc~ #(190)) body-env))) (+~ noise-body tonal-body)))

@@ -1,7 +1,5 @@
-;;; pd-lib-name: env/pad~
-;;; pd-lib-category: envelope
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal envelope))
-;;; pd-lib-note: slow pad envelope
+;;; env/pad~ --- converted PDEL library definition
+;;; category: envelope
+;;; note: slow pad envelope
 
-(pd-lisp! (@outlet~ (@vline~ (@msg ["1 450, 0.72 1200 450, 0 5000 1650"] (@inlet)))))
+(defpdel env/pad~ :inputs ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 450, 0.72 1200 450, 0 5000 1650") trigger)))

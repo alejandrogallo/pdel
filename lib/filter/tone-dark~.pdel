@@ -1,6 +1,4 @@
-;;; pd-lib-name: filter/tone-dark~
-;;; pd-lib-category: filter
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; filter/tone-dark~ --- converted PDEL library definition
+;;; category: filter
 
-(pd-lisp! (@outlet~ (@lop~ [2800] (@inlet~))))
+(defpdel filter/tone-dark~ :inputs ((audio signal)) :outputs ((audio signal)) (lop~ #(2800) audio))

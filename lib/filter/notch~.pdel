@@ -1,9 +1,5 @@
-;;; pd-lib-name: filter/notch~
-;;; pd-lib-category: filter
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: fixed 1kHz notch
+;;; filter/notch~ --- converted PDEL library definition
+;;; category: filter
+;;; note: fixed 1kHz notch
 
-(pd-lisp!
- (let* ((x (@inlet~)) (band (@bp~ [1000 5] x)))
-   (@outlet~ (@-~ x band))))
+(defpdel filter/notch~ :inputs ((audio signal)) :outputs ((audio signal)) (let* ((x audio) (band (bp~ #(1000 5) x))) (-~ x band)))

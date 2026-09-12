@@ -1,6 +1,4 @@
-;;; pd-lib-name: filter/tone-warm~
-;;; pd-lib-category: filter
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; filter/tone-warm~ --- converted PDEL library definition
+;;; category: filter
 
-(pd-lisp! (@outlet~ (@lop~ [6500] (@hip~ [35] (@inlet~)))))
+(defpdel filter/tone-warm~ :inputs ((audio signal)) :outputs ((audio signal)) (lop~ #(6500) (hip~ #(35) audio)))

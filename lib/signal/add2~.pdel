@@ -1,9 +1,4 @@
-;;; pd-lib-name: signal/add2~
-;;; pd-lib-category: signal
-;;; pd-lib-inlets: ((0 signal a) (1 signal b))
-;;; pd-lib-outlets: ((0 signal sum))
+;;; signal/add2~ --- converted PDEL library definition
+;;; category: signal
 
-(pd-lisp!
- (let* ((a (@inlet~))
-        (b (@inlet~)))
-   (@outlet~ (@+~ a b))))
+(defpdel signal/add2~ :inputs ((a signal) (b signal)) :outputs ((sum signal)) (+~ a b))

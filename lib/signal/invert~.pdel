@@ -1,6 +1,4 @@
-;;; pd-lib-name: signal/invert~
-;;; pd-lib-category: signal
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; signal/invert~ --- converted PDEL library definition
+;;; category: signal
 
-(pd-lisp! (@outlet~ (@*~ [-1] (@inlet~))))
+(defpdel signal/invert~ :inputs ((audio signal)) :outputs ((audio signal)) (*~ #(-1) audio))

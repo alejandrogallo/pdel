@@ -1,7 +1,5 @@
-;;; pd-lib-name: env/string~
-;;; pd-lib-category: envelope
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal envelope))
-;;; pd-lib-note: bowed-string articulation
+;;; env/string~ --- converted PDEL library definition
+;;; category: envelope
+;;; note: bowed-string articulation
 
-(pd-lisp! (@outlet~ (@vline~ (@msg ["1 80, 0.8 700 80, 0 2200 780"] (@inlet)))))
+(defpdel env/string~ :inputs ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 80, 0.8 700 80, 0 2200 780") trigger)))

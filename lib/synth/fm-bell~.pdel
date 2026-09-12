@@ -1,17 +1,6 @@
-;;; pd-lib-name: synth/fm-bell~
-;;; pd-lib-category: synthesizer
-;;; pd-lib-inlets: ((0 control trigger) (1 signal carrier-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; synth/fm-bell~ --- converted PDEL library definition
+;;; category: synthesizer
 
-(pd-lisp!
- (let* ((trigger (@inlet))
-        (frequency (@inlet~))
-        (index (@vline~
-                (@msg ["850 0, 20 1500 0"] trigger)))
-        (carrier
-         (@osc~
-          (@+~ frequency
-               (@*~ (@osc~ (@*~ [1.5] frequency)) index))))
-        (envelope (@vline~
-                   (@msg ["1 5, 0 2200 5"] trigger))))
-   (@outlet~ (@*~ carrier envelope))))
+(defpdel synth/fm-bell~ :inputs ((trigger control) (carrier-hz signal)) :outputs ((audio signal))
+ (let*
+   ((frequency carrier-hz) (index (vline~ (msg #("850 0, 20 1500 0") trigger))) (carrier (osc~ (+~ frequency (*~ (osc~ (*~ #(1.5) frequency)) index)))) (envelope (vline~ (msg #("1 5, 0 2200 5") trigger)))) (*~ carrier envelope)))

@@ -1,8 +1,4 @@
-;;; pd-lib-name: signal/crossfade~
-;;; pd-lib-category: signal
-;;; pd-lib-inlets: ((0 signal a) (1 signal b) (2 signal mix-0-to-1))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; signal/crossfade~ --- converted PDEL library definition
+;;; category: signal
 
-(pd-lisp!
- (let* ((a (@inlet~)) (b (@inlet~)) (mix (@inlet~)))
-   (@outlet~ (@+~ (@*~ a (@-~ [1] mix)) (@*~ b mix)))))
+(defpdel signal/crossfade~ :inputs ((a signal) (b signal) (mix-0-to-1 signal)) :outputs ((audio signal)) (let* ((mix mix-0-to-1)) (+~ (*~ a (-~ #(1) mix)) (*~ b mix))))

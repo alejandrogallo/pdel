@@ -1,21 +1,7 @@
-;;; pd-lib-name: poly/piano8~
-;;; pd-lib-category: polyphonic
-;;; pd-lib-inlets: ((0 control note-velocity-list))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: eight-voice MIDI allocator using Pd poly
+;;; poly/piano8~ --- converted PDEL library definition
+;;; category: polyphonic
+;;; note: eight-voice MIDI allocator using Pd poly
 
-(pd-lisp!
- (let* ((event (@inlet))
-        (uv (@unpack [f f] event))
-        (allocator (@poly [8 1] (@ 0 uv) (@ 1 uv)))
-        (packet (@pack [f f f] (@ 0 allocator) (@ 1 allocator) (@ 2 allocator)))
-        (router (@route [1 2 3 4 5 6 7 8] packet))
-        (v1 (@pdel/voice/piano-note~ (@ 0 router)))
-        (v2 (@pdel/voice/piano-note~ (@ 1 router)))
-        (v3 (@pdel/voice/piano-note~ (@ 2 router)))
-        (v4 (@pdel/voice/piano-note~ (@ 3 router)))
-        (v5 (@pdel/voice/piano-note~ (@ 4 router)))
-        (v6 (@pdel/voice/piano-note~ (@ 5 router)))
-        (v7 (@pdel/voice/piano-note~ (@ 6 router)))
-        (v8 (@pdel/voice/piano-note~ (@ 7 router))))
-   (@outlet~ (@*~ [0.32] (@+~ v1 (@+~ v2 (@+~ v3 (@+~ v4 (@+~ v5 (@+~ v6 (@+~ v7 v8)))))))))))
+(defpdel poly/piano8~ :inputs ((note-velocity-list control)) :outputs ((audio signal))
+ (let*
+   ((event note-velocity-list) (uv (unpack #(f f) event)) (allocator (poly #(8 1) (out 0 uv) (out 1 uv))) (packet (pack #(f f f) (out 0 allocator) (out 1 allocator) (out 2 allocator))) (router (route #(1 2 3 4 5 6 7 8) packet)) (v1 (voice/piano-note~ (out 0 router))) (v2 (voice/piano-note~ (out 1 router))) (v3 (voice/piano-note~ (out 2 router))) (v4 (voice/piano-note~ (out 3 router))) (v5 (voice/piano-note~ (out 4 router))) (v6 (voice/piano-note~ (out 5 router))) (v7 (voice/piano-note~ (out 6 router))) (v8 (voice/piano-note~ (out 7 router)))) (*~ #(0.32) (+~ v1 (+~ v2 (+~ v3 (+~ v4 (+~ v5 (+~ v6 (+~ v7 v8))))))))))

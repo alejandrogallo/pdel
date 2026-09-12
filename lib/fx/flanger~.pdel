@@ -1,15 +1,7 @@
-;;; pd-lib-name: fx/flanger~
-;;; pd-lib-category: effect
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: slow feedback flanger
+;;; fx/flanger~ --- converted PDEL library definition
+;;; category: effect
+;;; note: slow feedback flanger
 
-(pd-lisp!
- (let* ((x (@inlet~))
-        (sum (@+~ x))
-        (writer (@delwrite~ [$0-flange 30] sum))
-        (delay-ms (@+~ [3.5] (@*~ [2.5] (@osc~ [0.12]))))
-        (tap (@vd~ [$0-flange] delay-ms))
-        (fb (@*~ [0.32] tap)))
-   (-> fb 0 sum 1)
-   (@outlet~ (@*~ [0.7] (@+~ x tap)))))
+(defpdel fx/flanger~ :inputs ((audio signal)) :outputs ((audio signal))
+ (let*
+   ((x audio) (sum (+~ x)) (writer (delwrite~ #($0-flange 30) sum)) (delay-ms (+~ #(3.5) (*~ #(2.5) (osc~ #(0.12))))) (tap (vd~ #($0-flange) delay-ms)) (fb (*~ #(0.32) tap))) (-> fb 0 sum 1) (*~ #(0.7) (+~ x tap))))

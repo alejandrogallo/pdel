@@ -1,10 +1,6 @@
-;;; pd-lib-name: pdksynth/dkhh2~
-;;; pd-lib-category: pdksynth-percussion
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: second hi-hat voice corresponding to upstream dkhh2~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((t (@inlet)) (e (@vline~ (@msg ["1 1, 0.45 55 1, 0 260 56"] t))))
-   (@outlet~ (@*~ e (@hip~ [7200] (@noise~))))))
+;;; pdksynth/dkhh2~ --- converted PDEL library definition
+;;; category: pdksynth-percussion
+;;; note: second hi-hat voice corresponding to upstream dkhh2~
+
+(defpdel pdksynth/dkhh2~ :inputs ((trigger control)) :outputs ((audio signal))
+ (let* ((t trigger) (e (vline~ (msg #("1 1, 0.45 55 1, 0 260 56") t)))) (*~ e (hip~ #(7200) (noise~)))))

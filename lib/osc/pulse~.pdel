@@ -1,12 +1,5 @@
-;;; pd-lib-name: osc/pulse~
-;;; pd-lib-category: oscillator
-;;; pd-lib-inlets: ((0 signal frequency-hz) (1 signal duty-cycle))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; osc/pulse~ --- converted PDEL library definition
+;;; category: oscillator
 
-(pd-lisp!
- (let* ((frequency (@inlet~))
-        (duty (@inlet~)))
-   (@outlet~
-    (@-~ [1]
-         (@*~ [2]
-              (@>~ (@phasor~ frequency) duty))))))
+(defpdel osc/pulse~ :inputs ((frequency-hz signal) (duty-cycle signal)) :outputs ((audio signal))
+ (let* ((frequency frequency-hz) (duty duty-cycle)) (-~ #(1) (*~ #(2) (>~ (phasor~ frequency) duty)))))

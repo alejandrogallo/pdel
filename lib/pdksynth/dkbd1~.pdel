@@ -1,12 +1,7 @@
-;;; pd-lib-name: pdksynth/dkbd1~
-;;; pd-lib-category: pdksynth-percussion
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: bass drum voice corresponding to upstream dkbd1~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((t (@inlet))
-        (p (@vline~ (@msg ["150 0, 52 120 0"] t)))
-        (e (@vline~ (@msg ["1 2, 0 320 2"] t))))
-   (@outlet~ (@*~ e (@osc~ p)))))
+;;; pdksynth/dkbd1~ --- converted PDEL library definition
+;;; category: pdksynth-percussion
+;;; note: bass drum voice corresponding to upstream dkbd1~
+
+(defpdel pdksynth/dkbd1~ :inputs ((trigger control)) :outputs ((audio signal))
+ (let*
+   ((t trigger) (p (vline~ (msg #("150 0, 52 120 0") t))) (e (vline~ (msg #("1 2, 0 320 2") t)))) (*~ e (osc~ p))))

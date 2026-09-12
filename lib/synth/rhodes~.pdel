@@ -1,17 +1,6 @@
-;;; pd-lib-name: synth/rhodes~
-;;; pd-lib-category: synthesizer
-;;; pd-lib-inlets: ((0 control trigger) (1 signal carrier-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; synth/rhodes~ --- converted PDEL library definition
+;;; category: synthesizer
 
-(pd-lisp!
- (let* ((trigger (@inlet))
-        (frequency (@inlet~))
-        (mod-envelope (@vline~
-                       (@msg ["700 0, 30 850 0"] trigger)))
-        (carrier
-         (@osc~
-          (@+~ frequency
-               (@*~ (@osc~ (@*~ [2] frequency)) mod-envelope))))
-        (amp-envelope (@vline~
-                       (@msg ["1 4, 0.35 500 4, 0 1800 504"] trigger))))
-   (@outlet~ (@*~ carrier amp-envelope))))
+(defpdel synth/rhodes~ :inputs ((trigger control) (carrier-hz signal)) :outputs ((audio signal))
+ (let*
+   ((frequency carrier-hz) (mod-envelope (vline~ (msg #("700 0, 30 850 0") trigger))) (carrier (osc~ (+~ frequency (*~ (osc~ (*~ #(2) frequency)) mod-envelope)))) (amp-envelope (vline~ (msg #("1 4, 0.35 500 4, 0 1800 504") trigger)))) (*~ carrier amp-envelope)))

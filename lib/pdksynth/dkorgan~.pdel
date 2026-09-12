@@ -1,11 +1,10 @@
-;;; pd-lib-name: pdksynth/dkorgan~
-;;; pd-lib-category: pdksynth-pitched
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: additive organ corresponding to upstream dkorgan~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((t (@inlet)) (f (@inlet~)) (e (@vline~ (@msg ["1 15, 0.9 100 15, 0 900 115"] t)))
-        (v (@+~ (@osc~ f) (@+~ (@*~ [0.55] (@osc~ (@*~ [2] f))) (@+~ (@*~ [0.3] (@osc~ (@*~ [3] f))) (@*~ [0.18] (@osc~ (@*~ [4] f))))))))
-   (@outlet~ (@*~ [0.42] e v))))
+;;; pdksynth/dkorgan~ --- converted PDEL library definition
+;;; category: pdksynth-pitched
+;;; note: additive organ corresponding to upstream dkorgan~
+
+(defpdel pdksynth/dkorgan~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 15, 0.9 100 15, 0 900 115") t)))
+     (v
+       (+~ (osc~ f)
+         (+~ (*~ #(0.55) (osc~ (*~ #(2) f))) (+~ (*~ #(0.3) (osc~ (*~ #(3) f))) (*~ #(0.18) (osc~ (*~ #(4) f)))))))) (*~ #(0.42) e v)))

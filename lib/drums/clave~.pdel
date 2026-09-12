@@ -1,8 +1,4 @@
-;;; pd-lib-name: drums/clave~
-;;; pd-lib-category: percussion
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; drums/clave~ --- converted PDEL library definition
+;;; category: percussion
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (env (@vline~ (@msg ["1 1, 0 90 1"] trigger))))
-   (@outlet~ (@*~ (@osc~ [2450]) env))))
+(defpdel drums/clave~ :inputs ((trigger control)) :outputs ((audio signal)) (let* ((env (vline~ (msg #("1 1, 0 90 1") trigger)))) (*~ (osc~ #(2450)) env)))

@@ -1,7 +1,5 @@
-;;; pd-lib-name: env/click~
-;;; pd-lib-category: envelope
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal envelope))
-;;; pd-lib-note: very short click
+;;; env/click~ --- converted PDEL library definition
+;;; category: envelope
+;;; note: very short click
 
-(pd-lisp! (@outlet~ (@vline~ (@msg ["1 1, 0 18 1"] (@inlet)))))
+(defpdel env/click~ :inputs ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 1, 0 18 1") trigger)))

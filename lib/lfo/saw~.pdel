@@ -1,6 +1,4 @@
-;;; pd-lib-name: lfo/saw~
-;;; pd-lib-category: lfo
-;;; pd-lib-inlets: ((0 signal rate-hz))
-;;; pd-lib-outlets: ((0 signal modulation))
+;;; lfo/saw~ --- converted PDEL library definition
+;;; category: lfo
 
-(pd-lisp! (@outlet~ (@phasor~ (@inlet~))))
+(defpdel lfo/saw~ :inputs ((rate-hz signal)) :outputs ((modulation signal)) (phasor~ rate-hz))

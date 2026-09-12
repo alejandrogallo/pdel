@@ -1,8 +1,5 @@
-;;; pd-lib-name: drums/rimshot~
-;;; pd-lib-category: percussion
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; drums/rimshot~ --- converted PDEL library definition
+;;; category: percussion
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (env (@vline~ (@msg ["1 1, 0 80 1"] trigger))))
-   (@outlet~ (@*~ (@bp~ [2200 7] (@noise~)) env))))
+(defpdel drums/rimshot~ :inputs ((trigger control)) :outputs ((audio signal))
+ (let* ((env (vline~ (msg #("1 1, 0 80 1") trigger)))) (*~ (bp~ #(2200 7) (noise~)) env)))

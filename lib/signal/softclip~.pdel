@@ -1,9 +1,4 @@
-;;; pd-lib-name: signal/softclip~
-;;; pd-lib-category: signal
-;;; pd-lib-inlets: ((0 signal input))
-;;; pd-lib-outlets: ((0 signal output))
+;;; signal/softclip~ --- converted PDEL library definition
+;;; category: signal
 
-(pd-lisp!
- (@outlet~
-  (@clip~ [-1 1]
-          (@*~ [1.8] (@inlet~)))))
+(defpdel signal/softclip~ :inputs ((input signal)) :outputs ((output signal)) (clip~ #(-1 1) (*~ #(1.8) input)))

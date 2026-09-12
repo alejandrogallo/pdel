@@ -1,7 +1,4 @@
-;;; pd-lib-name: filter/dcblock~
-;;; pd-lib-category: filter
-;;; pd-lib-inlets: ((0 signal input))
-;;; pd-lib-outlets: ((0 signal output))
+;;; filter/dcblock~ --- converted PDEL library definition
+;;; category: filter
 
-(pd-lisp!
- (@outlet~ (@hip~ [5] (@inlet~))))
+(defpdel filter/dcblock~ :inputs ((input signal)) :outputs ((output signal)) (hip~ #(5) input))

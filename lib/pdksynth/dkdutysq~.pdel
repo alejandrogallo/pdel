@@ -1,10 +1,6 @@
-;;; pd-lib-name: pdksynth/dkdutysq~
-;;; pd-lib-category: pdksynth-oscillator
-;;; pd-lib-inlets: ((0 signal frequency-hz) (1 signal duty-0-to-1))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: variable-duty square oscillator corresponding to upstream dkdutysq~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((f (@inlet~)) (d (@inlet~)) (p (@phasor~ f)))
-   (@outlet~ (@expr~ ["if($v1 > $v2, 1, -1)"] p d))))
+;;; pdksynth/dkdutysq~ --- converted PDEL library definition
+;;; category: pdksynth-oscillator
+;;; note: variable-duty square oscillator corresponding to upstream dkdutysq~
+
+(defpdel pdksynth/dkdutysq~ :inputs ((frequency-hz signal) (duty-0-to-1 signal)) :outputs ((audio signal))
+ (let* ((f frequency-hz) (d duty-0-to-1) (p (phasor~ f))) (expr~ #("if($v1 > $v2, 1, -1)") p d)))

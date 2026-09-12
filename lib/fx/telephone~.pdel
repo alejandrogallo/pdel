@@ -1,6 +1,4 @@
-;;; pd-lib-name: fx/telephone~
-;;; pd-lib-category: effect
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; fx/telephone~ --- converted PDEL library definition
+;;; category: effect
 
-(pd-lisp! (@outlet~ (@pdel/filter/telephone~ (@inlet~))))
+(defpdel fx/telephone~ :inputs ((audio signal)) :outputs ((audio signal)) (filter/telephone~ audio))

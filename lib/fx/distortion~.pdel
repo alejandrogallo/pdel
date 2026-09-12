@@ -1,7 +1,5 @@
-;;; pd-lib-name: fx/distortion~
-;;; pd-lib-category: effect
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: hard clipping with top-end smoothing
+;;; fx/distortion~ --- converted PDEL library definition
+;;; category: effect
+;;; note: hard clipping with top-end smoothing
 
-(pd-lisp! (@outlet~ (@lop~ [8500] (@clip~ [-0.45 0.45] (@*~ [7] (@inlet~))))))
+(defpdel fx/distortion~ :inputs ((audio signal)) :outputs ((audio signal)) (lop~ #(8500) (clip~ #(-0.45 0.45) (*~ #(7) audio))))

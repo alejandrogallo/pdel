@@ -1,12 +1,5 @@
-;;; pd-lib-name: fx/tremolo~
-;;; pd-lib-category: effect
-;;; pd-lib-inlets: ((0 signal input) (1 signal rate-hz))
-;;; pd-lib-outlets: ((0 signal output))
-;;; pd-lib-note: full-depth unipolar sine tremolo
+;;; fx/tremolo~ --- converted PDEL library definition
+;;; category: effect
+;;; note: full-depth unipolar sine tremolo
 
-(pd-lisp!
- (let* ((input (@inlet~))
-        (rate (@inlet~))
-        (lfo (@*~ [0.5]
-                  (@+~ [1] (@osc~ rate)))))
-   (@outlet~ (@*~ input lfo))))
+(defpdel fx/tremolo~ :inputs ((input signal) (rate-hz signal)) :outputs ((output signal)) (let* ((rate rate-hz) (lfo (*~ #(0.5) (+~ #(1) (osc~ rate))))) (*~ input lfo)))

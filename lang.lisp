@@ -26,6 +26,10 @@
   id
   index)
 
+(defstruct output-values
+  "Compiler value holding one source group per declared subpatch outlet."
+  values)
+
 (defun declare-object (object)
   "Register OBJECT by name, replacing an older definition of that name."
   (let ((name (object-name object)))
@@ -178,6 +182,15 @@ Common Lisp macro launches that PDEL form through `pdel-pd:launch-form'."
     (symbol spec)
     (cons (first spec))))
 
+(defun formal-type (spec)
+  "Return the declared PDEL port type in SPEC, or CONTROL by default."
+  (if (and (consp spec) (second spec))
+      (second spec)
+      'control))
+
+(defun signal-port-p (spec)
+  (eq (formal-type spec) 'signal))
+
 (defun context-result (ctx)
   (make-instance
    'pdel-asm:assembly-result
@@ -222,40 +235,56 @@ Common Lisp macro launches that PDEL form through `pdel-pd:launch-form'."
 (defun make-subpatch-assembly (object)
   "Compile OBJECT's stored source into a child assembly.
 
-This first implementation supports named inputs and one returned output."
+Declared inputs become child inlet objects and lexical PDEL bindings.  The
+source result is connected to the declared outputs; `(outputs ...)' can
+supply one independent source group per outlet."
   (let ((ctx (make-instance 'context)))
-    ;; Each formal input becomes an [inlet] object and a lexical PDEL binding.
+    ;; Formal inputs are real child inlet objects.  Bind each formal name to
+    ;; the normal compiler representation: a list of PORTs.
     (loop for input-spec in (object-inputs object)
-          for inlet-number from 0
           for name = (formal-name input-spec)
           for id = (next-element-id ctx)
           do (push (make-instance 'pdel-asm:asm-element
-                                  :name 'inlet
+                                  :name (if (signal-port-p input-spec)
+                                            'inlet~
+                                            'inlet)
                                   :type :object
-                                  :id id
-                                  :args (list inlet-number))
+                                  :id id)
                    (context-objects ctx))
-             (push (cons name (cons id 0))
+             (push (cons name
+                         (list (make-port :id id :index 0)))
                    (context-bindings ctx)))
 
-    ;; Compile every body form.  The last value is the first subpatch output.
+    ;; The final source value describes the object outputs.  A normal result
+    ;; means output zero.  OUTPUT-VALUES carries one source group per outlet.
     (let ((result nil))
       (dolist (source-form (object-source object))
         (setf result (assembly-form source-form ctx)))
 
       (when (object-outputs object)
-        (unless result
-          (error "PDEL object ~S declares outputs but has no source result"
-                 (object-name object)))
-        (let ((outlet-id (next-element-id ctx)))
-          (push (make-instance 'pdel-asm:asm-element
-                               :name 'outlet
-                               :type :object
-                               :id outlet-id
-                               :args '(0))
-                (context-objects ctx))
-          (dolist (r result)
-            (add-connection ctx r (make-port :id outlet-id :index 0))))))
+        (let ((groups
+                (if (output-values-p result)
+                    (output-values-values result)
+                    (list result))))
+          (unless (= (length groups) (length (object-outputs object)))
+            (error "PDEL object ~S declares ~D outputs but its source produced ~D"
+                   (object-name object)
+                   (length (object-outputs object))
+                   (length groups)))
+
+          (loop for output-spec in (object-outputs object)
+                for sources in groups
+                for outlet-id = (next-element-id ctx)
+                do (push (make-instance 'pdel-asm:asm-element
+                                        :name (if (signal-port-p output-spec)
+                                                  'outlet~
+                                                  'outlet)
+                                        :type :object
+                                        :id outlet-id)
+                         (context-objects ctx))
+                   (dolist (source sources)
+                     (add-connection
+                      ctx source (make-port :id outlet-id :index 0)))))))
 
     (context-result ctx)))
 
@@ -267,10 +296,11 @@ This first implementation supports named inputs and one returned output."
            (loop for input in actual-inputs
                  collect (and input (assembly-form input ctx))))
          (child (make-subpatch-assembly object)))
-    (loop for source in actual-sources
+    (loop for sources in actual-sources
           for inlet from 0
           for destination = (make-port :id id :index inlet)
-          do (add-connection ctx source destination))
+          do (dolist (source sources)
+               (add-connection ctx source destination)))
     (push (make-instance 'pdel-asm:asm-subpatch
                          :name (object-name object)
                          :type :subpatch

@@ -1,10 +1,8 @@
-;;; pd-lib-name: gm/lead/calliope~
-;;; pd-lib-category: general-midi
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; gm/lead/calliope~ --- converted PDEL library definition
+;;; category: general-midi
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (frequency (@inlet~))
-        (env (@pdel/env/long-perc~ trigger))
-        (voice (@bp~ [2200 0.9] (@+~ (@pdel/osc/square-soft~ frequency) (@*~ [0.3] (@osc~ (@*~ [2] frequency)))))))
-   (@outlet~ (@*~ voice env))))
+(defpdel gm/lead/calliope~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((frequency frequency-hz) (env (env/long-perc~ trigger))
+     (voice
+       (bp~ #(2200 0.9) (+~ (osc/square-soft~ frequency) (*~ #(0.3) (osc~ (*~ #(2) frequency))))))) (*~ voice env)))

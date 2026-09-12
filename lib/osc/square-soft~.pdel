@@ -1,6 +1,4 @@
-;;; pd-lib-name: osc/square-soft~
-;;; pd-lib-category: oscillator
-;;; pd-lib-inlets: ((0 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; osc/square-soft~ --- converted PDEL library definition
+;;; category: oscillator
 
-(pd-lisp! (@outlet~ (@lop~ [9000] (@pdel/osc/square~ (@inlet~)))))
+(defpdel osc/square-soft~ :inputs ((frequency-hz signal)) :outputs ((audio signal)) (lop~ #(9000) (osc/square~ frequency-hz)))

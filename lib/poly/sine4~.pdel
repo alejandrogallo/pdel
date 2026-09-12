@@ -1,17 +1,7 @@
-;;; pd-lib-name: poly/sine4~
-;;; pd-lib-category: polyphonic
-;;; pd-lib-inlets: ((0 control note-velocity-list))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: four-voice MIDI allocator using Pd poly
+;;; poly/sine4~ --- converted PDEL library definition
+;;; category: polyphonic
+;;; note: four-voice MIDI allocator using Pd poly
 
-(pd-lisp!
- (let* ((event (@inlet))
-        (uv (@unpack [f f] event))
-        (allocator (@poly [4 1] (@ 0 uv) (@ 1 uv)))
-        (packet (@pack [f f f] (@ 0 allocator) (@ 1 allocator) (@ 2 allocator)))
-        (router (@route [1 2 3 4] packet))
-        (v1 (@pdel/voice/sine-note~ (@ 0 router)))
-        (v2 (@pdel/voice/sine-note~ (@ 1 router)))
-        (v3 (@pdel/voice/sine-note~ (@ 2 router)))
-        (v4 (@pdel/voice/sine-note~ (@ 3 router))))
-   (@outlet~ (@*~ [0.45] (@+~ v1 (@+~ v2 (@+~ v3 v4)))))))
+(defpdel poly/sine4~ :inputs ((note-velocity-list control)) :outputs ((audio signal))
+ (let*
+   ((event note-velocity-list) (uv (unpack #(f f) event)) (allocator (poly #(4 1) (out 0 uv) (out 1 uv))) (packet (pack #(f f f) (out 0 allocator) (out 1 allocator) (out 2 allocator))) (router (route #(1 2 3 4) packet)) (v1 (voice/sine-note~ (out 0 router))) (v2 (voice/sine-note~ (out 1 router))) (v3 (voice/sine-note~ (out 2 router))) (v4 (voice/sine-note~ (out 3 router)))) (*~ #(0.45) (+~ v1 (+~ v2 (+~ v3 v4))))))

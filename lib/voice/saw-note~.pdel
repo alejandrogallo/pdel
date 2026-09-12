@@ -1,16 +1,7 @@
-;;; pd-lib-name: voice/saw-note~
-;;; pd-lib-category: voice
-;;; pd-lib-inlets: ((0 control note-velocity-list))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: MIDI note/velocity voice; velocity zero releases
+;;; voice/saw-note~ --- converted PDEL library definition
+;;; category: voice
+;;; note: MIDI note/velocity voice; velocity zero releases
 
-(pd-lisp!
- (let* ((event (@inlet))
-        (uv (@unpack [f f] event))
-        (note (@ 0 uv))
-        (velocity (@ 1 uv))
-        (frequency (@mtof note))
-        (amp-target (@/ [127] velocity))
-        (amp (@line~ (@pack [f 8] amp-target)))
-        (voice (@pdel/osc/saw~ frequency)))
-   (@outlet~ (@*~ voice amp))))
+(defpdel voice/saw-note~ :inputs ((note-velocity-list control)) :outputs ((audio signal))
+ (let*
+   ((event note-velocity-list) (uv (unpack #(f f) event)) (note (out 0 uv)) (velocity (out 1 uv)) (frequency (mtof note)) (amp-target (/ #(127) velocity)) (amp (line~ (pack #(f 8) amp-target))) (voice (osc/saw~ frequency))) (*~ voice amp)))

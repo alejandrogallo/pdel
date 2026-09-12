@@ -1,9 +1,5 @@
-;;; pd-lib-name: sampler/mono-gain~
-;;; pd-lib-category: sampler
-;;; pd-lib-inlets: ((0 control readsf-message) (1 signal gain))
-;;; pd-lib-outlets: ((0 signal audio) (1 control done))
+;;; sampler/mono-gain~ --- converted PDEL library definition
+;;; category: sampler
 
-(pd-lisp!
- (let* ((player (@readsf~ [1] (@inlet))) (gain (@inlet~)))
-   (@outlet~ (@*~ gain (@ 0 player)))
-   (@outlet (@ 1 player))))
+(defpdel sampler/mono-gain~ :inputs ((readsf-message control) (gain signal)) :outputs ((audio signal) (done control))
+ (let* ((player (readsf~ #(1) readsf-message))) (outputs (*~ gain (out 0 player)) (out 1 player))))

@@ -1,6 +1,4 @@
-;;; pd-lib-name: signal/quarter~
-;;; pd-lib-category: signal
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; signal/quarter~ --- converted PDEL library definition
+;;; category: signal
 
-(pd-lisp! (@outlet~ (@*~ [0.25] (@inlet~))))
+(defpdel signal/quarter~ :inputs ((audio signal)) :outputs ((audio signal)) (*~ #(0.25) audio))

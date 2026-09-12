@@ -1,9 +1,4 @@
-;;; pd-lib-name: signal/split2~
-;;; pd-lib-category: signal
-;;; pd-lib-inlets: ((0 signal input))
-;;; pd-lib-outlets: ((0 signal left) (1 signal right))
+;;; signal/split2~ --- converted PDEL library definition
+;;; category: signal
 
-(pd-lisp!
- (let ((input (@inlet~)))
-   (@outlet~ input)
-   (@outlet~ input)))
+(defpdel signal/split2~ :inputs ((input signal)) :outputs ((left signal) (right signal)) (outputs input input))

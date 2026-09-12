@@ -1,10 +1,8 @@
-;;; pd-lib-name: gm/piano/electric-piano-1~
-;;; pd-lib-category: general-midi
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; gm/piano/electric-piano-1~ --- converted PDEL library definition
+;;; category: general-midi
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (frequency (@inlet~))
-        (env (@pdel/env/mallet~ trigger))
-        (voice (@+~ (@osc~ frequency) (@*~ [0.35] (@osc~ (@+~ frequency (@*~ [55] (@osc~ (@*~ [2] frequency)))))))))
-   (@outlet~ (@*~ voice env))))
+(defpdel gm/piano/electric-piano-1~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((frequency frequency-hz) (env (env/mallet~ trigger))
+     (voice
+       (+~ (osc~ frequency) (*~ #(0.35) (osc~ (+~ frequency (*~ #(55) (osc~ (*~ #(2) frequency))))))))) (*~ voice env)))

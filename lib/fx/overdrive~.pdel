@@ -1,7 +1,5 @@
-;;; pd-lib-name: fx/overdrive~
-;;; pd-lib-category: effect
-;;; pd-lib-inlets: ((0 signal audio))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: moderate overdrive
+;;; fx/overdrive~ --- converted PDEL library definition
+;;; category: effect
+;;; note: moderate overdrive
 
-(pd-lisp! (@outlet~ (@clip~ [-1 1] (@*~ [3.2] (@inlet~)))))
+(defpdel fx/overdrive~ :inputs ((audio signal)) :outputs ((audio signal)) (clip~ #(-1 1) (*~ #(3.2) audio)))

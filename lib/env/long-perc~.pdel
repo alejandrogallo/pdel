@@ -1,11 +1,5 @@
-;;; pd-lib-name: env/long-perc~
-;;; pd-lib-category: envelope
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal envelope))
-;;; pd-lib-note: fixed 5ms attack, 1800ms decay
+;;; env/long-perc~ --- converted PDEL library definition
+;;; category: envelope
+;;; note: fixed 5ms attack, 1800ms decay
 
-(pd-lisp!
- (@outlet~
-  (@vline~
-   (@msg ["1 5, 0 1800 5"]
-         (@inlet)))))
+(defpdel env/long-perc~ :inputs ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 5, 0 1800 5") trigger)))

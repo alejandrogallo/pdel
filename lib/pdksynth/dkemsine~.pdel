@@ -1,12 +1,7 @@
-;;; pd-lib-name: pdksynth/dkemsine~
-;;; pd-lib-category: pdksynth-pitched
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: modulated sine voice corresponding to upstream dkemsine~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((t (@inlet)) (f (@inlet~)) (e (@vline~ (@msg ["1 8, 0.65 260 8, 0 900 268"] t)))
-        (mod (@*~ [2.5] (@osc~ [4.7])))
-        (v (@osc~ (@+~ f mod))))
-   (@outlet~ (@*~ e v))))
+;;; pdksynth/dkemsine~ --- converted PDEL library definition
+;;; category: pdksynth-pitched
+;;; note: modulated sine voice corresponding to upstream dkemsine~
+
+(defpdel pdksynth/dkemsine~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 8, 0.65 260 8, 0 900 268") t))) (mod (*~ #(2.5) (osc~ #(4.7)))) (v (osc~ (+~ f mod)))) (*~ e v)))

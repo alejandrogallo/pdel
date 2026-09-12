@@ -1,11 +1,19 @@
 (in-package #:pdel-lang)
 
+
+(defpdel-compiler-macro outputs (ctx &rest forms)
+  "Return one independently routable source group for each FORM."
+  (make-output-values
+   :values (mapcar (lambda (form)
+                     (ensure-ids form ctx))
+                   forms)))
+
 (defpdel-compiler-macro join (ctx &rest objects)
-  (alexandria:flatten (loop for o in objects
-                            collect (ensure-ids o ctx))))
+  (loop for o in objects
+        append (copy-list (ensure-ids o ctx))))
 
 (defpdel-compiler-macro defvar (ctx var-name object)
-  (set-binding var-name (ensure-id object ctx) ctx))
+  (set-binding var-name (ensure-ids object ctx) ctx))
 
 (defpdel-compiler-macro undefvar (ctx var-name)
   (unset-binding var-name ctx))
@@ -21,7 +29,7 @@
          (loop for (name form) in bindings
                collect
                (cons name
-                     (ensure-id form ctx)))))
+                     (ensure-ids form ctx)))))
 
     (unwind-protect
          (progn
@@ -61,7 +69,7 @@
 
 (defpdel-compiler-macro -> (ctx &rest objects)
   (let* ((ids (mapcar (lambda (o)
-                        (ensure-id o ctx))
+                        (ensure-ids o ctx))
                       objects))
          (first (car ids)))
     (dolist (out (cdr ids) first)
@@ -70,7 +78,7 @@
           (add-connection ctx f o)))
       (setf first out))))
 
-(defpdel-macro mutliple-outlet-bind (names object &rest body)
+(defpdel-macro multiple-outlet-bind (names object &rest body)
   (let ((tmp (gensym "OBJECT")))
     `(let ((,tmp ,object))
        (let ,(loop for name in names
@@ -93,3 +101,25 @@
             `(-> ,tmp ,destination))
           destinations)
        ,tmp)))
+
+
+(defun load-bundled-library (&optional
+                               (root (merge-pathnames
+                                      #P"lib/"
+                                      (asdf:system-source-directory :pdel))))
+  "Load every bundled DEFPDEL definition below ROOT.
+
+The files retain the .pdel extension but now contain ordinary Common Lisp
+DEFPDEL forms."
+  (labels ((walk (directory)
+             (dolist (file (sort (copy-list (directory (merge-pathnames #P"*.pdel" directory)))
+                                 #'string< :key #'namestring))
+               (load file))
+             (dolist (subdir (sort (copy-list (uiop:subdirectories directory))
+                                   #'string< :key #'namestring))
+               (walk subdir))))
+    (walk root))
+  *obj-alist*)
+
+(eval-when (:load-toplevel :execute)
+  (load-bundled-library))

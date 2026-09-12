@@ -1,10 +1,6 @@
-;;; pd-lib-name: gm/reed/tenor-sax~
-;;; pd-lib-category: general-midi
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; gm/reed/tenor-sax~ --- converted PDEL library definition
+;;; category: general-midi
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (frequency (@inlet~))
-        (env (@pdel/env/brass~ trigger))
-        (voice (@bp~ [950 1.0] (@pdel/osc/saw~ frequency))))
-   (@outlet~ (@*~ voice env))))
+(defpdel gm/reed/tenor-sax~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((frequency frequency-hz) (env (env/brass~ trigger)) (voice (bp~ #(950 1.0) (osc/saw~ frequency)))) (*~ voice env)))

@@ -1,10 +1,6 @@
-;;; pd-lib-name: gm/pad/warm~
-;;; pd-lib-category: general-midi
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; gm/pad/warm~ --- converted PDEL library definition
+;;; category: general-midi
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (frequency (@inlet~))
-        (env (@pdel/env/pad~ trigger))
-        (voice (@lop~ [2800] (@pdel/osc/supersaw~ frequency))))
-   (@outlet~ (@*~ voice env))))
+(defpdel gm/pad/warm~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((frequency frequency-hz) (env (env/pad~ trigger)) (voice (lop~ #(2800) (osc/supersaw~ frequency)))) (*~ voice env)))

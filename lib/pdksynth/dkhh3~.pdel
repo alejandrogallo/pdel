@@ -1,11 +1,7 @@
-;;; pd-lib-name: pdksynth/dkhh3~
-;;; pd-lib-category: pdksynth-percussion
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: metallic hi-hat voice corresponding to upstream dkhh3~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((t (@inlet)) (e (@vline~ (@msg ["1 0, 0 180 0"] t)))
-        (m (@+~ (@pdel/osc/square~ 422) (@+~ (@pdel/osc/square~ 677) (@pdel/osc/square~ 1013)))))
-   (@outlet~ (@*~ [0.28] e (@hip~ [6800] m)))))
+;;; pdksynth/dkhh3~ --- converted PDEL library definition
+;;; category: pdksynth-percussion
+;;; note: metallic hi-hat voice corresponding to upstream dkhh3~
+
+(defpdel pdksynth/dkhh3~ :inputs ((trigger control)) :outputs ((audio signal))
+ (let*
+   ((t trigger) (e (vline~ (msg #("1 0, 0 180 0") t))) (m (+~ (osc/square~ 422) (+~ (osc/square~ 677) (osc/square~ 1013))))) (*~ #(0.28) e (hip~ #(6800) m))))

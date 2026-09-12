@@ -1,11 +1,7 @@
-;;; pd-lib-name: pdksynth/dkstring~
-;;; pd-lib-category: pdksynth-pitched
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
-;;; pd-lib-note: string synth corresponding to upstream dkstring~
-;;; Upstream: https://github.com/derekxkwan/pdksynth
-;;; License: GPL-3.0-or-later (derived port namespace)
-(pd-lisp!
- (let* ((t (@inlet)) (f (@inlet~)) (e (@vline~ (@msg ["1 180, 0.78 650 180, 0 1600 830"] t)))
-        (v (@+~ (@pdel/osc/saw~ f) (@*~ [0.45] (@pdel/osc/saw~ (@*~ [1.004] f))))))
-   (@outlet~ (@*~ [0.35] e (@lop~ [3600] v)))))
+;;; pdksynth/dkstring~ --- converted PDEL library definition
+;;; category: pdksynth-pitched
+;;; note: string synth corresponding to upstream dkstring~
+
+(defpdel pdksynth/dkstring~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 180, 0.78 650 180, 0 1600 830") t))) (v (+~ (osc/saw~ f) (*~ #(0.45) (osc/saw~ (*~ #(1.004) f)))))) (*~ #(0.35) e (lop~ #(3600) v))))

@@ -1,8 +1,5 @@
-;;; pd-lib-name: drums/cymbal~
-;;; pd-lib-category: percussion
-;;; pd-lib-inlets: ((0 control trigger))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; drums/cymbal~ --- converted PDEL library definition
+;;; category: percussion
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (env (@vline~ (@msg ["1 1, 0.5 120 1, 0 1500 121"] trigger))))
-   (@outlet~ (@*~ (@hip~ [6500] (@bp~ [9800 1.5] (@noise~))) env))))
+(defpdel drums/cymbal~ :inputs ((trigger control)) :outputs ((audio signal))
+ (let* ((env (vline~ (msg #("1 1, 0.5 120 1, 0 1500 121") trigger)))) (*~ (hip~ #(6500) (bp~ #(9800 1.5) (noise~))) env)))

@@ -1,10 +1,4 @@
-;;; pd-lib-name: filter/bp~
-;;; pd-lib-category: filter
-;;; pd-lib-inlets: ((0 signal input) (1 control center-hz) (2 control q))
-;;; pd-lib-outlets: ((0 signal output))
+;;; filter/bp~ --- converted PDEL library definition
+;;; category: filter
 
-(pd-lisp!
- (let* ((input (@inlet~))
-        (center (@inlet))
-        (q (@inlet)))
-   (@outlet~ (@bp~ input center q))))
+(defpdel filter/bp~ :inputs ((input signal) (center-hz control) (q control)) :outputs ((output signal)) (let* ((center center-hz)) (bp~ input center q)))

@@ -1,10 +1,6 @@
-;;; pd-lib-name: gm/guitar/muted-electric~
-;;; pd-lib-category: general-midi
-;;; pd-lib-inlets: ((0 control trigger) (1 signal frequency-hz))
-;;; pd-lib-outlets: ((0 signal audio))
+;;; gm/guitar/muted-electric~ --- converted PDEL library definition
+;;; category: general-midi
 
-(pd-lisp!
- (let* ((trigger (@inlet)) (frequency (@inlet~))
-        (env (@pdel/env/fast-perc~ trigger))
-        (voice (@lop~ [3600] (@pdel/osc/square-soft~ frequency))))
-   (@outlet~ (@*~ voice env))))
+(defpdel gm/guitar/muted-electric~ :inputs ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+ (let*
+   ((frequency frequency-hz) (env (env/fast-perc~ trigger)) (voice (lop~ #(3600) (osc/square-soft~ frequency)))) (*~ voice env)))
