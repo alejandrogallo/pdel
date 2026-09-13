@@ -18,7 +18,7 @@
   (:export
    #:object #:object-name #:object-origin #:object-args #:object-flags
    #:object-inputs #:object-outputs #:object-methods #:object-source
-   #:declare-object #:find-object
+   #:declare-object #:find-object #:find-pdel-macro #:find-compiler-macro #:pdel-name=
    #:defpdel
    #:defpdel-macro
    #:load-bundled-library
@@ -67,6 +67,15 @@
    #:write-pd-connection
    #:launch-form))
 
+
+(defpackage #:pdel-disassembler
+  (:use #:cl)
+  (:export
+   #:disassembly #:disassembly-definitions #:disassembly-form
+   #:read-pd-string #:read-pd-file
+   #:disassemble-assembly #:disassemble-pd-string #:disassemble-pd-file
+   #:disassembly-to-string #:write-disassembly))
+
 (defpackage #:pdel-user
   (:use #:cl #:pdel-lang)
   (:import-from #:pdel-compiler
@@ -76,4 +85,5 @@
    #:write-pd
    #:write-pd-element
    #:write-pd-connection
-   #:launch-form))
+   #:launch-form
+   #:pdel))

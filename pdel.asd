@@ -5,16 +5,18 @@
   :license "GPL-3.0-or-later"
   :serial t
   :depends-on (#:s-graphviz #:alexandria #:uiop)
+  :in-order-to ((test-op (test-op "pdel/tests")))
   :components ((:file "package")
                (:file "asm")
                (:file "layout")
                (:file "pd")
                (:file "compiler")
                (:file "lib")
+               (:file "disassembler")
                (:file "user")))
 
 (asdf:defsystem #:pdel/tests
-  :depends-on (#:pdel)
+  :depends-on (#:pdel #:fiveam)
   :serial t
   :components ((:file "tests/tests"))
   :perform (asdf:test-op (op system)

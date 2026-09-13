@@ -59,6 +59,14 @@
        (format stream "#X listbox ~d ~d" x y)
        (when args (write-char #\Space stream) (write-pd-arguments args stream))
        (write-string ";" stream))
+      (:raw-element
+       ;; Unknown connectable #X records parsed by the disassembler retain
+       ;; their complete textual record in the first argument.
+       (write-string (or (first args) "") stream)
+       (unless (and args
+                    (> (length (first args)) 0)
+                    (char= (char (first args) (1- (length (first args)))) #\;))
+         (write-char #\; stream)))
       (otherwise
        (error "Unsupported assembly element type ~S for ~S" type element)))
     (terpri stream)))

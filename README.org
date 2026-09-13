@@ -105,3 +105,59 @@ Run the Common Lisp sanity suite with:
 #+end_src
 
 The runner uses ASDF and SBCL and executes =asdf:test-system :pdel=.
+
+* Disassembling Pure Data patches
+
+The Common Lisp disassembler reads ordinary =.pd= text back into the same
+=PDEL-ASM:ASSEMBLY-RESULT= representation used by the compiler, then emits
+round-tripable PDEL source.
+
+#+begin_src lisp
+(defparameter *decompiled*
+  (pdel-disassembler:disassemble-pd-file #P"patch.pd"))
+
+(format t "~A~%"
+        (pdel-disassembler:disassembly-to-string *decompiled*))
+#+end_src
+
+The source generator is topology-aware.  It binds each Pd object exactly once
+and uses the language forms already provided by PDEL where they describe the
+original graph:
+
+- =let= for object identity and sharing;
+- =->= for explicit wiring and cycles;
+- =join= for several source endpoints entering one inlet;
+- =fanout= for one source endpoint feeding several destinations;
+- =in= / =out= for non-zero port numbers;
+- =multiple-outlet-bind= when several outlets of one object are consumed;
+- =msg=, atom-box compiler forms, =declare=, =raw=, and =raw-object= for the
+  corresponding special Pd records.
+
+Nested Pd canvases become =defpdel= definitions with their inlet/outlet signal
+kind inferred from =[inlet~]/[outlet~]= versus =[inlet]/[outlet]=.  If a
+subpatch name already names a registered bundled PDEL object, the disassembler
+reuses that object instead of generating a duplicate definition.
+
+Unknown indexed =#X= records are represented with =(raw-object "...")=.  This
+is distinct from structural =(raw "...")=: =raw-object= consumes an object id
+and can therefore remain the endpoint of =#X connect= records.
+
+The parser preserves canvas dimensions and object =x/y= positions in the
+assembly.  The generated PDEL intentionally leaves layout to the normal PDEL
+layout pass.
+
+** Tests
+
+All tests use FiveAM.  Run the complete compiler/backend/disassembler suite:
+
+#+begin_src sh
+./tests/run-tests.sh
+#+end_src
+
+or from Lisp:
+
+#+begin_src lisp
+(asdf:test-system :pdel/tests)
+;; :pdel also forwards TEST-OP to :pdel/tests.
+(asdf:test-system :pdel)
+#+end_src

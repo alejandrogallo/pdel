@@ -138,7 +138,7 @@
       'control))
 
 (defun signal-port-p (spec)
-  (eq (formal-type spec) 'signal))
+  (pdel-name= (formal-type spec) 'signal))
 
 (defun context-result (ctx)
   (make-instance
@@ -331,12 +331,21 @@ supply one independent source group per outlet."
       ctx))
 
     ;; general form
-    ((consp form)
+    ((and (consp form)
+          (not (fboundp (car form))))
      (let* ((name (car form))
             (declared-object (find-object name)))
        (if declared-object
            (assembly-pdel-object form declared-object ctx)
            (assembly-free-object form ctx))))
+
+    ;; general lisp
+    ((and (consp form)
+          (fboundp (car form)))
+     (loop for form in (eval form)
+           for return = (assembly-form form ctx)
+           finally (return return)))
+
     (t
      (error "Cannot assemble PDEL form ~S" form))))
 
@@ -461,6 +470,20 @@ Common Lisp macro launches that PDEL form through `pdel-pd:launch-form'."
     (error "RAW requires a string, got ~S" content))
   (push content (context-raw-records ctx))
   nil)
+
+(defpdel-compiler-macro raw-object (ctx content)
+  "Add an unknown but object-indexed Pd record and return its outlet zero.
+Unlike RAW, RAW-OBJECT consumes an object id and can participate in wiring."
+  (unless (stringp content)
+    (error "RAW-OBJECT requires a string, got ~S" content))
+  (let ((id (next-element-id ctx)))
+    (push (make-instance 'pdel-asm:asm-element
+                         :name 'raw-object
+                         :type :raw-element
+                         :id id
+                         :args (list content))
+          (context-objects ctx))
+    (list (make-port :id id :index 0))))
 
 (defpdel-compiler-macro outputs (ctx &rest forms)
   "Return one independently routable source group for each FORM."
