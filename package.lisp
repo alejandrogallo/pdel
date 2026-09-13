@@ -87,3 +87,13 @@
    #:write-pd-connection
    #:launch-form
    #:pdel))
+
+
+(defpackage #:pdel
+  (:use #:cl #:pdel-lang)
+  (:import-from #:pdel-compiler
+                #:defpdel
+                #:defpdel-macro)
+  (:export
+   #:launch-form
+   #:pdel))
