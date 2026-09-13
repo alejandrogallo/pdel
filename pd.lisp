@@ -123,6 +123,10 @@
     (write-pd-assembly-body assembly stream))
   pathname)
 
+(defun pdel->pd (forms pathname)
+  (let ((asm (pdel-compiler:assembly forms)))
+    (write-pd asm pathname)))
+
 (defun temporary-pd-pathname ()
   "Return a fresh temporary pathname suitable for a generated Pd patch."
   (merge-pathnames

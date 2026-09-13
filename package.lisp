@@ -65,7 +65,8 @@
    #:write-pd
    #:write-pd-element
    #:write-pd-connection
-   #:launch-form))
+   #:launch-form
+   #:pdel->pd))
 
 
 (defpackage #:pdel-disassembler
@@ -90,10 +91,14 @@
 
 
 (defpackage #:pdel
-  (:use #:cl #:pdel-lang)
+  (:use #:cl)
   (:import-from #:pdel-compiler
                 #:defpdel
                 #:defpdel-macro)
+  (:import-from #:pdel-user
+                #:pdel)
   (:export
    #:launch-form
+   #:defpdel
+   #:defpdel-macro
    #:pdel))

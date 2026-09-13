@@ -339,12 +339,6 @@ supply one independent source group per outlet."
            (assembly-pdel-object form declared-object ctx)
            (assembly-free-object form ctx))))
 
-    ;; general lisp
-    ((and (consp form)
-          (fboundp (car form)))
-     (loop for form in (eval form)
-           for return = (assembly-form form ctx)
-           finally (return return)))
 
     (t
      (error "Cannot assemble PDEL form ~S" form))))
@@ -425,6 +419,11 @@ Common Lisp macro launches that PDEL form through `pdel-pd:launch-form'."
      ',name))
 
 ;; Special Pd canvas records -------------------------------------------------
+
+(defpdel-compiler-macro lisp (ctx &rest body)
+  (loop for form in (eval body)
+        for return = (assembly-form form ctx)
+        finally (return return)))
 
 (defpdel-compiler-macro msg (ctx &rest form)
   (multiple-value-bind (arguments inputs)
