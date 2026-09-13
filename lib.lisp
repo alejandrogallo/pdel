@@ -50,6 +50,3 @@ DEFPDEL forms."
                (walk subdir))))
     (walk root))
   pdel-compiler::*obj-alist*)
-
-(eval-when (:load-toplevel :execute)
-  (load-bundled-library))
