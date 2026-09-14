@@ -87,8 +87,18 @@
    #:write-pd-element
    #:write-pd-connection
    #:launch-form
+   #:defpdel-macro
+   #:defpdel
    #:load-bundled-library
-   #:pdel))
+   #:pdel
+   #:knob!
+   #:bng!
+   #:slider-h
+   #:slider-v
+   #:switch-toggle
+   #:radio-h
+   #:switch-radio-v
+   #:box-new))
 
 
 (defpackage #:pdel

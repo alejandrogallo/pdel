@@ -50,6 +50,8 @@ DEFPDEL forms."
                                    #'string< :key #'namestring))
                (walk subdir))))
     (walk root))
+  (do-symbols (sym :pdel-user)
+    (export sym :pdel-user))
   pdel-compiler::*obj-alist*)
 
 (eval-when (:load-toplevel :execute)
