@@ -1,0 +1,245 @@
+(in-package #:pdel-user)
+
+(defpdel-macro bng! (&optional
+                     input
+                     &key
+                     (size 20)
+                     (hold-time 250)
+                     (interrupt-time 50)
+                     (init 0)
+                     (send-symbol 'empty)
+                     (receive-symbol 'empty)
+                     (label 'empty)
+                     (label-x 0)
+                     (label-y -10)
+                     (font 0)
+                     (font-size 12)
+                     (background "#fcfcfc")
+                     (active "#000000")
+                     (label-color "#000000"))
+  `(bng
+    #(,size
+      ,hold-time
+      ,interrupt-time
+      ,init send-symbol
+      ,receive-symbol
+      ,label
+      ,label-x
+      ,label-y
+      ,font
+      ,font-size
+      ,background
+      ,active
+      ,label-color)
+    ,input))
+
+(defpdel-macro slider-h (&optional
+                         input
+                         &key
+                         (width 128)
+                         (height 15)
+                         (minimum 0)
+                         (maximum 127)
+                         (logarithmic 0)
+                         (init 0)
+                         (send-symbol 'empty)
+                         (receive-symbol 'empty)
+                         (label 'empty)
+                         (label-x -2)
+                         (label-y -10)
+                         (font 0)
+                         (font-size 12)
+                         (background "#fcfcfc")
+                         (foreground "#000000")
+                         (label-color "#000000")
+                         (default 0)
+                         (steady-on-click 1))
+  `(hsl ,(vector
+          width height minimum maximum logarithmic init
+          send-symbol receive-symbol label
+          label-x label-y font font-size
+          background foreground label-color
+          default steady-on-click)
+        ,input))
+
+(defpdel-macro slider-v (&optional
+                         input
+                         &key
+                         (width 15)
+                         (height 128)
+                         (minimum 0)
+                         (maximum 127)
+                         (logarithmic 0)
+                         (init 0)
+                         (send-symbol 'empty)
+                         (receive-symbol 'empty)
+                         (label 'empty)
+                         (label-x 0)
+                         (label-y -9)
+                         (font 0)
+                         (font-size 12)
+                         (background "#fcfcfc")
+                         (foreground "#000000")
+                         (label-color "#000000")
+                         (default 0)
+                         (steady-on-click 1))
+  `(vsl ,(vector
+          width height minimum maximum logarithmic init
+          send-symbol receive-symbol label
+          label-x label-y font font-size
+          background foreground label-color
+          default steady-on-click)
+        ,input))
+
+(defpdel-macro switch-toggle
+    (&optional
+     input
+     &key
+     (size 20)
+     (init 0)
+     (send-symbol 'empty)
+     (receive-symbol 'empty)
+     (label 'empty)
+     (label-x 0)
+     (label-y -10)
+     (font 0)
+     (font-size 12)
+     (background "#fcfcfc")
+     (active "#000000")
+     (label-color "#000000")
+     (default 0)
+     (nonzero-value 1))
+  `(tgl ,(vector
+          size init send-symbol receive-symbol
+          label label-x label-y font font-size
+          background active label-color
+          default nonzero-value)
+        ,input))
+
+(defpdel-macro radio-h (&optional
+                        input
+                        &key
+                        (size 20)
+                        (new-old 1)
+                        (init 0)
+                        (number 8)
+                        (send-symbol 'empty)
+                        (receive-symbol 'empty)
+                        (label 'empty)
+                        (label-x 0)
+                        (label-y -10)
+                        (font 0)
+                        (font-size 12)
+                        (background "#fcfcfc")
+                        (active "#000000")
+                        (label-color "#000000")
+                        (default 0))
+  `(tgl ,(vector
+          size new-old init number
+          send-symbol receive-symbol
+          label label-x label-y font font-size
+          background active label-color
+          default)
+        ,input))
+
+(defpdel-macro switch-radio-v (&optional
+                               input
+                               &key
+                               (size 20)
+                               (new-old 1)
+                               (init 0)
+                               (number 8)
+                               (send-symbol 'empty)
+                               (receive-symbol 'empty)
+                               (label 'empty)
+                               (label-x 0)
+                               (label-y -10)
+                               (font 0)
+                               (font-size 12)
+                               (background "#fcfcfc")
+                               (active "#000000")
+                               (label-color "#000000")
+                               (default 0))
+  `(vradio
+    ,(vector
+      size new-old init number
+      send-symbol receive-symbol
+      label label-x label-y font font-size
+      background active label-color
+      default)
+    ,input))
+
+(defpdel-macro box-new (&optional
+                        input
+                        &key
+                        (width 5)
+                        (height 20)
+                        (minimum -1e+37)
+                        (maximum 1e+37)
+                        (logarithmic 0)
+                        (init 0)
+                        (send-symbol 'empty)
+                        (receive-symbol 'empty)
+                        (label 'empty)
+                        (label-x 0)
+                        (label-y -10)
+                        (font 0)
+                        (font-size 12)
+                        (background "#fcfcfc")
+                        (foreground "#000000")
+                        (label-color "#000000")
+                        (default 0)
+                        (log-height 256))
+  `(nbx ,(vector
+           width height minimum maximum logarithmic init
+           send-symbol receive-symbol
+           label label-x label-y font font-size
+           background foreground label-color
+           default log-height)
+    ,input))
+
+(defpdel-macro knob! (&optional
+                      input
+                      &key
+                      (set nil set-p)
+                      (load nil load-p)
+                      (size nil size-p)
+                      (arc nil arc-p)
+                      (nosquare nil nosquare-p)
+                      (nooutline nil nooutline-p)
+                      (background nil background-p)
+                      (foreground nil foreground-p)
+                      (circular nil circular-p)
+                      (angle nil angle-p)
+                      (offset nil offset-p)
+                      (send-symbol nil send-symbol-p)
+                      (receive-symbol nil receive-symbol-p)
+                      (exponential nil exponential-p)
+                      (ticks nil ticks-p)
+                      (discrete nil discrete-p)
+                      (jump nil jump-p))
+  `(progn
+     (declare -lib else)
+     (else/knob
+      ,(coerce (append
+                (when set-p (list '-set set))
+                (when load-p (list '-load load))
+                (when size-p (list '-size size))
+                (when arc-p (list '-arc arc))
+                (when nosquare-p (list '-nosquare nosquare))
+                (when nooutline-p (list '-nooutline nooutline))
+                (when background-p (list '-bgcolor background))
+                (when foreground-p (list '-fgcolor foreground))
+                (when circular-p (list '-circular circular))
+                (when angle-p (list '-angle angle))
+                (when offset-p (list '-offset offset))
+                (when send-symbol-p (list '-send send-symbol))
+                (when receive-symbol-p (list '-receive receive-symbol))
+                (when exponential-p (list '-exp exponential))
+                (when ticks-p (list '-ticks ticks))
+                (when discrete-p (list '-discrete discrete))
+                (when jump-p (list '-jump jump)))
+               'vector)
+      ,@(when input
+          (list input)))))
+
