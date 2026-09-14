@@ -125,6 +125,7 @@
 
 (defun pdel->pd (forms pathname)
   (let ((asm (pdel-compiler:assembly forms)))
+    (pdel-layout:layout asm)
     (write-pd asm pathname)))
 
 (defun temporary-pd-pathname ()
