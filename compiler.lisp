@@ -376,7 +376,7 @@ supply one independent source group per outlet."
                  *macro-alist*)))
 
      ;; Also make it directly executable from Common Lisp.
-     (defmacro ,name (&rest call-arguments)
+     (defmacro ,name ,args
        (list 'pdel-pd:launch-form
              (list 'quote
                    (cons ',name call-arguments))))
