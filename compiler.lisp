@@ -44,7 +44,7 @@
        (string-equal (symbol-name a) (symbol-name b))))
 
 (defun find-object (name)
-  (cdr (assoc name *obj-alist* :test #'pdel-name=)))
+  (cdr (assoc name *obj-alist* :test #'eq)))
 
 (defun find-compiler-macro (name)
   (cdr (assoc name *compiler-macro-alist* :test #'pdel-name=)))
@@ -60,7 +60,11 @@
     (values options forms)))
 
 (defun find-pdel-macro (name)
-  (cdr (assoc name *macro-alist* :test #'pdel-name=)))
+  (or
+   ;; find first by proper name
+   (cdr (assoc name *macro-alist* :test #'eq))
+   ;; if not found, try to find a similar name by string
+   (cdr (assoc name *macro-alist* :test #'pdel-name=))))
 
 (defclass var ()
     ((name :initarg :name
@@ -331,8 +335,7 @@ supply one independent source group per outlet."
       ctx))
 
     ;; general form
-    ((and (consp form)
-          (not (fboundp (car form))))
+    ((consp form)
      (let* ((name (car form))
             (declared-object (find-object name)))
        (if declared-object
@@ -341,7 +344,7 @@ supply one independent source group per outlet."
 
 
     (t
-     (error "Cannot assemble PDEL form ~S" form))))
+     (error "Cannot understand form ~S to assemble" form))))
 
 (defun assembly (form)
   (let ((ctx (make-instance 'context)))
