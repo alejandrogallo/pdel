@@ -31,7 +31,7 @@
                 #:defpdel
                 #:defpdel-macro)
   (:export
-   #:load-bundled-library))
+   ))
 
 (defpackage #:pdel-layout
   (:use #:cl)
@@ -87,6 +87,7 @@
    #:write-pd-element
    #:write-pd-connection
    #:launch-form
+   #:load-bundled-library
    #:pdel))
 
 

@@ -11,7 +11,6 @@
                (:file "layout")
                (:file "pd")
                (:file "compiler")
-               (:file "lib")
                (:file "disassembler")
                (:file "user")))
 
