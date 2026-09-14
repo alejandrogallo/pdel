@@ -1,8 +1,14 @@
 ;;; gm/lead/calliope~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/lead/calliope~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/lead/calliope~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/long-perc~ trigger))
      (voice
-       (bp~ #(2200 0.9) (+~ (osc/square-soft~ frequency) (*~ #(0.3) (osc~ (*~ #(2) frequency))))))) (*~ voice env)))
+       (bp~ #(2200 0.9)
+            (+~ (osc/square-soft~ frequency)
+                (*~ #(0.3) (osc~ (*~ #(2) frequency)))))))
+   (*~ voice env)))

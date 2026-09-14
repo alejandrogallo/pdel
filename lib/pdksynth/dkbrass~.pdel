@@ -2,6 +2,12 @@
 ;;; category: pdksynth-pitched
 ;;; note: brass synth corresponding to upstream dkbrass~
 
-(defpdel pdksynth/dkbrass~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel pdksynth/dkbrass~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 35, 0.75 170 35, 0 650 205") t))) (v (+~ (osc/saw~ f) (*~ #(0.35) (osc/saw~ (*~ #(1.005) f)))))) (*~ e (lop~ #(4200) v))))
+   ((t trigger) (f frequency-hz)
+    (e (vline~ (msg #("1 35, 0.75 170 35, 0 650 205") t)))
+    (v (+~ (osc/saw~ f) (*~ #(0.35) (osc/saw~ (*~ #(1.005) f))))))
+   (*~ e (lop~ #(4200) v))))

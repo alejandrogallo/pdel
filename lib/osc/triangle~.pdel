@@ -1,4 +1,8 @@
 ;;; osc/triangle~ --- converted PDEL library definition
 ;;; category: oscillator
 
-(defpdel osc/triangle~ ((frequency-hz signal)) :outputs ((audio signal)) (-~ #(1) (*~ #(4) (abs~ (-~ #(0.5) (phasor~ frequency-hz))))))
+(in-package #:pdel-user)
+
+(defpdel osc/triangle~ ((frequency-hz signal)) :outputs
+  ((audio signal))
+  (-~ #(1) (*~ #(4) (abs~ (-~ #(0.5) (phasor~ frequency-hz))))))

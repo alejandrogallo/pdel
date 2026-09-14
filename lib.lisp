@@ -19,7 +19,6 @@
    (cdr forms)
    :initial-value (car forms)))
 
-;; TODO
 (defpdel dsp-1 ()
   (msg #("; pd dsp 1") (loadbang)))
 

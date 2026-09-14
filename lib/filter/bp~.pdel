@@ -1,4 +1,8 @@
 ;;; filter/bp~ --- converted PDEL library definition
 ;;; category: filter
 
-(defpdel filter/bp~ ((input signal) (center-hz control) (q control)) :outputs ((output signal)) (let* ((center center-hz)) (bp~ input center q)))
+(in-package #:pdel-user)
+
+(defpdel filter/bp~ ((input signal) (center-hz control) (q control))
+  :outputs ((output signal))
+  (let* ((center center-hz)) (bp~ input center q)))

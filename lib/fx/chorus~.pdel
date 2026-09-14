@@ -2,6 +2,11 @@
 ;;; category: effect
 ;;; note: gentle mono chorus
 
+(in-package #:pdel-user)
+
 (defpdel fx/chorus~ ((audio signal)) :outputs ((audio signal))
- (let*
-   ((x audio) (writer (delwrite~ #($0-chorus 100) x)) (delay-ms (+~ #(18) (*~ #(6) (osc~ #(0.27))))) (wet (vd~ #($0-chorus) delay-ms))) (*~ #(0.62) (+~ x wet))))
+         (let*
+             ((x audio) (writer (delwrite~ #($0-chorus 100) x))
+              (delay-ms (+~ #(18) (*~ #(6) (osc~ #(0.27)))))
+              (wet (vd~ #($0-chorus) delay-ms)))
+           (*~ #(0.62) (+~ x wet))))

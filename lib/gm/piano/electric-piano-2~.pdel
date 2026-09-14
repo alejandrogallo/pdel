@@ -1,8 +1,16 @@
 ;;; gm/piano/electric-piano-2~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/piano/electric-piano-2~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/piano/electric-piano-2~
+    ((trigger control) (frequency-hz signal)) :outputs
+  ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/mallet~ trigger))
      (voice
-       (+~ (osc~ frequency) (*~ #(0.25) (osc~ (+~ frequency (*~ #(90) (osc~ (*~ #(3) frequency))))))))) (*~ voice env)))
+       (+~ (osc~ frequency)
+           (*~ #(0.25)
+               (osc~
+                (+~ frequency (*~ #(90) (osc~ (*~ #(3) frequency)))))))))
+   (*~ voice env)))

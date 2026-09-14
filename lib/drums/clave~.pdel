@@ -1,4 +1,8 @@
 ;;; drums/clave~ --- converted PDEL library definition
 ;;; category: percussion
 
-(defpdel drums/clave~ ((trigger control)) :outputs ((audio signal)) (let* ((env (vline~ (msg #("1 1, 0 90 1") trigger)))) (*~ (osc~ #(2450)) env)))
+(in-package #:pdel-user)
+
+(defpdel drums/clave~ ((trigger control)) :outputs ((audio signal))
+  (let* ((env (vline~ (msg #("1 1, 0 90 1") trigger))))
+    (*~ (osc~ #(2450)) env)))

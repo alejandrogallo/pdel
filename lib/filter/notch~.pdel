@@ -2,4 +2,7 @@
 ;;; category: filter
 ;;; note: fixed 1kHz notch
 
-(defpdel filter/notch~ ((audio signal)) :outputs ((audio signal)) (let* ((x audio) (band (bp~ #(1000 5) x))) (-~ x band)))
+(in-package #:pdel-user)
+
+(defpdel filter/notch~ ((audio signal)) :outputs ((audio signal))
+  (let* ((x audio) (band (bp~ #(1000 5) x))) (-~ x band)))

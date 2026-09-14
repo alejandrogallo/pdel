@@ -2,5 +2,8 @@
 ;;; category: effect
 ;;; note: long hall
 
+(in-package #:pdel-user)
+
 (defpdel fx/reverb-hall~ ((audio signal)) :outputs ((audio signal))
- (let* ((x audio) (rv (rev3~ #(96 88 4200 28) x x))) (*~ #(0.55) (+~ (out 0 rv) (out 1 rv)))))
+  (let* ((x audio) (rv (rev3~ #(96 88 4200 28) x x)))
+    (*~ #(0.55) (+~ (out 0 rv) (out 1 rv)))))

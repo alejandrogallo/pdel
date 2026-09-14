@@ -1,4 +1,7 @@
 ;;; osc/saw~ --- converted PDEL library definition
 ;;; category: oscillator
 
-(defpdel osc/saw~ ((frequency-hz signal)) :outputs ((audio signal)) (-~ #(1) (*~ #(2) (phasor~ frequency-hz))))
+(in-package #:pdel-user)
+
+(defpdel osc/saw~ ((frequency-hz signal)) :outputs ((audio signal))
+  (-~ #(1) (*~ #(2) (phasor~ frequency-hz))))

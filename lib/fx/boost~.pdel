@@ -2,4 +2,7 @@
 ;;; category: effect
 ;;; note: +5dB-ish gain boost; may clip
 
-(defpdel fx/boost~ ((audio signal)) :outputs ((audio signal)) (*~ #(1.8) audio))
+(in-package #:pdel-user)
+
+(defpdel fx/boost~ ((audio signal)) :outputs ((audio signal))
+  (*~ #(1.8) audio))

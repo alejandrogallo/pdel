@@ -1,5 +1,8 @@
 ;;; drums/shaker~ --- converted PDEL library definition
 ;;; category: percussion
 
+(in-package #:pdel-user)
+
 (defpdel drums/shaker~ ((trigger control)) :outputs ((audio signal))
- (let* ((env (vline~ (msg #("1 1, 0 190 1") trigger)))) (*~ (hip~ #(7000) (noise~)) env)))
+  (let* ((env (vline~ (msg #("1 1, 0 190 1") trigger))))
+    (*~ (hip~ #(7000) (noise~)) env)))

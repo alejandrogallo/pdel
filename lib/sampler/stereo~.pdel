@@ -2,5 +2,9 @@
 ;;; category: sampler
 ;;; note: stream stereo files using readsf~ messages
 
-(defpdel sampler/stereo~ ((readsf-message control)) :outputs ((left signal) (right signal) (done control))
- (let* ((player (readsf~ #(2) readsf-message))) (outputs (out 0 player) (out 1 player) (out 2 player))))
+(in-package #:pdel-user)
+
+(defpdel sampler/stereo~ ((readsf-message control)) :outputs
+  ((left signal) (right signal) (done control))
+ (let* ((player (readsf~ #(2) readsf-message)))
+   (outputs (out 0 player) (out 1 player) (out 2 player))))

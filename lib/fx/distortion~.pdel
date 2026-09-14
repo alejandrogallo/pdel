@@ -2,4 +2,7 @@
 ;;; category: effect
 ;;; note: hard clipping with top-end smoothing
 
-(defpdel fx/distortion~ ((audio signal)) :outputs ((audio signal)) (lop~ #(8500) (clip~ #(-0.45 0.45) (*~ #(7) audio))))
+(in-package #:pdel-user)
+
+(defpdel fx/distortion~ ((audio signal)) :outputs ((audio signal))
+  (lop~ #(8500) (clip~ #(-0.45 0.45) (*~ #(7) audio))))

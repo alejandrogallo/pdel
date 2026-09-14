@@ -2,4 +2,7 @@
 ;;; category: envelope
 ;;; note: fixed 2ms attack, 250ms decay
 
-(defpdel env/perc~ ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 2, 0 250 2") trigger)))
+(in-package #:pdel-user)
+
+(defpdel env/perc~ ((trigger control)) :outputs ((envelope signal))
+  (vline~ (msg #("1 2, 0 250 2") trigger)))

@@ -1,8 +1,15 @@
 ;;; gm/piano/harpsichord~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/piano/harpsichord~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/piano/harpsichord~
+    ((trigger control) (frequency-hz signal)) :outputs
+  ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pluck~ trigger))
      (voice
-       (hip~ #(120) (+~ (osc/saw~ frequency) (*~ #(0.3) (osc/square~ (*~ #(2) frequency))))))) (*~ voice env)))
+       (hip~ #(120)
+             (+~ (osc/saw~ frequency)
+                 (*~ #(0.3) (osc/square~ (*~ #(2) frequency)))))))
+   (*~ voice env)))

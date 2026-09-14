@@ -2,4 +2,7 @@
 ;;; category: envelope
 ;;; note: slow pad envelope
 
-(defpdel env/pad~ ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 450, 0.72 1200 450, 0 5000 1650") trigger)))
+(in-package #:pdel-user)
+
+(defpdel env/pad~ ((trigger control)) :outputs ((envelope signal))
+  (vline~ (msg #("1 450, 0.72 1200 450, 0 5000 1650") trigger)))

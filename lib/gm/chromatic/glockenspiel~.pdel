@@ -1,7 +1,15 @@
 ;;; gm/chromatic/glockenspiel~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/chromatic/glockenspiel~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/chromatic/glockenspiel~
+    ((trigger control) (frequency-hz signal)) :outputs
+  ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/mallet~ trigger))
-     (voice (hip~ #(900) (+~ (osc~ frequency) (*~ #(0.45) (osc~ (*~ #(3.0) frequency))))))) (*~ voice env)))
+     (voice
+       (hip~ #(900)
+             (+~ (osc~ frequency)
+                 (*~ #(0.45) (osc~ (*~ #(3.0) frequency)))))))
+   (*~ voice env)))

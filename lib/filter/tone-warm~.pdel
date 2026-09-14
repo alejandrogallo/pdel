@@ -1,4 +1,7 @@
 ;;; filter/tone-warm~ --- converted PDEL library definition
 ;;; category: filter
 
-(defpdel filter/tone-warm~ ((audio signal)) :outputs ((audio signal)) (lop~ #(6500) (hip~ #(35) audio)))
+(in-package #:pdel-user)
+
+(defpdel filter/tone-warm~ ((audio signal)) :outputs ((audio signal))
+  (lop~ #(6500) (hip~ #(35) audio)))

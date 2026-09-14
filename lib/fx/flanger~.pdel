@@ -2,6 +2,11 @@
 ;;; category: effect
 ;;; note: slow feedback flanger
 
+(in-package #:pdel-user)
+
 (defpdel fx/flanger~ ((audio signal)) :outputs ((audio signal))
- (let*
-   ((x audio) (sum (+~ x)) (writer (delwrite~ #($0-flange 30) sum)) (delay-ms (+~ #(3.5) (*~ #(2.5) (osc~ #(0.12))))) (tap (vd~ #($0-flange) delay-ms)) (fb (*~ #(0.32) tap))) (-> fb 0 sum 1) (*~ #(0.7) (+~ x tap))))
+  (let*
+      ((x audio) (sum (+~ x)) (writer (delwrite~ #($0-flange 30) sum))
+       (delay-ms (+~ #(3.5) (*~ #(2.5) (osc~ #(0.12)))))
+       (tap (vd~ #($0-flange) delay-ms)) (fb (*~ #(0.32) tap)))
+    (-> fb 0 sum 1) (*~ #(0.7) (+~ x tap))))

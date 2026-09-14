@@ -1,6 +1,13 @@
 ;;; fx/tremolo-param~ --- converted PDEL library definition
 ;;; category: effect
 
-(defpdel fx/tremolo-param~ ((audio signal) (rate-hz signal) (depth-0-to-1 signal)) :outputs ((audio signal))
- (let*
-   ((x audio) (rate rate-hz) (depth depth-0-to-1) (lfo (*~ #(0.5) (+~ #(1) (osc~ rate)))) (gain (+~ (-~ #(1) depth) (*~ depth lfo)))) (*~ x gain)))
+(in-package #:pdel-user)
+
+(defpdel fx/tremolo-param~
+    ((audio signal) (rate-hz signal) (depth-0-to-1 signal)) :outputs
+  ((audio signal))
+  (let*
+      ((x audio) (rate rate-hz) (depth depth-0-to-1)
+       (lfo (*~ #(0.5) (+~ #(1) (osc~ rate))))
+       (gain (+~ (-~ #(1) depth) (*~ depth lfo))))
+    (*~ x gain)))

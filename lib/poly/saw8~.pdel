@@ -2,6 +2,24 @@
 ;;; category: polyphonic
 ;;; note: eight-voice MIDI allocator using Pd poly
 
-(defpdel poly/saw8~ ((note-velocity-list control)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel poly/saw8~ ((note-velocity-list control)) :outputs
+  ((audio signal))
  (let*
-   ((event note-velocity-list) (uv (unpack #(f f) event)) (allocator (poly #(8 1) (out 0 uv) (out 1 uv))) (packet (pack #(f f f) (out 0 allocator) (out 1 allocator) (out 2 allocator))) (router (route #(1 2 3 4 5 6 7 8) packet)) (v1 (voice/saw-note~ (out 0 router))) (v2 (voice/saw-note~ (out 1 router))) (v3 (voice/saw-note~ (out 2 router))) (v4 (voice/saw-note~ (out 3 router))) (v5 (voice/saw-note~ (out 4 router))) (v6 (voice/saw-note~ (out 5 router))) (v7 (voice/saw-note~ (out 6 router))) (v8 (voice/saw-note~ (out 7 router)))) (*~ #(0.32) (+~ v1 (+~ v2 (+~ v3 (+~ v4 (+~ v5 (+~ v6 (+~ v7 v8))))))))))
+   ((event note-velocity-list) (uv (unpack #(f f) event))
+    (allocator (poly #(8 1) (out 0 uv) (out 1 uv)))
+    (packet
+      (pack #(f f f) (out 0 allocator) (out 1 allocator)
+            (out 2 allocator)))
+    (router (route #(1 2 3 4 5 6 7 8) packet))
+    (v1 (voice/saw-note~ (out 0 router)))
+    (v2 (voice/saw-note~ (out 1 router)))
+    (v3 (voice/saw-note~ (out 2 router)))
+    (v4 (voice/saw-note~ (out 3 router)))
+    (v5 (voice/saw-note~ (out 4 router)))
+    (v6 (voice/saw-note~ (out 5 router)))
+    (v7 (voice/saw-note~ (out 6 router)))
+    (v8 (voice/saw-note~ (out 7 router))))
+   (*~ #(0.32)
+       (+~ v1 (+~ v2 (+~ v3 (+~ v4 (+~ v5 (+~ v6 (+~ v7 v8))))))))))

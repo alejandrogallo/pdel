@@ -1,4 +1,8 @@
 ;;; drums/conga~ --- converted PDEL library definition
 ;;; category: percussion
 
-(defpdel drums/conga~ ((trigger control)) :outputs ((audio signal)) (let* ((env (vline~ (msg #("1 2, 0 260 2") trigger)))) (*~ (osc~ #(190)) env)))
+(in-package #:pdel-user)
+
+(defpdel drums/conga~ ((trigger control)) :outputs ((audio signal))
+  (let* ((env (vline~ (msg #("1 2, 0 260 2") trigger))))
+    (*~ (osc~ #(190)) env)))

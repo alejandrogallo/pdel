@@ -1,6 +1,13 @@
 ;;; drums/snare~ --- converted PDEL library definition
 ;;; category: percussion
 
+(in-package #:pdel-user)
+
 (defpdel drums/snare~ ((trigger control)) :outputs ((audio signal))
- (let*
-   ((noise-env (vline~ (msg #("1 1, 0 180 1") trigger))) (body-env (vline~ (msg #("1 1, 0 110 1") trigger))) (noise-body (*~ (bp~ #(3200 1.2) (hip~ #(900) (noise~))) noise-env)) (tonal-body (*~ (osc~ #(190)) body-env))) (+~ noise-body tonal-body)))
+  (let*
+      ((noise-env (vline~ (msg #("1 1, 0 180 1") trigger)))
+       (body-env (vline~ (msg #("1 1, 0 110 1") trigger)))
+       (noise-body
+         (*~ (bp~ #(3200 1.2) (hip~ #(900) (noise~))) noise-env))
+       (tonal-body (*~ (osc~ #(190)) body-env)))
+    (+~ noise-body tonal-body)))

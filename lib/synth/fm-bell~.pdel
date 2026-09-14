@@ -1,6 +1,14 @@
 ;;; synth/fm-bell~ --- converted PDEL library definition
 ;;; category: synthesizer
 
-(defpdel synth/fm-bell~ ((trigger control) (carrier-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel synth/fm-bell~ ((trigger control) (carrier-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((frequency carrier-hz) (index (vline~ (msg #("850 0, 20 1500 0") trigger))) (carrier (osc~ (+~ frequency (*~ (osc~ (*~ #(1.5) frequency)) index)))) (envelope (vline~ (msg #("1 5, 0 2200 5") trigger)))) (*~ carrier envelope)))
+   ((frequency carrier-hz)
+    (index (vline~ (msg #("850 0, 20 1500 0") trigger)))
+    (carrier
+      (osc~ (+~ frequency (*~ (osc~ (*~ #(1.5) frequency)) index))))
+    (envelope (vline~ (msg #("1 5, 0 2200 5") trigger))))
+   (*~ carrier envelope)))

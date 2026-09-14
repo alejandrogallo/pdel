@@ -1,4 +1,7 @@
 ;;; lfo/sine~ --- converted PDEL library definition
 ;;; category: lfo
 
-(defpdel lfo/sine~ ((rate-hz signal)) :outputs ((modulation signal)) (osc~ rate-hz))
+(in-package #:pdel-user)
+
+(defpdel lfo/sine~ ((rate-hz signal)) :outputs ((modulation signal))
+  (osc~ rate-hz))

@@ -2,6 +2,12 @@
 ;;; category: pdksynth-pitched
 ;;; note: modulated sine voice corresponding to upstream dkemsine~
 
-(defpdel pdksynth/dkemsine~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel pdksynth/dkemsine~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 8, 0.65 260 8, 0 900 268") t))) (mod (*~ #(2.5) (osc~ #(4.7)))) (v (osc~ (+~ f mod)))) (*~ e v)))
+   ((t trigger) (f frequency-hz)
+    (e (vline~ (msg #("1 8, 0.65 260 8, 0 900 268") t)))
+    (mod (*~ #(2.5) (osc~ #(4.7)))) (v (osc~ (+~ f mod))))
+   (*~ e v)))

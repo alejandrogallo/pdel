@@ -1,4 +1,7 @@
 ;;; lfo/bipolar-saw~ --- converted PDEL library definition
 ;;; category: lfo
 
-(defpdel lfo/bipolar-saw~ ((rate-hz signal)) :outputs ((modulation signal)) (-~ #(1) (*~ #(2) (phasor~ rate-hz))))
+(in-package #:pdel-user)
+
+(defpdel lfo/bipolar-saw~ ((rate-hz signal)) :outputs
+  ((modulation signal)) (-~ #(1) (*~ #(2) (phasor~ rate-hz))))

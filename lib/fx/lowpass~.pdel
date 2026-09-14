@@ -1,4 +1,7 @@
 ;;; fx/lowpass~ --- converted PDEL library definition
 ;;; category: effect
 
-(defpdel fx/lowpass~ ((audio signal)) :outputs ((audio signal)) (lop~ #(4200) audio))
+(in-package #:pdel-user)
+
+(defpdel fx/lowpass~ ((audio signal)) :outputs ((audio signal))
+  (lop~ #(4200) audio))

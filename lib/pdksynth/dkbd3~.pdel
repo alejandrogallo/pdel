@@ -2,6 +2,11 @@
 ;;; category: pdksynth-percussion
 ;;; note: noise-enhanced bass drum corresponding to upstream dkbd3~
 
+(in-package #:pdel-user)
+
 (defpdel pdksynth/dkbd3~ ((trigger control)) :outputs ((audio signal))
  (let*
-   ((t trigger) (p (vline~ (msg #("130 0, 44 110 0") t))) (e (vline~ (msg #("1 2, 0 420 2") t))) (n (*~ (vline~ (msg #("1 0, 0 35 0") t)) (lop~ #(900) (noise~))))) (+~ (*~ e (osc~ p)) (*~ #(0.16) n))))
+   ((t trigger) (p (vline~ (msg #("130 0, 44 110 0") t)))
+    (e (vline~ (msg #("1 2, 0 420 2") t)))
+    (n (*~ (vline~ (msg #("1 0, 0 35 0") t)) (lop~ #(900) (noise~)))))
+   (+~ (*~ e (osc~ p)) (*~ #(0.16) n))))

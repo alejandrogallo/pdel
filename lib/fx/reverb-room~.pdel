@@ -2,5 +2,8 @@
 ;;; category: effect
 ;;; note: small/medium room
 
+(in-package #:pdel-user)
+
 (defpdel fx/reverb-room~ ((audio signal)) :outputs ((audio signal))
- (let* ((x audio) (rv (rev3~ #(85 78 3200 18) x x))) (*~ #(0.55) (+~ (out 0 rv) (out 1 rv)))))
+ (let* ((x audio) (rv (rev3~ #(85 78 3200 18) x x)))
+   (*~ #(0.55) (+~ (out 0 rv) (out 1 rv)))))

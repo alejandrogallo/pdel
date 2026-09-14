@@ -1,4 +1,7 @@
 ;;; lfo/square~ --- converted PDEL library definition
 ;;; category: lfo
 
-(defpdel lfo/square~ ((rate-hz signal)) :outputs ((modulation signal)) (-~ #(1) (*~ #(2) (>~ #(0.5) (phasor~ rate-hz)))))
+(in-package #:pdel-user)
+
+(defpdel lfo/square~ ((rate-hz signal)) :outputs ((modulation signal))
+  (-~ #(1) (*~ #(2) (>~ #(0.5) (phasor~ rate-hz)))))

@@ -2,4 +2,7 @@
 ;;; category: signal
 ;;; note: equal 50/50 mix
 
-(defpdel signal/mix2~ ((a signal) (b signal)) :outputs ((audio signal)) (*~ #(0.5) (+~ a b)))
+(in-package #:pdel-user)
+
+(defpdel signal/mix2~ ((a signal) (b signal)) :outputs
+  ((audio signal)) (*~ #(0.5) (+~ a b)))

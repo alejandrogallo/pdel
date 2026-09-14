@@ -1,6 +1,10 @@
 ;;; gm/bass/synth-2~ --- converted PDEL library definition
 ;;; category: general-midi
+(in-package #:pdel-user)
 
-(defpdel gm/bass/synth-2~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/bass/synth-2~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((frequency frequency-hz) (env (env/long-perc~ trigger)) (voice (lop~ #(1200) (osc/square-soft~ frequency)))) (*~ voice env)))
+   ((frequency frequency-hz) (env (env/long-perc~ trigger))
+    (voice (lop~ #(1200) (osc/square-soft~ frequency))))
+   (*~ voice env)))

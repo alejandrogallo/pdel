@@ -2,4 +2,7 @@
 ;;; category: envelope
 ;;; note: plucked decay
 
-(defpdel env/pluck~ ((trigger control)) :outputs ((envelope signal)) (vline~ (msg #("1 2, 0.45 90 2, 0 700 92") trigger)))
+(in-package #:pdel-user)
+
+(defpdel env/pluck~ ((trigger control)) :outputs ((envelope signal))
+  (vline~ (msg #("1 2, 0.45 90 2, 0 700 92") trigger)))

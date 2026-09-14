@@ -2,5 +2,9 @@
 ;;; category: pdksynth-percussion
 ;;; note: second hi-hat voice corresponding to upstream dkhh2~
 
+(in-package #:pdel-user)
+
 (defpdel pdksynth/dkhh2~ ((trigger control)) :outputs ((audio signal))
- (let* ((t trigger) (e (vline~ (msg #("1 1, 0.45 55 1, 0 260 56") t)))) (*~ e (hip~ #(7200) (noise~)))))
+ (let*
+     ((t trigger) (e (vline~ (msg #("1 1, 0.45 55 1, 0 260 56") t))))
+   (*~ e (hip~ #(7200) (noise~)))))

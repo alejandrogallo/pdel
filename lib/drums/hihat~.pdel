@@ -1,5 +1,8 @@
 ;;; drums/hihat~ --- converted PDEL library definition
 ;;; category: percussion
 
+(in-package #:pdel-user)
+
 (defpdel drums/hihat~ ((trigger control)) :outputs ((audio signal))
- (let* ((envelope (vline~ (msg #("1 1, 0 65 1") trigger)))) (*~ (bp~ #(10000 2) (hip~ #(6500) (noise~))) envelope)))
+  (let* ((envelope (vline~ (msg #("1 1, 0 65 1") trigger))))
+    (*~ (bp~ #(10000 2) (hip~ #(6500) (noise~))) envelope)))

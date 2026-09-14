@@ -2,5 +2,8 @@
 ;;; category: effect
 ;;; note: bright plate-like reverb
 
+(in-package #:pdel-user)
+
 (defpdel fx/reverb-plate~ ((audio signal)) :outputs ((audio signal))
- (let* ((x audio) (rv (rev3~ #(90 84 6000 12) x x))) (*~ #(0.55) (+~ (out 0 rv) (out 1 rv)))))
+  (let* ((x audio) (rv (rev3~ #(90 84 6000 12) x x)))
+    (*~ #(0.55) (+~ (out 0 rv) (out 1 rv)))))

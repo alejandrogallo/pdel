@@ -1,8 +1,13 @@
 ;;; gm/bass/acoustic~ --- converted PDEL library definition
 ;;; category: general-midi
+(in-package #:pdel-user)
 
-(defpdel gm/bass/acoustic~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(defpdel gm/bass/acoustic~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pluck~ trigger))
      (voice
-       (lop~ #(1800) (+~ (osc~ frequency) (*~ #(0.3) (osc/triangle~ (*~ #(2) frequency))))))) (*~ voice env)))
+       (lop~ #(1800)
+             (+~ (osc~ frequency)
+                 (*~ #(0.3) (osc/triangle~ (*~ #(2) frequency)))))))
+   (*~ voice env)))

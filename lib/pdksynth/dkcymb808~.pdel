@@ -2,8 +2,14 @@
 ;;; category: pdksynth-percussion
 ;;; note: 808-style metallic cymbal corresponding to upstream dkcymb808~
 
-(defpdel pdksynth/dkcymb808~ ((trigger control)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel pdksynth/dkcymb808~ ((trigger control)) :outputs
+  ((audio signal))
  (let*
    ((t trigger) (e (vline~ (msg #("1 1, 0 900 1") t)))
      (m
-       (+~ (osc/square~ 205) (+~ (osc/square~ 305) (+~ (osc/square~ 410) (osc/square~ 615)))))) (*~ #(0.25) e (hip~ #(5200) m))))
+       (+~ (osc/square~ 205)
+           (+~ (osc/square~ 305)
+               (+~ (osc/square~ 410) (osc/square~ 615))))))
+   (*~ #(0.25) e (hip~ #(5200) m))))

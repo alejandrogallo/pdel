@@ -1,4 +1,7 @@
 ;;; fx/fuzz~ --- converted PDEL library definition
 ;;; category: effect
 
-(defpdel fx/fuzz~ ((audio signal)) :outputs ((audio signal)) (clip~ #(-0.22 0.22) (*~ #(14) (hip~ #(90) audio))))
+(in-package #:pdel-user)
+
+(defpdel fx/fuzz~ ((audio signal)) :outputs ((audio signal))
+  (clip~ #(-0.22 0.22) (*~ #(14) (hip~ #(90) audio))))

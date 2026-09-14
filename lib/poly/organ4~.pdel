@@ -2,6 +2,19 @@
 ;;; category: polyphonic
 ;;; note: four-voice MIDI allocator using Pd poly
 
-(defpdel poly/organ4~ ((note-velocity-list control)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel poly/organ4~ ((note-velocity-list control)) :outputs
+  ((audio signal))
  (let*
-   ((event note-velocity-list) (uv (unpack #(f f) event)) (allocator (poly #(4 1) (out 0 uv) (out 1 uv))) (packet (pack #(f f f) (out 0 allocator) (out 1 allocator) (out 2 allocator))) (router (route #(1 2 3 4) packet)) (v1 (voice/organ-note~ (out 0 router))) (v2 (voice/organ-note~ (out 1 router))) (v3 (voice/organ-note~ (out 2 router))) (v4 (voice/organ-note~ (out 3 router)))) (*~ #(0.45) (+~ v1 (+~ v2 (+~ v3 v4))))))
+   ((event note-velocity-list) (uv (unpack #(f f) event))
+    (allocator (poly #(4 1) (out 0 uv) (out 1 uv)))
+    (packet
+      (pack #(f f f) (out 0 allocator) (out 1 allocator)
+            (out 2 allocator)))
+    (router (route #(1 2 3 4) packet))
+    (v1 (voice/organ-note~ (out 0 router)))
+    (v2 (voice/organ-note~ (out 1 router)))
+    (v3 (voice/organ-note~ (out 2 router)))
+    (v4 (voice/organ-note~ (out 3 router))))
+   (*~ #(0.45) (+~ v1 (+~ v2 (+~ v3 v4))))))

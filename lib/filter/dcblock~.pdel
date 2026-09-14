@@ -1,4 +1,7 @@
 ;;; filter/dcblock~ --- converted PDEL library definition
 ;;; category: filter
 
-(defpdel filter/dcblock~ ((input signal)) :outputs ((output signal)) (hip~ #(5) input))
+(in-package #:pdel-user)
+
+(defpdel filter/dcblock~ ((input signal)) :outputs ((output signal))
+         (hip~ #(5) input))

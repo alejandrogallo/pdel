@@ -2,6 +2,14 @@
 ;;; category: pdksynth-pitched
 ;;; note: detuned synth pad corresponding to upstream dkdesyp~
 
-(defpdel pdksynth/dkdesyp~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel pdksynth/dkdesyp~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 650, 0.75 900 650, 0 2200 1550") t))) (v (+~ (osc/saw~ (*~ #(0.997) f)) (+~ (osc/saw~ f) (osc/saw~ (*~ #(1.003) f)))))) (*~ #(0.22) e (lop~ #(2800) v))))
+   ((t trigger) (f frequency-hz)
+    (e (vline~ (msg #("1 650, 0.75 900 650, 0 2200 1550") t)))
+    (v
+      (+~ (osc/saw~ (*~ #(0.997) f))
+          (+~ (osc/saw~ f) (osc/saw~ (*~ #(1.003) f))))))
+   (*~ #(0.22) e (lop~ #(2800) v))))

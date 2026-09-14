@@ -1,4 +1,7 @@
 ;;; fx/drive-param~ --- converted PDEL library definition
 ;;; category: effect
 
-(defpdel fx/drive-param~ ((audio signal) (drive signal)) :outputs ((audio signal)) (clip~ #(-1 1) (*~ audio drive)))
+(in-package #:pdel-user)
+
+(defpdel fx/drive-param~ ((audio signal) (drive signal)) :outputs
+  ((audio signal)) (clip~ #(-1 1) (*~ audio drive)))

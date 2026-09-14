@@ -1,6 +1,12 @@
 ;;; gm/brass/synth-brass~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/brass/synth-brass~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/brass/synth-brass~
+    ((trigger control) (frequency-hz signal)) :outputs
+  ((audio signal))
  (let*
-   ((frequency frequency-hz) (env (env/brass~ trigger)) (voice (lop~ #(3600) (osc/square-soft~ frequency)))) (*~ voice env)))
+   ((frequency frequency-hz) (env (env/brass~ trigger))
+    (voice (lop~ #(3600) (osc/square-soft~ frequency))))
+   (*~ voice env)))

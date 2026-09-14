@@ -1,4 +1,7 @@
 ;;; signal/add2~ --- converted PDEL library definition
 ;;; category: signal
 
-(defpdel signal/add2~ ((a signal) (b signal)) :outputs ((sum signal)) (+~ a b))
+(in-package #:pdel-user)
+
+(defpdel signal/add2~ ((a signal) (b signal)) :outputs ((sum signal))
+  (+~ a b))

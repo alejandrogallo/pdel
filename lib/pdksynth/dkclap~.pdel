@@ -2,9 +2,15 @@
 ;;; category: pdksynth-percussion
 ;;; note: clap synthesizer corresponding to upstream dkclap~
 
-(defpdel pdksynth/dkclap~ ((trigger control)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel pdksynth/dkclap~ ((trigger control)) :outputs
+  ((audio signal))
  (let*
    ((t trigger)
      (e
        (vline~
-         (msg #("1 0, 0 18 0, 1 22 22, 0 18 44, 1 22 66, 0 18 88, 0.45 35 120, 0 220 155") t)))) (*~ e (bp~ #(1500 0.9) (hip~ #(700) (noise~))))))
+         (msg
+          #("1 0, 0 18 0, 1 22 22, 0 18 44, 1 22 66, 0 18 88, 0.45 35 120, 0 220 155")
+          t))))
+   (*~ e (bp~ #(1500 0.9) (hip~ #(700) (noise~))))))

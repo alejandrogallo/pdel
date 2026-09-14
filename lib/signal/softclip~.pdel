@@ -1,4 +1,7 @@
 ;;; signal/softclip~ --- converted PDEL library definition
 ;;; category: signal
 
-(defpdel signal/softclip~ ((input signal)) :outputs ((output signal)) (clip~ #(-1 1) (*~ #(1.8) input)))
+(in-package #:pdel-user)
+
+(defpdel signal/softclip~ ((input signal)) :outputs ((output signal))
+  (clip~ #(-1 1) (*~ #(1.8) input)))

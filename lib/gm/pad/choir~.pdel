@@ -1,7 +1,14 @@
 ;;; gm/pad/choir~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/pad/choir~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/pad/choir~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
    ((frequency frequency-hz) (env (env/pad~ trigger))
-     (voice (bp~ #(1000 0.7) (+~ (osc~ frequency) (*~ #(0.4) (osc~ (*~ #(2) frequency))))))) (*~ voice env)))
+     (voice
+       (bp~ #(1000 0.7)
+            (+~ (osc~ frequency)
+                (*~ #(0.4) (osc~ (*~ #(2) frequency)))))))
+   (*~ voice env)))

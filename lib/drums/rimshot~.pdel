@@ -1,5 +1,8 @@
 ;;; drums/rimshot~ --- converted PDEL library definition
 ;;; category: percussion
 
+(in-package #:pdel-user)
+
 (defpdel drums/rimshot~ ((trigger control)) :outputs ((audio signal))
- (let* ((env (vline~ (msg #("1 1, 0 80 1") trigger)))) (*~ (bp~ #(2200 7) (noise~)) env)))
+  (let* ((env (vline~ (msg #("1 1, 0 80 1") trigger))))
+    (*~ (bp~ #(2200 7) (noise~)) env)))

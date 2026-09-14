@@ -2,6 +2,13 @@
 ;;; category: pdksynth-pitched
 ;;; note: dual-tone multifrequency voice corresponding to upstream dkdtmf~
 
-(defpdel pdksynth/dkdtmf~ ((trigger control) (low-frequency-hz signal) (high-frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel pdksynth/dkdtmf~
+    ((trigger control) (low-frequency-hz signal)
+                       (high-frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((t trigger) (lo low-frequency-hz) (hi high-frequency-hz) (e (vline~ (msg #("1 2, 0 180 2") t)))) (*~ #(0.45) e (+~ (osc~ lo) (osc~ hi)))))
+   ((t trigger) (lo low-frequency-hz) (hi high-frequency-hz)
+    (e (vline~ (msg #("1 2, 0 180 2") t))))
+   (*~ #(0.45) e (+~ (osc~ lo) (osc~ hi)))))

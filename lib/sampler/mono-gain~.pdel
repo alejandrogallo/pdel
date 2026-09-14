@@ -1,5 +1,9 @@
 ;;; sampler/mono-gain~ --- converted PDEL library definition
 ;;; category: sampler
 
-(defpdel sampler/mono-gain~ ((readsf-message control) (gain signal)) :outputs ((audio signal) (done control))
- (let* ((player (readsf~ #(1) readsf-message))) (outputs (*~ gain (out 0 player)) (out 1 player))))
+(in-package #:pdel-user)
+
+(defpdel sampler/mono-gain~ ((readsf-message control) (gain signal))
+  :outputs ((audio signal) (done control))
+ (let* ((player (readsf~ #(1) readsf-message)))
+   (outputs (*~ gain (out 0 player)) (out 1 player))))

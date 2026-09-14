@@ -2,4 +2,7 @@
 ;;; category: effect
 ;;; note: simple safety limiter
 
-(defpdel fx/limiter~ ((audio signal)) :outputs ((audio signal)) (clip~ #(-0.92 0.92) audio))
+(in-package #:pdel-user)
+
+(defpdel fx/limiter~ ((audio signal)) :outputs ((audio signal))
+  (clip~ #(-0.92 0.92) audio))

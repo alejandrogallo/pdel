@@ -1,6 +1,12 @@
 ;;; synth/sub-bass~ --- converted PDEL library definition
 ;;; category: synthesizer
 
-(defpdel synth/sub-bass~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel synth/sub-bass~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((frequency frequency-hz) (saw (-~ #(1) (*~ #(2) (phasor~ frequency)))) (envelope (vline~ (msg #("1 3, 0 420 3") trigger)))) (*~ (lop~ #(700) saw) envelope)))
+   ((frequency frequency-hz)
+    (saw (-~ #(1) (*~ #(2) (phasor~ frequency))))
+    (envelope (vline~ (msg #("1 3, 0 420 3") trigger))))
+   (*~ (lop~ #(700) saw) envelope)))

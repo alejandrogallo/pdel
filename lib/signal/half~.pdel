@@ -1,4 +1,7 @@
 ;;; signal/half~ --- converted PDEL library definition
 ;;; category: signal
 
-(defpdel signal/half~ ((audio signal)) :outputs ((audio signal)) (*~ #(0.5) audio))
+(in-package #:pdel-user)
+
+(defpdel signal/half~ ((audio signal)) :outputs ((audio signal))
+  (*~ #(0.5) audio))

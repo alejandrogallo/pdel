@@ -2,6 +2,13 @@
 ;;; category: pdksynth-pitched
 ;;; note: pulse-width-modulated square voice corresponding to upstream dkpwmsq~
 
-(defpdel pdksynth/dkpwmsq~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel pdksynth/dkpwmsq~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 7, 0.72 220 7, 0 900 227") t))) (duty (+~ #(0.5) (*~ #(0.28) (osc~ #(0.23))))) (v (expr~ #("if($v1 > $v2, 1, -1)") (phasor~ f) duty))) (*~ #(0.42) e v)))
+   ((t trigger) (f frequency-hz)
+    (e (vline~ (msg #("1 7, 0.72 220 7, 0 900 227") t)))
+    (duty (+~ #(0.5) (*~ #(0.28) (osc~ #(0.23)))))
+    (v (expr~ #("if($v1 > $v2, 1, -1)") (phasor~ f) duty)))
+   (*~ #(0.42) e v)))

@@ -2,6 +2,14 @@
 ;;; category: pdksynth-pitched
 ;;; note: Karplus-Strong style plucked string corresponding to upstream dkkarplus~
 
-(defpdel pdksynth/dkkarplus~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel pdksynth/dkkarplus~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((t trigger) (f frequency-hz) (exc (*~ (vline~ (msg #("1 0, 0 8 0") t)) (noise~))) (sum (+~ exc)) (writer (delwrite~ #($0-dkks 1000) sum)) (tap (vd~ #($0-dkks) (/~ #(1000) f))) (fb (*~ #(0.992) (lop~ #(6500) tap)))) (-> fb 0 sum 1) tap))
+   ((t trigger) (f frequency-hz)
+    (exc (*~ (vline~ (msg #("1 0, 0 8 0") t)) (noise~)))
+    (sum (+~ exc)) (writer (delwrite~ #($0-dkks 1000) sum))
+    (tap (vd~ #($0-dkks) (/~ #(1000) f)))
+    (fb (*~ #(0.992) (lop~ #(6500) tap))))
+   (-> fb 0 sum 1) tap))

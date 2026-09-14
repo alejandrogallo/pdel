@@ -1,6 +1,12 @@
 ;;; gm/strings/violin~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/strings/violin~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/strings/violin~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((frequency frequency-hz) (env (env/string~ trigger)) (voice (lop~ #(6200) (+~ (osc/saw~ frequency) (*~ #(0.16) (noise~)))))) (*~ voice env)))
+   ((frequency frequency-hz) (env (env/string~ trigger))
+    (voice
+      (lop~ #(6200) (+~ (osc/saw~ frequency) (*~ #(0.16) (noise~))))))
+   (*~ voice env)))

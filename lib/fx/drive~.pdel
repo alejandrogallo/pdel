@@ -1,4 +1,7 @@
 ;;; fx/drive~ --- converted PDEL library definition
 ;;; category: effect
 
-(defpdel fx/drive~ ((input signal) (drive signal)) :outputs ((output signal)) (clip~ #(-1 1) (*~ input drive)))
+(in-package #:pdel-user)
+
+(defpdel fx/drive~ ((input signal) (drive signal)) :outputs
+  ((output signal)) (clip~ #(-1 1) (*~ input drive)))

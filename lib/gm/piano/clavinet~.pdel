@@ -1,6 +1,11 @@
 ;;; gm/piano/clavinet~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/piano/clavinet~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/piano/clavinet~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((frequency frequency-hz) (env (env/pluck~ trigger)) (voice (bp~ #(1800 1.2) (osc/square-soft~ frequency)))) (*~ voice env)))
+   ((frequency frequency-hz) (env (env/pluck~ trigger))
+    (voice (bp~ #(1800 1.2) (osc/square-soft~ frequency))))
+   (*~ voice env)))

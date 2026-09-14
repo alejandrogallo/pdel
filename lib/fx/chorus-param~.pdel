@@ -1,6 +1,14 @@
 ;;; fx/chorus-param~ --- converted PDEL library definition
 ;;; category: effect
 
-(defpdel fx/chorus-param~ ((audio signal) (rate-hz signal) (depth-ms signal)) :outputs ((audio signal))
- (let*
-   ((x audio) (rate rate-hz) (depth depth-ms) (writer (delwrite~ #($0-chorus-param 120) x)) (delay-ms (+~ #(15) (*~ depth (osc~ rate)))) (wet (vd~ #($0-chorus-param) delay-ms))) (*~ #(0.62) (+~ x wet))))
+(in-package #:pdel-user)
+
+(defpdel fx/chorus-param~
+    ((audio signal) (rate-hz signal) (depth-ms signal)) :outputs
+  ((audio signal))
+  (let*
+      ((x audio) (rate rate-hz) (depth depth-ms)
+       (writer (delwrite~ #($0-chorus-param 120) x))
+       (delay-ms (+~ #(15) (*~ depth (osc~ rate))))
+       (wet (vd~ #($0-chorus-param) delay-ms)))
+    (*~ #(0.62) (+~ x wet))))

@@ -1,4 +1,7 @@
 ;;; fx/telephone~ --- converted PDEL library definition
 ;;; category: effect
 
-(defpdel fx/telephone~ ((audio signal)) :outputs ((audio signal)) (filter/telephone~ audio))
+(in-package #:pdel-user)
+
+(defpdel fx/telephone~ ((audio signal)) :outputs ((audio signal))
+         (filter/telephone~ audio))

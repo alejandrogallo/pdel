@@ -1,4 +1,7 @@
 ;;; filter/lop~ --- converted PDEL library definition
 ;;; category: filter
 
-(defpdel filter/lop~ ((input signal) (cutoff-hz control)) :outputs ((output signal)) (let* ((cutoff cutoff-hz)) (lop~ input cutoff)))
+(in-package #:pdel-user)
+
+(defpdel filter/lop~ ((input signal) (cutoff-hz control)) :outputs
+  ((output signal)) (let* ((cutoff cutoff-hz)) (lop~ input cutoff)))

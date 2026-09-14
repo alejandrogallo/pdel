@@ -2,6 +2,13 @@
 ;;; category: pdksynth-effect
 ;;; note: three-formant vowel-filter style effect corresponding to upstream dkvowel~
 
-(defpdel pdksynth/dkvowel~ ((audio signal) (formant-shift signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel pdksynth/dkvowel~ ((audio signal) (formant-shift signal))
+  :outputs ((audio signal))
  (let*
-   ((x audio) (shift formant-shift) (f1 (bp~ #(0 7) x (+~ #(700) shift))) (f2 (bp~ #(0 9) x (+~ #(1220) (*~ #(1.4) shift)))) (f3 (bp~ #(0 12) x (+~ #(2600) (*~ #(2) shift))))) (*~ #(0.65) (+~ f1 (+~ (*~ #(0.65) f2) (*~ #(0.4) f3))))))
+   ((x audio) (shift formant-shift)
+    (f1 (bp~ #(0 7) x (+~ #(700) shift)))
+    (f2 (bp~ #(0 9) x (+~ #(1220) (*~ #(1.4) shift))))
+    (f3 (bp~ #(0 12) x (+~ #(2600) (*~ #(2) shift)))))
+   (*~ #(0.65) (+~ f1 (+~ (*~ #(0.65) f2) (*~ #(0.4) f3))))))

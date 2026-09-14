@@ -2,6 +2,11 @@
 ;;; category: pdksynth-percussion
 ;;; note: snare synthesizer corresponding to upstream dksd5~
 
+(in-package #:pdel-user)
+
 (defpdel pdksynth/dksd5~ ((trigger control)) :outputs ((audio signal))
  (let*
-   ((t trigger) (e (vline~ (msg #("1 1, 0 260 1") t))) (tone (*~ #(0.45) (osc~ #(190)))) (noise (*~ #(0.8) (bp~ #(5200 1.2) (noise~))))) (*~ e (+~ tone noise))))
+   ((t trigger) (e (vline~ (msg #("1 1, 0 260 1") t)))
+    (tone (*~ #(0.45) (osc~ #(190))))
+    (noise (*~ #(0.8) (bp~ #(5200 1.2) (noise~)))))
+   (*~ e (+~ tone noise))))

@@ -1,6 +1,11 @@
 ;;; gm/lead/saw~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/lead/saw~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/lead/saw~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((frequency frequency-hz) (env (env/long-perc~ trigger)) (voice (lop~ #(6200) (osc/saw~ frequency)))) (*~ voice env)))
+   ((frequency frequency-hz) (env (env/long-perc~ trigger))
+    (voice (lop~ #(6200) (osc/saw~ frequency))))
+   (*~ voice env)))

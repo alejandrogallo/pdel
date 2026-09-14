@@ -2,6 +2,11 @@
 ;;; category: effect
 ;;; note: 5.2Hz vibrato, about +/-3ms
 
+(in-package #:pdel-user)
+
 (defpdel fx/vibrato~ ((audio signal)) :outputs ((audio signal))
- (let*
-   ((x audio) (writer (delwrite~ #($0-vibrato 80) x)) (delay-ms (+~ #(8) (*~ #(3) (osc~ #(5.2))))) (wet (vd~ #($0-vibrato) delay-ms))) (*~ #(0.9) wet)))
+  (let*
+      ((x audio) (writer (delwrite~ #($0-vibrato 80) x))
+       (delay-ms (+~ #(8) (*~ #(3) (osc~ #(5.2)))))
+       (wet (vd~ #($0-vibrato) delay-ms)))
+    (*~ #(0.9) wet)))

@@ -1,10 +1,17 @@
 ;;; synth/additive-organ~ --- converted PDEL library definition
 ;;; category: synthesizer
 
-(defpdel synth/additive-organ~ ((trigger control) (fundamental-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel synth/additive-organ~
+    ((trigger control) (fundamental-hz signal)) :outputs
+  ((audio signal))
  (let*
    ((frequency fundamental-hz)
      (partials
        (+~ (*~ #(0.55) (osc~ frequency))
          (+~ (*~ #(0.28) (osc~ (*~ #(2) frequency)))
-           (+~ (*~ #(0.12) (osc~ (*~ #(3) frequency))) (*~ #(0.08) (osc~ (*~ #(4) frequency))))))) (envelope (vline~ (msg #("1 8, 0 900 8") trigger)))) (*~ partials envelope)))
+           (+~ (*~ #(0.12) (osc~ (*~ #(3) frequency)))
+               (*~ #(0.08) (osc~ (*~ #(4) frequency)))))))
+    (envelope (vline~ (msg #("1 8, 0 900 8") trigger))))
+   (*~ partials envelope)))

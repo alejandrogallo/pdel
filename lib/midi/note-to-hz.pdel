@@ -1,4 +1,7 @@
 ;;; midi/note-to-hz --- converted PDEL library definition
 ;;; category: midi
 
-(defpdel midi/note-to-hz ((midi-note control)) :outputs ((frequency-hz control)) (mtof midi-note))
+(in-package #:pdel-user)
+
+(defpdel midi/note-to-hz ((midi-note control)) :outputs
+  ((frequency-hz control)) (mtof midi-note))

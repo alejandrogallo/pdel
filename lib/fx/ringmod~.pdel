@@ -1,4 +1,8 @@
 ;;; fx/ringmod~ --- converted PDEL library definition
 ;;; category: effect
 
-(defpdel fx/ringmod~ ((input signal) (mod-frequency-hz signal)) :outputs ((output signal)) (let* ((frequency mod-frequency-hz)) (*~ input (osc~ frequency))))
+(in-package #:pdel-user)
+
+(defpdel fx/ringmod~ ((input signal) (mod-frequency-hz signal))
+  :outputs ((output signal))
+  (let* ((frequency mod-frequency-hz)) (*~ input (osc~ frequency))))

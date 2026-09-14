@@ -1,4 +1,8 @@
 ;;; osc/saw-bright~ --- converted PDEL library definition
 ;;; category: oscillator
 
-(defpdel osc/saw-bright~ ((frequency-hz signal)) :outputs ((audio signal)) (hip~ #(8) (-~ #(1) (*~ #(2) (phasor~ frequency-hz)))))
+(in-package #:pdel-user)
+
+(defpdel osc/saw-bright~ ((frequency-hz signal)) :outputs
+  ((audio signal))
+  (hip~ #(8) (-~ #(1) (*~ #(2) (phasor~ frequency-hz)))))

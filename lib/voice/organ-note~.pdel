@@ -2,6 +2,14 @@
 ;;; category: voice
 ;;; note: MIDI note/velocity voice; velocity zero releases
 
-(defpdel voice/organ-note~ ((note-velocity-list control)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel voice/organ-note~ ((note-velocity-list control)) :outputs
+  ((audio signal))
  (let*
-   ((event note-velocity-list) (uv (unpack #(f f) event)) (note (out 0 uv)) (velocity (out 1 uv)) (frequency (mtof note)) (amp-target (/ #(127) velocity)) (amp (line~ (pack #(f 8) amp-target))) (voice (osc/organ~ frequency))) (*~ voice amp)))
+   ((event note-velocity-list) (uv (unpack #(f f) event))
+    (note (out 0 uv)) (velocity (out 1 uv)) (frequency (mtof note))
+    (amp-target (/ #(127) velocity))
+    (amp (line~ (pack #(f 8) amp-target)))
+    (voice (osc/organ~ frequency)))
+   (*~ voice amp)))

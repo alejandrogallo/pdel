@@ -2,5 +2,10 @@
 ;;; category: effect
 ;;; note: 105ms slapback
 
+(in-package #:pdel-user)
+
 (defpdel fx/slapback~ ((audio signal)) :outputs ((audio signal))
- (let* ((x audio) (writer (delwrite~ #($0-slap 400) x)) (tap (delread~ #($0-slap 105)))) (+~ x (*~ #(0.36) tap))))
+  (let*
+      ((x audio) (writer (delwrite~ #($0-slap 400) x))
+       (tap (delread~ #($0-slap 105))))
+    (+~ x (*~ #(0.36) tap))))

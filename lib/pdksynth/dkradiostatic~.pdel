@@ -2,5 +2,9 @@
 ;;; category: pdksynth-effect
 ;;; note: radio-static effect corresponding to upstream dkradiostatic~
 
-(defpdel pdksynth/dkradiostatic~ ((audio signal) (amount-0-to-1 signal)) :outputs ((audio signal))
- (let* ((x audio) (a amount-0-to-1) (n (bp~ #(4200 0.8) (noise~)))) (+~ (*~ x (-~ #(1) a)) (*~ a n))))
+(in-package #:pdel-user)
+
+(defpdel pdksynth/dkradiostatic~
+    ((audio signal) (amount-0-to-1 signal)) :outputs ((audio signal))
+ (let* ((x audio) (a amount-0-to-1) (n (bp~ #(4200 0.8) (noise~))))
+   (+~ (*~ x (-~ #(1) a)) (*~ a n))))

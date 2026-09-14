@@ -1,4 +1,7 @@
 ;;; osc/square~ --- converted PDEL library definition
 ;;; category: oscillator
 
-(defpdel osc/square~ ((frequency-hz signal)) :outputs ((audio signal)) (-~ #(1) (*~ #(2) (>~ #(0.5) (phasor~ frequency-hz)))))
+(in-package #:pdel-user)
+
+(defpdel osc/square~ ((frequency-hz signal)) :outputs ((audio signal))
+  (-~ #(1) (*~ #(2) (>~ #(0.5) (phasor~ frequency-hz)))))

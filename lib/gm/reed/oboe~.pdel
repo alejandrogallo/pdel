@@ -1,6 +1,11 @@
 ;;; gm/reed/oboe~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/reed/oboe~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/reed/oboe~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((frequency frequency-hz) (env (env/brass~ trigger)) (voice (bp~ #(1700 1.3) (osc/square-soft~ frequency)))) (*~ voice env)))
+   ((frequency frequency-hz) (env (env/brass~ trigger))
+    (voice (bp~ #(1700 1.3) (osc/square-soft~ frequency))))
+   (*~ voice env)))

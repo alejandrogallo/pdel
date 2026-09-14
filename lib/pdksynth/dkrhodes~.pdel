@@ -2,6 +2,13 @@
 ;;; category: pdksynth-pitched
 ;;; note: electric-piano/FM voice corresponding to upstream dkrhodes~
 
-(defpdel pdksynth/dkrhodes~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel pdksynth/dkrhodes~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((t trigger) (f frequency-hz) (e (vline~ (msg #("1 4, 0.55 500 4, 0 1900 504") t))) (m (*~ (*~ #(2) f) (*~ #(0.9) (osc~ (*~ #(2) f))))) (v (osc~ (+~ f m)))) (*~ #(0.72) e v)))
+   ((t trigger) (f frequency-hz)
+    (e (vline~ (msg #("1 4, 0.55 500 4, 0 1900 504") t)))
+    (m (*~ (*~ #(2) f) (*~ #(0.9) (osc~ (*~ #(2) f)))))
+    (v (osc~ (+~ f m))))
+   (*~ #(0.72) e v)))

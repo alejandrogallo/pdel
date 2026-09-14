@@ -1,6 +1,14 @@
 ;;; gm/piano/electric-grand~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/piano/electric-grand~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/piano/electric-grand~
+    ((trigger control) (frequency-hz signal)) :outputs
+  ((audio signal))
  (let*
-   ((frequency frequency-hz) (env (env/piano~ trigger)) (voice (+~ (osc~ frequency) (*~ #(0.28) (osc/triangle~ (*~ #(2) frequency)))))) (*~ voice env)))
+   ((frequency frequency-hz) (env (env/piano~ trigger))
+    (voice
+      (+~ (osc~ frequency)
+          (*~ #(0.28) (osc/triangle~ (*~ #(2) frequency))))))
+   (*~ voice env)))

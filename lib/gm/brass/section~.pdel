@@ -1,6 +1,11 @@
 ;;; gm/brass/section~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/brass/section~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/brass/section~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((frequency frequency-hz) (env (env/brass~ trigger)) (voice (lop~ #(4800) (osc/supersaw~ frequency)))) (*~ voice env)))
+   ((frequency frequency-hz) (env (env/brass~ trigger))
+    (voice (lop~ #(4800) (osc/supersaw~ frequency))))
+   (*~ voice env)))

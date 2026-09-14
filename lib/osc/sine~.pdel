@@ -1,4 +1,7 @@
 ;;; osc/sine~ --- converted PDEL library definition
 ;;; category: oscillator
 
-(defpdel osc/sine~ ((frequency-hz signal)) :outputs ((audio signal)) (osc~ frequency-hz))
+(in-package #:pdel-user)
+
+(defpdel osc/sine~ ((frequency-hz signal)) :outputs ((audio signal))
+  (osc~ frequency-hz))

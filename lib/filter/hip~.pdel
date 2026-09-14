@@ -1,4 +1,7 @@
 ;;; filter/hip~ --- converted PDEL library definition
 ;;; category: filter
 
-(defpdel filter/hip~ ((input signal) (cutoff-hz control)) :outputs ((output signal)) (let* ((cutoff cutoff-hz)) (hip~ input cutoff)))
+(in-package #:pdel-user)
+
+(defpdel filter/hip~ ((input signal) (cutoff-hz control)) :outputs
+  ((output signal)) (let* ((cutoff cutoff-hz)) (hip~ input cutoff)))

@@ -1,6 +1,11 @@
 ;;; gm/organ/drawbar~ --- converted PDEL library definition
 ;;; category: general-midi
 
-(defpdel gm/organ/drawbar~ ((trigger control) (frequency-hz signal)) :outputs ((audio signal))
+(in-package #:pdel-user)
+
+(defpdel gm/organ/drawbar~ ((trigger control) (frequency-hz signal))
+  :outputs ((audio signal))
  (let*
-   ((frequency frequency-hz) (env (env/long-perc~ trigger)) (voice (lop~ #(8000) (osc/organ~ frequency)))) (*~ voice env)))
+   ((frequency frequency-hz) (env (env/long-perc~ trigger))
+    (voice (lop~ #(8000) (osc/organ~ frequency))))
+   (*~ voice env)))

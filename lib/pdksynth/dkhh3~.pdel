@@ -2,6 +2,11 @@
 ;;; category: pdksynth-percussion
 ;;; note: metallic hi-hat voice corresponding to upstream dkhh3~
 
+(in-package #:pdel-user)
+
 (defpdel pdksynth/dkhh3~ ((trigger control)) :outputs ((audio signal))
  (let*
-   ((t trigger) (e (vline~ (msg #("1 0, 0 180 0") t))) (m (+~ (osc/square~ 422) (+~ (osc/square~ 677) (osc/square~ 1013))))) (*~ #(0.28) e (hip~ #(6800) m))))
+   ((t trigger) (e (vline~ (msg #("1 0, 0 180 0") t)))
+    (m
+      (+~ (osc/square~ 422) (+~ (osc/square~ 677) (osc/square~ 1013)))))
+   (*~ #(0.28) e (hip~ #(6800) m))))

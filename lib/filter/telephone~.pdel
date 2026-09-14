@@ -1,4 +1,7 @@
 ;;; filter/telephone~ --- converted PDEL library definition
 ;;; category: filter
 
-(defpdel filter/telephone~ ((audio signal)) :outputs ((audio signal)) (lop~ #(3400) (hip~ #(300) audio)))
+(in-package #:pdel-user)
+
+(defpdel filter/telephone~ ((audio signal)) :outputs ((audio signal))
+  (lop~ #(3400) (hip~ #(300) audio)))

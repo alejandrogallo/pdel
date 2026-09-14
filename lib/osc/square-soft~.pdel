@@ -1,4 +1,7 @@
 ;;; osc/square-soft~ --- converted PDEL library definition
 ;;; category: oscillator
 
-(defpdel osc/square-soft~ ((frequency-hz signal)) :outputs ((audio signal)) (lop~ #(9000) (osc/square~ frequency-hz)))
+(in-package #:pdel-user)
+
+(defpdel osc/square-soft~ ((frequency-hz signal)) :outputs
+  ((audio signal)) (lop~ #(9000) (osc/square~ frequency-hz)))
