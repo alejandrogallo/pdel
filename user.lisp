@@ -55,4 +55,4 @@ DEFPDEL forms."
   pdel-compiler::*obj-alist*)
 
 (eval-when (:load-toplevel :execute)
-  (pdel-lang::load-bundled-library))
+  (load-bundled-library))

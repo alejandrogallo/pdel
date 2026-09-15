@@ -21,7 +21,6 @@
    #:declare-object #:find-object #:find-pdel-macro #:find-compiler-macro #:pdel-name=
    #:defpdel
    #:defpdel-macro
-   #:load-bundled-library
    #:free-form-flags #:free-form-args #:free-form-inputs
    #:assembly))
 
